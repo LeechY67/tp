@@ -9,6 +9,16 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
+### Jing Yang
+
+<img src="images/jiya-oh.png" width="200px">
+
+[[github](http://github.com/Jiya-OH)]
+
+* Role: Software Developer
+* Responsibilities: Creating, designing, and programming,
+* Running tests to identify bugs and troubleshooting issues to ensure software functionality.
+
 ### Gao Huiying
 
 <img src="images/ghyyuan.png" width="200px">
@@ -26,12 +36,13 @@ Manage the project repository and branching strategy to integrate individual mod
 [[github](http://github.com/leechy67)]
 
 * Role: Team Leader
+* Responsibilities: software development
 
 ### Xingchen
 
 <img src="images/Xingchen722.png" width="200px">
 
-[[github](https://github.com/Xingchen722]
+[[github](https://github.com/Xingchen722)]
 
 * Role: Tech Lead
 * Responsibilities: software development
@@ -40,27 +51,7 @@ Manage the project repository and branching strategy to integrate individual mod
 
 <img src="images/brenda77777.png" width="200px">
 
-[[github](https://github.com/brenda77777)] [[portfolio](team/johndoe.md)]
+[[github](https://github.com/brenda77777)]
 
 * Role: Tech Lead 
 * Responsibilities: Backend development
-
-### Jean Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
-
-### James Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: UI
