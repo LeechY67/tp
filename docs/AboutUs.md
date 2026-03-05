@@ -9,14 +9,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### Brenda Tan 
-
-<img src="images/brenda77777.png" width="200px">
-
-[[github](https://github.com/brenda77777)]
-* Role: Tech Lead
-* Responsibilities: backend development
-
 ### Gao Huiying
 
 <img src="images/ghyyuan.png" width="200px">
@@ -24,7 +16,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/ghyyuan)]
 
 * Role: Project Advisor
-
 
 ### Xingchen
 
@@ -35,14 +26,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Tech Lead
 * Responsibilities: software development
 
-### Johnny Doe
+### Brenda
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/brenda77777.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](https://github.com/brenda77777)] [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Data
+* Role: Tech Lead 
+* Responsibilities: Backend development
 
 ### Jean Doe
 
