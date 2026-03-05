@@ -17,7 +17,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Jing Yang
 
-<img src="docs/images/jiya-oh.png" width="200px">
+<img src="images/jiya-oh.png" width="200px">
 
 [[github](http://github.com/Jiya-OH)]
 
