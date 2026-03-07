@@ -326,7 +326,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Role**: The position/title applied for.
+* **Status**: The current progress state of an application (e.g. SAVED, APPLIED, OA, INTERVIEW, OFFER, REJECTED, WITHDRAWN).
+* **Company**: The organisation that offers the opportunity.
+* **Record**: The complete collection of information stored in the system about users submitting internship applications to enterprises.
+* **Industry Categorization**: The industry labels marked by users for enterprises (such as Internet, finance, manufacturing, etc.)
+* **Archive**: Move the internship application records that have completed the process (such as those that have been rejected, hired, and have completed onboarding) from the active list to the archive area.
+* **Reminder**: Time reminders for the deadline of internship applications, interview times, and follow-up nodes.
+* **Deadline**: The time by which a submission is due for an opportunity record.
+* **MSS**: Main Success Scenario. Scenario)The primary, happy-path flow of a use case, describing what happens when everything goes as expected with no errors or exceptions
+* **JSON Data File**: A JSON format text file used for local storage of all internship data.
+* **Executable JAR**: Package it as a single executable file and double-click to run it.
+* **Data Integrity**: Data is automatically saved without loss, logically legal and free of contradictions.
 
 --------------------------------------------------------------------------------------------------------------------
 
