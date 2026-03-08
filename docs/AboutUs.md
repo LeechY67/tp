@@ -27,7 +27,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Software Developer (Integration)
 * Responsibilities: Lead the implementation of core features, ensuring system reliability through unit testing and documentation.
-Manage the project repository and branching strategy to integrate individual modules into a cohesive, high-quality software release.
+  Manage the project repository and branching strategy to integrate individual modules into a cohesive, high-quality software release.
 
 ### Li Qiyu
 
