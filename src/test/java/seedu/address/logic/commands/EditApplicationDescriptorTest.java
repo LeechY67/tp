@@ -60,7 +60,7 @@ public class EditApplicationDescriptorTest {
     @Test
     public void toStringMethod() {
         EditApplicationDescriptor editApplicationDescriptor = new EditApplicationDescriptor();
-        String expected = EditApplicationDescriptor.class.getCanonicalRole() + "{role="
+        String expected = EditApplicationDescriptor.class.getCanonicalName() + "{role="
                 + editApplicationDescriptor.getRole().orElse(null) + ", phone="
                 + editApplicationDescriptor.getPhone().orElse(null) + ", hrEmail="
                 + editApplicationDescriptor.getHrEmail().orElse(null) + ", company="

@@ -176,7 +176,7 @@ public class EditCommandTest {
         Index index = Index.fromOneBased(1);
         EditApplicationDescriptor editApplicationDescriptor = new EditApplicationDescriptor();
         EditCommand editCommand = new EditCommand(index, editApplicationDescriptor);
-        String expected = EditCommand.class.getCanonicalRole() + "{index=" + index + ", editApplicationDescriptor="
+        String expected = EditCommand.class.getCanonicalName() + "{index=" + index + ", editApplicationDescriptor="
                 + editApplicationDescriptor + "}";
         assertEquals(expected, editCommand.toString());
     }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import seedu.address.model.application.Application;
 import seedu.address.model.application.Company;
-import seedu.address.model.application.hrEmail;
+import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
 import seedu.address.model.tag.Tag;
@@ -23,7 +23,7 @@ public class ApplicationBuilder {
 
     private Role role;
     private Phone phone;
-    private hrEmail hrEmail;
+    private HrEmail hrEmail;
     private Company company;
     private Set<Tag> tags;
 
@@ -33,7 +33,7 @@ public class ApplicationBuilder {
     public ApplicationBuilder() {
         role = new Role(DEFAULT_ROLE);
         phone = new Phone(DEFAULT_PHONE);
-        hrEmail = new hrEmail(DEFAULT_HREMAIL);
+        hrEmail = new HrEmail(DEFAULT_HREMAIL);
         company = new Company(DEFAULT_COMPANY);
         tags = new HashSet<>();
     }
@@ -85,7 +85,7 @@ public class ApplicationBuilder {
      * Sets the {@code HrEmail} of the {@code Application} that we are building.
      */
     public ApplicationBuilder withHrEmail(String hrEmail) {
-        this.hrEmail = new hrEmail(hrEmail);
+        this.hrEmail = new HrEmail(hrEmail);
         return this;
     }
 

@@ -119,7 +119,7 @@ public class CommandTestUtil {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredApplicationList().size());
 
         Application application = model.getFilteredApplicationList().get(targetIndex.getZeroBased());
-        final String[] splitRole = application.getRole().fullRole.split("\\s+");
+        final String[] splitRole = application.getRole().roleName.split("\\s+");
         model.updateFilteredApplicationList(new RoleContainsKeywordsPredicate(Arrays.asList(splitRole[0])));
 
         assertEquals(1, model.getFilteredApplicationList().size());

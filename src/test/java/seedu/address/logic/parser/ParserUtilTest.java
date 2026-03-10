@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.application.Company;
-import seedu.address.model.application.hrEmail;
+import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
 import seedu.address.model.tag.Tag;
@@ -44,7 +44,7 @@ public class ParserUtilTest {
     @Test
     public void parseIndex_outOfRangeInput_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-            -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+                -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
     }
 
     @Test
@@ -58,25 +58,25 @@ public class ParserUtilTest {
 
     @Test
     public void parseRole_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseRole((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseName((String) null));
     }
 
     @Test
     public void parseRole_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseRole(INVALID_ROLE));
+        assertThrows(ParseException.class, () -> ParserUtil.parseName(INVALID_ROLE));
     }
 
     @Test
     public void parseRole_validValueWithoutWhitespace_returnsRole() throws Exception {
         Role expectedRole = new Role(VALID_ROLE);
-        assertEquals(expectedRole, ParserUtil.parseRole(VALID_ROLE));
+        assertEquals(expectedRole, ParserUtil.parseName(VALID_ROLE));
     }
 
     @Test
     public void parseRole_validValueWithWhitespace_returnsTrimmedRole() throws Exception {
         String roleWithWhitespace = WHITESPACE + VALID_ROLE + WHITESPACE;
         Role expectedRole = new Role(VALID_ROLE);
-        assertEquals(expectedRole, ParserUtil.parseRole(roleWithWhitespace));
+        assertEquals(expectedRole, ParserUtil.parseName(roleWithWhitespace));
     }
 
     @Test
@@ -104,48 +104,48 @@ public class ParserUtilTest {
 
     @Test
     public void parseCompany_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseCompany((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
     }
 
     @Test
     public void parseCompany_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseCompany(INVALID_COMPANY));
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_COMPANY));
     }
 
     @Test
     public void parseCompany_validValueWithoutWhitespace_returnsCompany() throws Exception {
         Company expectedCompany = new Company(VALID_COMPANY);
-        assertEquals(expectedCompany, ParserUtil.parseCompany(VALID_COMPANY));
+        assertEquals(expectedCompany, ParserUtil.parseAddress(VALID_COMPANY));
     }
 
     @Test
     public void parseCompany_validValueWithWhitespace_returnsTrimmedCompany() throws Exception {
         String companyWithWhitespace = WHITESPACE + VALID_COMPANY + WHITESPACE;
         Company expectedCompany = new Company(VALID_COMPANY);
-        assertEquals(expectedCompany, ParserUtil.parseCompany(companyWithWhitespace));
+        assertEquals(expectedCompany, ParserUtil.parseAddress(companyWithWhitespace));
     }
 
     @Test
     public void parseHrEmail_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseHrEmail((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail((String) null));
     }
 
     @Test
     public void parseHrEmail_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseHrEmail(INVALID_HREMAIL));
+        assertThrows(ParseException.class, () -> ParserUtil.parseEmail(INVALID_HREMAIL));
     }
 
     @Test
     public void parseHrEmail_validValueWithoutWhitespace_returnsHrEmail() throws Exception {
-        hrEmail expectedhrEmail = new hrEmail(VALID_HREMAIL);
-        assertEquals(expectedhrEmail, ParserUtil.parseHrEmail(VALID_HREMAIL));
+        HrEmail expectedHrEmail = new HrEmail(VALID_HREMAIL);
+        assertEquals(expectedHrEmail, ParserUtil.parseEmail(VALID_HREMAIL));
     }
 
     @Test
     public void parseHrEmail_validValueWithWhitespace_returnsTrimmedHrEmail() throws Exception {
         String hrEmailWithWhitespace = WHITESPACE + VALID_HREMAIL + WHITESPACE;
-        hrEmail expectedhrEmail = new hrEmail(VALID_HREMAIL);
-        assertEquals(expectedhrEmail, ParserUtil.parseHrEmail(hrEmailWithWhitespace));
+        HrEmail expectedHrEmail = new HrEmail(VALID_HREMAIL);
+        assertEquals(expectedHrEmail, ParserUtil.parseEmail(hrEmailWithWhitespace));
     }
 
     @Test

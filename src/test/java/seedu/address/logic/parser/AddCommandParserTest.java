@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.model.application.Company;
-import seedu.address.model.application.hrEmail;
+import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Application;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
@@ -174,7 +174,7 @@ public class AddCommandParserTest {
 
         // invalid hrEmail
         assertParseFailure(parser, ROLE_DESC_BOB + PHONE_DESC_BOB + INVALID_HREMAIL_DESC + COMPANY_DESC_BOB
-                + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, hrEmail.MESSAGE_CONSTRAINTS);
+                + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, HrEmail.MESSAGE_CONSTRAINTS);
 
         // invalid company
         assertParseFailure(parser, ROLE_DESC_BOB + PHONE_DESC_BOB + HREMAIL_DESC_BOB + INVALID_COMPANY_DESC

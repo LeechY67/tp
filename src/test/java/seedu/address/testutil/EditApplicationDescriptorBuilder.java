@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.EditCommand.EditApplicationDescriptor;
 import seedu.address.model.application.Company;
-import seedu.address.model.application.hrEmail;
+import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Application;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
@@ -59,7 +59,7 @@ public class EditApplicationDescriptorBuilder {
      * Sets the {@code HrEmail} of the {@code EditApplicationDescriptor} that we are building.
      */
     public EditApplicationDescriptorBuilder withHrEmail(String hrEmail) {
-        descriptor.setHrEmail(new hrEmail(hrEmail));
+        descriptor.setHrEmail(new HrEmail(hrEmail));
         return this;
     }
 
