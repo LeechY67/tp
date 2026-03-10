@@ -11,10 +11,10 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
 /**
- * Represents a Person in the address book.
+ * Represents an Application record in Hired!.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Person {
+public class Application {
 
     // Identity fields
     private final Role role;
@@ -28,7 +28,7 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Role role, Phone phone, HrEmail hrEmail, Company company, Set<Tag> tags) {
+    public Application(Role role, Phone phone, HrEmail hrEmail, Company company, Set<Tag> tags) {
         requireAllNonNull(role, phone, hrEmail, company, tags);
         this.role = role;
         this.phone = phone;
@@ -37,7 +37,7 @@ public class Person {
         this.tags.addAll(tags);
     }
 
-    public Role getName() {
+    public Role getRole() {
         return role;
     }
 
@@ -45,11 +45,11 @@ public class Person {
         return phone;
     }
 
-    public HrEmail getEmail() {
+    public HrEmail getHrEmail() {
         return hrEmail;
     }
 
-    public Company getAddress() {
+    public Company getCompany() {
         return company;
     }
 
@@ -62,16 +62,17 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
+     * Returns true if both persons have the same role and company.
+     * This defines a weaker notion of equality between two persons/applications.
      */
-    public boolean isSamePerson(Person otherPerson) {
-        if (otherPerson == this) {
+    public boolean isSamePerson(Application otherApplication) {
+        if (otherApplication == this) {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        return otherApplication != null
+                && otherApplication.getRole().equals(getRole())
+                && otherApplication.getCompany().equals(getCompany());
     }
 
     /**
@@ -85,16 +86,16 @@ public class Person {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Person)) {
+        if (!(other instanceof Application)) {
             return false;
         }
 
-        Person otherPerson = (Person) other;
-        return role.equals(otherPerson.role)
-                && phone.equals(otherPerson.phone)
-                && hrEmail.equals(otherPerson.hrEmail)
-                && company.equals(otherPerson.company)
-                && tags.equals(otherPerson.tags);
+        Application otherApplication = (Application) other;
+        return role.equals(otherApplication.role)
+                && phone.equals(otherApplication.phone)
+                && hrEmail.equals(otherApplication.hrEmail)
+                && company.equals(otherApplication.company)
+                && tags.equals(otherApplication.tags);
     }
 
     @Override
@@ -106,12 +107,11 @@ public class Person {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name", role)
+                .add("role", role)
                 .add("phone", phone)
-                .add("email", hrEmail)
-                .add("address", company)
+                .add("hrEmail", hrEmail)
+                .add("company", company)
                 .add("tags", tags)
                 .toString();
     }
-
 }

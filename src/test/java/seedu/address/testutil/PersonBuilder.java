@@ -3,9 +3,9 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.application.Application;
 import seedu.address.model.application.Company;
 import seedu.address.model.application.HrEmail;
-import seedu.address.model.application.Person;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
 import seedu.address.model.tag.Tag;
@@ -41,12 +41,12 @@ public class PersonBuilder {
     /**
      * Initializes the PersonBuilder with the data of {@code personToCopy}.
      */
-    public PersonBuilder(Person personToCopy) {
-        role = personToCopy.getName();
-        phone = personToCopy.getPhone();
-        hrEmail = personToCopy.getEmail();
-        company = personToCopy.getAddress();
-        tags = new HashSet<>(personToCopy.getTags());
+    public PersonBuilder(Application applicationToCopy) {
+        role = applicationToCopy.getName();
+        phone = applicationToCopy.getPhone();
+        hrEmail = applicationToCopy.getEmail();
+        company = applicationToCopy.getAddress();
+        tags = new HashSet<>(applicationToCopy.getTags());
     }
 
     /**
@@ -89,8 +89,8 @@ public class PersonBuilder {
         return this;
     }
 
-    public Person build() {
-        return new Person(role, phone, hrEmail, company, tags);
+    public Application build() {
+        return new Application(role, phone, hrEmail, company, tags);
     }
 
 }
