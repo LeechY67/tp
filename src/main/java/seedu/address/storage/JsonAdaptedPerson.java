@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.application.Address;
+import seedu.address.model.application.Company;
 import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Person;
 import seedu.address.model.application.Phone;
@@ -95,15 +95,15 @@ class JsonAdaptedPerson {
         final HrEmail modelHrEmail = new HrEmail(email);
 
         if (address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Company.class.getSimpleName()));
         }
-        if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
+        if (!Company.isValidAddress(address)) {
+            throw new IllegalValueException(Company.MESSAGE_CONSTRAINTS);
         }
-        final Address modelAddress = new Address(address);
+        final Company modelCompany = new Company(address);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelRole, modelPhone, modelHrEmail, modelAddress, modelTags);
+        return new Person(modelRole, modelPhone, modelHrEmail, modelCompany, modelTags);
     }
 
 }

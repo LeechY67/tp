@@ -3,7 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.address.model.application.Address;
+import seedu.address.model.application.Company;
 import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Person;
 import seedu.address.model.application.Phone;
@@ -24,7 +24,7 @@ public class PersonBuilder {
     private Role role;
     private Phone phone;
     private HrEmail hrEmail;
-    private Address address;
+    private Company company;
     private Set<Tag> tags;
 
     /**
@@ -34,7 +34,7 @@ public class PersonBuilder {
         role = new Role(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         hrEmail = new HrEmail(DEFAULT_EMAIL);
-        address = new Address(DEFAULT_ADDRESS);
+        company = new Company(DEFAULT_ADDRESS);
         tags = new HashSet<>();
     }
 
@@ -45,7 +45,7 @@ public class PersonBuilder {
         role = personToCopy.getName();
         phone = personToCopy.getPhone();
         hrEmail = personToCopy.getEmail();
-        address = personToCopy.getAddress();
+        company = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -69,7 +69,7 @@ public class PersonBuilder {
      * Sets the {@code Address} of the {@code Person} that we are building.
      */
     public PersonBuilder withAddress(String address) {
-        this.address = new Address(address);
+        this.company = new Company(address);
         return this;
     }
 
@@ -90,7 +90,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(role, phone, hrEmail, address, tags);
+        return new Person(role, phone, hrEmail, company, tags);
     }
 
 }
