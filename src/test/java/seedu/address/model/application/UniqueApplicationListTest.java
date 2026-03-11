@@ -3,7 +3,6 @@ package seedu.address.model.application;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_COMPANY_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalApplications.ALICE;
@@ -42,7 +41,9 @@ public class UniqueApplicationListTest {
     @Test
     public void contains_applicationWithSameIdentityFieldsInList_returnsTrue() {
         uniqueApplicationList.add(ALICE);
-        Application editedAlice = new ApplicationBuilder(ALICE).withCompany(VALID_COMPANY_BOB).withTags(VALID_TAG_HUSBAND)
+        Application editedAlice = new ApplicationBuilder(ALICE)
+                .withPhone("99999999")
+                .withTags(VALID_TAG_HUSBAND)
                 .build();
         assertTrue(uniqueApplicationList.contains(editedAlice));
     }
@@ -85,7 +86,9 @@ public class UniqueApplicationListTest {
     @Test
     public void setApplication_editedApplicationHasSameIdentity_success() {
         uniqueApplicationList.add(ALICE);
-        Application editedAlice = new ApplicationBuilder(ALICE).withCompany(VALID_COMPANY_BOB).withTags(VALID_TAG_HUSBAND)
+        Application editedAlice = new ApplicationBuilder(ALICE)
+                .withPhone("99999999")
+                .withTags(VALID_TAG_HUSBAND)
                 .build();
         uniqueApplicationList.setApplication(ALICE, editedAlice);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
@@ -129,7 +132,8 @@ public class UniqueApplicationListTest {
 
     @Test
     public void setApplications_nullUniqueApplicationList_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> uniqueApplicationList.setApplications((UniqueApplicationList) null));
+        assertThrows(NullPointerException.class, () ->
+                uniqueApplicationList.setApplications((UniqueApplicationList) null));
     }
 
     @Test
@@ -159,13 +163,14 @@ public class UniqueApplicationListTest {
     @Test
     public void setApplications_listWithDuplicateApplications_throwsDuplicateApplicationException() {
         List<Application> listWithDuplicateApplications = Arrays.asList(ALICE, ALICE);
-        assertThrows(DuplicateApplicationException.class, () -> uniqueApplicationList.setApplications(listWithDuplicateApplications));
+        assertThrows(DuplicateApplicationException.class, () ->
+                uniqueApplicationList.setApplications(listWithDuplicateApplications));
     }
 
     @Test
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, ()
-                -> uniqueApplicationList.asUnmodifiableObservableList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () ->
+                uniqueApplicationList.asUnmodifiableObservableList().remove(0));
     }
 
     @Test

@@ -3,45 +3,51 @@ package seedu.address.storage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.testutil.Assert.assertThrows;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.AddressBook;
 import seedu.address.testutil.TypicalApplications;
 
+/**
+ * Tests for {@link JsonSerializableAddressBook}.
+ * These tests construct in-memory JSON-adapted data instead of reading from files,
+ * to avoid any dependency on the file system layout.
+ */
 public class JsonSerializableAddressBookTest {
 
-    private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonSerializableAddressBookTest");
-    private static final Path TYPICAL_APPLICATIONS_FILE = TEST_DATA_FOLDER.resolve("typicalApplicationsAddressBook.json");
-    private static final Path INVALID_APPLICATION_FILE = TEST_DATA_FOLDER.resolve("invalidApplicationAddressBook.json");
-    private static final Path DUPLICATE_APPLICATION_FILE = TEST_DATA_FOLDER.resolve("duplicateApplicationAddressBook.json");
-
     @Test
-    public void toModelType_typicalApplicationsFile_success() throws Exception {
-        JsonSerializableAddressBook dataFromFile = JsonUtil.readJsonFile(TYPICAL_APPLICATIONS_FILE,
-                JsonSerializableAddressBook.class).get();
-        AddressBook companyBookFromFile = dataFromFile.toModelType();
+    public void toModelType_typicalApplications_success() throws Exception {
         AddressBook typicalApplicationsAddressBook = TypicalApplications.getTypicalAddressBook();
-        assertEquals(companyBookFromFile, typicalApplicationsAddressBook);
+        JsonSerializableAddressBook serializable = new JsonSerializableAddressBook(typicalApplicationsAddressBook);
+        AddressBook companyBookFromSerializable = serializable.toModelType();
+        assertEquals(companyBookFromSerializable, typicalApplicationsAddressBook);
     }
 
     @Test
-    public void toModelType_invalidApplicationFile_throwsIllegalValueException() throws Exception {
-        JsonSerializableAddressBook dataFromFile = JsonUtil.readJsonFile(INVALID_APPLICATION_FILE,
-                JsonSerializableAddressBook.class).get();
-        assertThrows(IllegalValueException.class, dataFromFile::toModelType);
+    public void toModelType_invalidApplication_throwsIllegalValueException() {
+        // Application with invalid role (empty string)
+        JsonAdaptedApplication invalidApplication = new JsonAdaptedApplication("",
+                "94351253", "alice@example.com", "Some Company", Collections.emptyList());
+        JsonSerializableAddressBook serializable =
+                new JsonSerializableAddressBook(Collections.singletonList(invalidApplication));
+        assertThrows(IllegalValueException.class, serializable::toModelType);
     }
 
     @Test
-    public void toModelType_duplicateApplications_throwsIllegalValueException() throws Exception {
-        JsonSerializableAddressBook dataFromFile = JsonUtil.readJsonFile(DUPLICATE_APPLICATION_FILE,
-                JsonSerializableAddressBook.class).get();
+    public void toModelType_duplicateApplications_throwsIllegalValueException() {
+        JsonAdaptedApplication alice = new JsonAdaptedApplication(TypicalApplications.ALICE);
+        // Duplicate by identity (same role)
+        JsonAdaptedApplication duplicateAlice = new JsonAdaptedApplication(TypicalApplications.ALICE);
+        List<JsonAdaptedApplication> applications = Arrays.asList(alice, duplicateAlice);
+        JsonSerializableAddressBook serializable = new JsonSerializableAddressBook(applications);
+
         assertThrows(IllegalValueException.class, JsonSerializableAddressBook.MESSAGE_DUPLICATE_APPLICATION,
-                dataFromFile::toModelType);
+                serializable::toModelType);
     }
 
 }

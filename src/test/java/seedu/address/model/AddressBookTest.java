@@ -3,7 +3,6 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_COMPANY_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalApplications.ALICE;
@@ -46,7 +45,9 @@ public class AddressBookTest {
     @Test
     public void resetData_withDuplicateApplications_throwsDuplicateApplicationException() {
         // Two applications with the same identity fields
-        Application editedAlice = new ApplicationBuilder(ALICE).withCompany(VALID_COMPANY_BOB).withTags(VALID_TAG_HUSBAND)
+        Application editedAlice = new ApplicationBuilder(ALICE)
+                .withPhone("99999999")
+                .withTags(VALID_TAG_HUSBAND)
                 .build();
         List<Application> newApplications = Arrays.asList(ALICE, editedAlice);
         AddressBookStub newData = new AddressBookStub(newApplications);
@@ -73,7 +74,9 @@ public class AddressBookTest {
     @Test
     public void hasApplication_applicationWithSameIdentityFieldsInAddressBook_returnsTrue() {
         companyBook.addApplication(ALICE);
-        Application editedAlice = new ApplicationBuilder(ALICE).withCompany(VALID_COMPANY_BOB).withTags(VALID_TAG_HUSBAND)
+        Application editedAlice = new ApplicationBuilder(ALICE)
+                .withPhone("99999999")
+                .withTags(VALID_TAG_HUSBAND)
                 .build();
         assertTrue(companyBook.hasApplication(editedAlice));
     }
@@ -85,7 +88,8 @@ public class AddressBookTest {
 
     @Test
     public void toStringMethod() {
-        String expected = AddressBook.class.getCanonicalName() + "{applications=" + companyBook.getApplicationList() + "}";
+        String expected = AddressBook.class.getCanonicalName()
+                + "{applications=" + companyBook.getApplicationList() + "}";
         assertEquals(expected, companyBook.toString());
     }
 

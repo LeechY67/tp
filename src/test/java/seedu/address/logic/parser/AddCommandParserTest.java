@@ -58,10 +58,12 @@ public class AddCommandParserTest {
 
 
         // multiple tags - all accepted
-        Application expectedApplicationMultipleTags = new ApplicationBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
+        Application expectedApplicationMultipleTags = new ApplicationBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
                 .build();
         assertParseSuccess(parser,
-                ROLE_DESC_BOB + PHONE_DESC_BOB + HREMAIL_DESC_BOB + COMPANY_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                ROLE_DESC_BOB + PHONE_DESC_BOB + HREMAIL_DESC_BOB + COMPANY_DESC_BOB
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedApplicationMultipleTags));
     }
 
@@ -90,7 +92,8 @@ public class AddCommandParserTest {
         assertParseFailure(parser,
                 validExpectedApplicationString + PHONE_DESC_AMY + HREMAIL_DESC_AMY + ROLE_DESC_AMY + COMPANY_DESC_AMY
                         + validExpectedApplicationString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ROLE, PREFIX_COMPANY, PREFIX_HREMAIL, PREFIX_PHONE));
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ROLE, PREFIX_COMPANY, PREFIX_HREMAIL,
+                        PREFIX_PHONE));
 
         // invalid value followed by valid value
 

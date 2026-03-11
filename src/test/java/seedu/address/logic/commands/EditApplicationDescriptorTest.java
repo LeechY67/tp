@@ -37,7 +37,9 @@ public class EditApplicationDescriptorTest {
         assertFalse(DESC_AMY.equals(DESC_BOB));
 
         // different role -> returns false
-        EditApplicationDescriptor editedAmy = new EditApplicationDescriptorBuilder(DESC_AMY).withRole(VALID_ROLE_BOB).build();
+        EditApplicationDescriptor editedAmy = new EditApplicationDescriptorBuilder(DESC_AMY)
+                .withRole(VALID_ROLE_BOB)
+                .build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different phone -> returns false

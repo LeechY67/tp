@@ -31,7 +31,8 @@ public class CompanyTest {
         // valid companyes
         assertTrue(Company.isValidCompanyName("Blk 456, Den Road, #01-355"));
         assertTrue(Company.isValidCompanyName("-")); // one character
-        assertTrue(Company.isValidCompanyName("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long company
+        assertTrue(Company.isValidCompanyName("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA"));
+        // long company
     }
 
     @Test

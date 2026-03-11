@@ -68,21 +68,21 @@ public class HrEmailTest {
 
     @Test
     public void equals() {
-        HrEmail HrEmail = new HrEmail("valid@HrEmail");
+        HrEmail hrEmail = new HrEmail("valid@HrEmail");
 
         // same values -> returns true
-        assertTrue(HrEmail.equals(new HrEmail("valid@HrEmail")));
+        assertTrue(hrEmail.equals(new HrEmail("valid@HrEmail")));
 
         // same object -> returns true
-        assertTrue(HrEmail.equals(HrEmail));
+        assertTrue(hrEmail.equals(hrEmail));
 
         // null -> returns false
-        assertFalse(HrEmail.equals(null));
+        assertFalse(hrEmail.equals(null));
 
         // different types -> returns false
-        assertFalse(HrEmail.equals(5.0f));
+        assertFalse(hrEmail.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(HrEmail.equals(new HrEmail("other.valid@HrEmail")));
+        assertFalse(hrEmail.equals(new HrEmail("other.valid@HrEmail")));
     }
 }

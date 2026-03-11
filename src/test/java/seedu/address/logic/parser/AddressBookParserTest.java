@@ -58,7 +58,8 @@ public class AddressBookParserTest {
         Application application = new ApplicationBuilder().build();
         EditApplicationDescriptor descriptor = new EditApplicationDescriptorBuilder(application).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_APPLICATION.getOneBased() + " " + ApplicationUtil.getEditApplicationDescriptorDetails(descriptor));
+                + INDEX_FIRST_APPLICATION.getOneBased() + " "
+                + ApplicationUtil.getEditApplicationDescriptorDetails(descriptor));
         assertEquals(new EditCommand(INDEX_FIRST_APPLICATION, descriptor), command);
     }
 
