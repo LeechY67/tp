@@ -93,7 +93,6 @@ public class MainWindow extends UiPart<Stage> {
          * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
          * not work when the focus is in them because the key event is consumed by
          * the TextInputControl(s).
-         *
          * For now, we add following event filter to capture such key events and open
          * help window purposely so to support accelerators even when focus is
          * in CommandBox or ResultDisplay.
