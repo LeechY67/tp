@@ -97,8 +97,7 @@ public class Application {
         }
 
         return otherApplication != null
-                && otherApplication.getRole().equals(getRole())
-                && otherApplication.getCompany().equals(getCompany());
+                && otherApplication.getRole().equals(getRole());
     }
 
     /**

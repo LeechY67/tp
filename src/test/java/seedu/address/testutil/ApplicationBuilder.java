@@ -8,6 +8,7 @@ import seedu.address.model.application.Company;
 import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
+import seedu.address.model.application.Status;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -26,6 +27,7 @@ public class ApplicationBuilder {
     private HrEmail hrEmail;
     private Company company;
     private Set<Tag> tags;
+    private Status status;
 
     /**
      * Creates a {@code ApplicationBuilder} with the default details.
@@ -36,6 +38,7 @@ public class ApplicationBuilder {
         hrEmail = new HrEmail(DEFAULT_HREMAIL);
         company = new Company(DEFAULT_COMPANY);
         tags = new HashSet<>();
+        status = Status.APPLIED;
     }
 
     /**
@@ -47,6 +50,7 @@ public class ApplicationBuilder {
         hrEmail = applicationToCopy.getHrEmail();
         company = applicationToCopy.getCompany();
         tags = new HashSet<>(applicationToCopy.getTags());
+        status = applicationToCopy.getStatus();
     }
 
     /**
@@ -89,8 +93,13 @@ public class ApplicationBuilder {
         return this;
     }
 
+    public ApplicationBuilder withStatus(Status status) {
+        this.status = status;
+        return this;
+    }
+
     public Application build() {
-        return new Application(role, phone, hrEmail, company, tags);
+        return new Application(role, phone, hrEmail, company, tags, status);
     }
 
 }
