@@ -26,6 +26,7 @@ import seedu.address.model.application.Company;
 import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
+import seedu.address.model.application.Status;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -101,8 +102,9 @@ public class EditCommand extends Command {
         HrEmail updatedHrEmail = editApplicationDescriptor.getHrEmail().orElse(applicationToEdit.getHrEmail());
         Company updatedCompany = editApplicationDescriptor.getCompany().orElse(applicationToEdit.getCompany());
         Set<Tag> updatedTags = editApplicationDescriptor.getTags().orElse(applicationToEdit.getTags());
+        Status updatedStatus = editApplicationDescriptor.getStatus().orElse(applicationToEdit.getStatus());
 
-        return new Application(updatedRole, updatedPhone, updatedHrEmail, updatedCompany, updatedTags);
+        return new Application(updatedRole, updatedPhone, updatedHrEmail, updatedCompany, updatedTags, updatedStatus);
     }
 
     @Override
@@ -138,6 +140,7 @@ public class EditCommand extends Command {
         private HrEmail hrEmail;
         private Company company;
         private Set<Tag> tags;
+        private Status status;
 
         public EditApplicationDescriptor() {}
 
@@ -151,6 +154,7 @@ public class EditCommand extends Command {
             setHrEmail(toCopy.hrEmail);
             setCompany(toCopy.company);
             setTags(toCopy.tags);
+            setStatus(toCopy.status);
         }
 
         /**
@@ -209,6 +213,24 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
+        /**
+         * Sets {@code status} to this object's {@code status}.
+         * @param status to be set to the object's status
+         */
+        public void setStatus(Status status) {
+            this.status = status;
+        }
+
+        /**
+         * Returns the status of the application to be edited, if specified.
+         *
+         * @return an {@code Optional} containing the {@code Status} if set,
+         *         or {@code Optional.empty()} if no status was provided.
+         */
+        public Optional<Status> getStatus() {
+            return Optional.ofNullable(status);
+        }
+
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -224,7 +246,8 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditApplicationDescriptor.phone)
                     && Objects.equals(hrEmail, otherEditApplicationDescriptor.hrEmail)
                     && Objects.equals(company, otherEditApplicationDescriptor.company)
-                    && Objects.equals(tags, otherEditApplicationDescriptor.tags);
+                    && Objects.equals(tags, otherEditApplicationDescriptor.tags)
+                    && Objects.equals(status, otherEditApplicationDescriptor.status);
         }
 
         @Override
@@ -235,6 +258,7 @@ public class EditCommand extends Command {
                     .add("hrEmail", hrEmail)
                     .add("company", company)
                     .add("tags", tags)
+                    .add("status", status)
                     .toString();
         }
     }

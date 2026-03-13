@@ -19,6 +19,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.application.Application;
 import seedu.address.model.application.RoleContainsKeywordsPredicate;
+import seedu.address.model.application.Status;
 import seedu.address.testutil.EditApplicationDescriptorBuilder;
 
 /**
@@ -36,6 +37,7 @@ public class CommandTestUtil {
     public static final String VALID_COMPANY_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
+    public static final Status VALID_STATUS_OFFERED = Status.OFFERED;
 
     public static final String ROLE_DESC_AMY = " " + PREFIX_ROLE + VALID_ROLE_AMY;
     public static final String ROLE_DESC_BOB = " " + PREFIX_ROLE + VALID_ROLE_BOB;

@@ -25,8 +25,29 @@ public class Application {
     private final Company company;
     private final Set<Tag> tags = new HashSet<>();
 
+    //Status field
+    private Status status;
+
     /**
      * Every field must be present and not null.
+     */
+    public Application(Role role, Phone phone, HrEmail hrEmail, Company company, Set<Tag> tags, Status status) {
+        requireAllNonNull(role, phone, hrEmail, company, tags, status);
+        this.role = role;
+        this.phone = phone;
+        this.hrEmail = hrEmail;
+        this.company = company;
+        this.tags.addAll(tags);
+        this.status = status;
+    }
+
+    /**
+     * Constructs a new Application with status APPLIED set as default if status is not specified
+     * @param role
+     * @param phone
+     * @param hrEmail
+     * @param company
+     * @param tags
      */
     public Application(Role role, Phone phone, HrEmail hrEmail, Company company, Set<Tag> tags) {
         requireAllNonNull(role, phone, hrEmail, company, tags);
@@ -35,6 +56,7 @@ public class Application {
         this.hrEmail = hrEmail;
         this.company = company;
         this.tags.addAll(tags);
+        this.status = Status.APPLIED;
     }
 
     public Role getRole() {
@@ -51,6 +73,10 @@ public class Application {
 
     public Company getCompany() {
         return company;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     /**
@@ -71,8 +97,7 @@ public class Application {
         }
 
         return otherApplication != null
-                && otherApplication.getRole().equals(getRole())
-                && otherApplication.getCompany().equals(getCompany());
+                && otherApplication.getRole().equals(getRole());
     }
 
     /**
@@ -95,13 +120,14 @@ public class Application {
                 && phone.equals(otherApplication.phone)
                 && hrEmail.equals(otherApplication.hrEmail)
                 && company.equals(otherApplication.company)
-                && tags.equals(otherApplication.tags);
+                && tags.equals(otherApplication.tags)
+                && status.equals(otherApplication.status);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(role, phone, hrEmail, company, tags);
+        return Objects.hash(role, phone, hrEmail, company, tags, status);
     }
 
     @Override
@@ -112,6 +138,7 @@ public class Application {
                 .add("hrEmail", hrEmail)
                 .add("company", company)
                 .add("tags", tags)
+                .add("status", status)
                 .toString();
     }
 }
