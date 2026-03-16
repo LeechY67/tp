@@ -34,7 +34,7 @@ public interface Logic {
     ObservableList<Application> getFilteredApplicationList();
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' Hired! file path.
      */
     Path getAddressBookFilePath();
 

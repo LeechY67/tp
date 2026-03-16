@@ -35,17 +35,17 @@ public interface Model {
     void setGuiSettings(GuiSettings guiSettings);
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' Hired! file path.
      */
     Path getAddressBookFilePath();
 
     /**
-     * Sets the user prefs' address book file path.
+     * Sets the user prefs' Hired! file path.
      */
     void setAddressBookFilePath(Path addressBookFilePath);
 
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replaces Hired! data with the data in {@code addressBook}.
      */
     void setAddressBook(ReadOnlyAddressBook addressBook);
 
@@ -53,27 +53,27 @@ public interface Model {
     ReadOnlyAddressBook getAddressBook();
 
     /**
-     * Returns true if an application with the same identity as {@code application} exists in the address book.
+     * Returns true if an application with the same identity as {@code application} exists in the Hired!.
      */
     boolean hasApplication(Application application);
 
     /**
      * Deletes the given application.
-     * The application must exist in the address book.
+     * The application must exist in the Hired!.
      */
     void deleteApplication(Application target);
 
     /**
      * Adds the given application.
-     * {@code application} must not already exist in the address book.
+     * {@code application} must not already exist in the Hired!.
      */
     void addApplication(Application application);
 
     /**
      * Replaces the given application {@code target} with {@code editedApplication}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the Hired!.
      * The application identity of {@code editedApplication} must not be the same as
-     * another existing application in the address book.
+     * another existing application in the Hired!.
      */
     void setApplication(Application target, Application editedApplication);
 

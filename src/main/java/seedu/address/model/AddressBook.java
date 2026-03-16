@@ -52,7 +52,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     //// application-level operations
 
     /**
-     * Returns true if an application with the same identity as {@code application} exists in the address book.
+     * Returns true if an application with the same identity as {@code application} exists in the Hired!.
      */
     public boolean hasApplication(Application application) {
         requireNonNull(application);
@@ -60,8 +60,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Adds an application to the address book.
-     * The application must not already exist in the address book.
+     * Adds an application to the Hired!.
+     * The application must not already exist in the Hired!.
      */
     public void addApplication(Application p) {
         applications.add(p);
@@ -69,7 +69,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Replaces the given application {@code target} in the list with {@code editedApplication}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the Hired!.
      */
     public void setApplication(Application target, Application editedApplication) {
         requireNonNull(editedApplication);
@@ -78,7 +78,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Removes {@code key} from this {@code AddressBook}.
-     * {@code key} must exist in the address book.
+     * {@code key} must exist in the Hired!.
      */
     public void removeApplication(Application key) {
         applications.remove(key);
