@@ -128,6 +128,21 @@ Examples:
 * `find engineer` returns applications with roles containing `engineer`
 * `find backend frontend` returns applications with roles containing `backend` or `frontend`
 
+### Changing the default status: `status`
+
+Changes the status of the application to APPLIED, INTERVIEWING, OFFERED, REJECTED or WITHDRAWN.
+
+Format: `status INDEX s/STATUS`
+
+* The status is case-insensitive. e.g. `REJECTED` will turn out to be `rejected`
+* Only status given above can be chosen.
+* Only one application can be changed at a time.
+* Status will appear as a tag in the UI.
+
+Examples:
+* `status 1 s/OFFERED` changes the status to `offered`
+* `status 1 s/selected` will result in an error as `selected` is not a given status.
+
 ### Deleting an application : `delete`
 
 Deletes the specified application record from Hired!.
@@ -197,4 +212,5 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/ROLE] [p/PHONE] [e/EMAIL] [a/COMPANY] [t/TAG]...`<br> e.g. `edit 2 n/Backend Engineer a/Shopee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g. `find engineer backend`
 **List** | `list`
+**Status** | `status INDEX s/STATUS` <br> e.g. `status 2 s/offered`
 **Help** | `help`
