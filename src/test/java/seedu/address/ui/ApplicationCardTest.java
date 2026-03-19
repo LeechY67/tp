@@ -92,6 +92,29 @@ public class ApplicationCardTest {
         assertEquals("applied", ((Label) tagsPane.getChildren().get(2)).getText());
     }
 
+    @Test
+    public void constructor_statusLabelHiddenAndStatusTagAdded() throws Exception {
+        Application application = new ApplicationBuilder()
+                .withCompanyName("Google")
+                .withCompanyLocation("Singapore")
+                .withRole("Intern")
+                .withPhone("91234567")
+                .withHrEmail("hr@google.com")
+                .build();
+
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label statusLabel = getLabel(applicationCard, "status");
+        FlowPane tagsPane = getTagsPane(applicationCard);
+
+        assertFalse(statusLabel.isVisible());
+        assertFalse(statusLabel.isManaged());
+
+        assertTrue(tagsPane.getChildren().stream()
+                .map(node -> (Label) node)
+                .anyMatch(label -> label.getText().equals("applied")));
+    }
+
     private String getLabelText(ApplicationCard card, String fieldName) throws Exception {
         Field field = ApplicationCard.class.getDeclaredField(fieldName);
         field.setAccessible(true);
