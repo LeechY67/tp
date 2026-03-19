@@ -15,7 +15,7 @@ Hired! is a **desktop app for managing internship applications, optimized for us
 1. Ensure you have Java `17` or above installed on your computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from the [project release page](REPLACE_WITH_RELEASE_LINK).
+1. Download the latest `.jar` file from the [project release page](https://github.com/AY2526S2-CS2103T-T13-3/tp/releases/tag/v1.0).
 
 1. Copy the file to the folder you want to use as the _home folder_ for Hired!.
 
