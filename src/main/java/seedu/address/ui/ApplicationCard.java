@@ -65,9 +65,15 @@ public class ApplicationCard extends UiPart<Region> {
         }
 
         status.setText("Status: " + application.getStatus().toString());
+        status.setVisible(false);
+        status.setManaged(false);
 
         application.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
+        String statusText = application.getStatus().toString().toLowerCase();
+        Label statusTag = new Label(statusText);
+        tags.getChildren().add(statusTag);
     }
 }

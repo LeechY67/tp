@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
@@ -50,7 +51,8 @@ public class ApplicationCardTest {
         assertEquals("Intern", getLabelText(applicationCard, "role"));
         assertEquals("91234567", getLabelText(applicationCard, "phone"));
         assertEquals("hr@google.com", getLabelText(applicationCard, "hrEmail"));
-        assertEquals("Status: APPLIED", getLabelText(applicationCard, "status"));
+        assertFalse(getLabel(applicationCard, "status").isVisible());
+        assertFalse(getLabel(applicationCard, "status").isManaged());
         // companyLocation is hidden when empty; its text is not guaranteed.
     }
 
@@ -84,9 +86,54 @@ public class ApplicationCardTest {
         ApplicationCard applicationCard = new ApplicationCard(application, 1);
 
         FlowPane tagsPane = getTagsPane(applicationCard);
-        assertEquals(2, tagsPane.getChildren().size());
+        assertEquals(3, tagsPane.getChildren().size());
         assertEquals("atag", ((Label) tagsPane.getChildren().get(0)).getText());
         assertEquals("ztag", ((Label) tagsPane.getChildren().get(1)).getText());
+        assertEquals("applied", ((Label) tagsPane.getChildren().get(2)).getText());
+    }
+
+    @Test
+    public void constructor_statusLabelHiddenAndStatusTagAdded() throws Exception {
+        Application application = new ApplicationBuilder()
+                .withCompanyName("Google")
+                .withCompanyLocation("Singapore")
+                .withRole("Intern")
+                .withPhone("91234567")
+                .withHrEmail("hr@google.com")
+                .build();
+
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label statusLabel = getLabel(applicationCard, "status");
+        FlowPane tagsPane = getTagsPane(applicationCard);
+
+        assertFalse(statusLabel.isVisible());
+        assertFalse(statusLabel.isManaged());
+
+        assertTrue(tagsPane.getChildren().stream()
+                .map(node -> (Label) node)
+                .anyMatch(label -> label.getText().equals("applied")));
+    }
+
+    @Test
+    public void constructor_withExistingTags_addsStatusTagAsWell() throws Exception {
+        Application application = new ApplicationBuilder()
+                .withCompanyName("Google")
+                .withCompanyLocation("Singapore")
+                .withRole("Intern")
+                .withPhone("91234567")
+                .withHrEmail("hr@google.com")
+                .withTags("atag", "ztag")
+                .build();
+
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        FlowPane tagsPane = getTagsPane(applicationCard);
+
+        assertEquals(3, tagsPane.getChildren().size());
+        assertEquals("atag", ((Label) tagsPane.getChildren().get(0)).getText());
+        assertEquals("ztag", ((Label) tagsPane.getChildren().get(1)).getText());
+        assertEquals("applied", ((Label) tagsPane.getChildren().get(2)).getText());
     }
 
     private String getLabelText(ApplicationCard card, String fieldName) throws Exception {
@@ -94,6 +141,12 @@ public class ApplicationCardTest {
         field.setAccessible(true);
         Label label = (Label) field.get(card);
         return label.getText();
+    }
+
+    private Label getLabel(ApplicationCard card, String fieldName) throws Exception {
+        Field field = ApplicationCard.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return (Label) field.get(card);
     }
 
     private FlowPane getTagsPane(ApplicationCard card) throws Exception {
