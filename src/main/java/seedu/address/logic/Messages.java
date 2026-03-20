@@ -19,6 +19,7 @@ public class Messages {
     public static final String MESSAGE_APPLICATIONS_LISTED_OVERVIEW = "%1$d applications listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
+    public static final String MESSAGE_INVALID_STATUS = "Invalid status! \n%1$s";
     /**
      * Returns an error message indicating the duplicate prefixes.
      */
