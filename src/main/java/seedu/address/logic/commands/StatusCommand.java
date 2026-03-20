@@ -25,6 +25,13 @@ public class StatusCommand extends Command {
             + "Parameters: INDEX s/STATUS\n"
             + "Example: " + COMMAND_WORD + " 1 s/OFFERED";
 
+    public static final String VALID_STATUS_LIST = "Input one of the following valid statuses (case-insensitive):\n"
+            + "APPLIED\n"
+            + "INTERVIEWING\n"
+            + "OFFERED\n"
+            + "REJECTED\n"
+            + "WITHDRAWN";
+
     public static final String MESSAGE_SUCCESS = "Updated application status: %1$s";
 
     private final Index index;

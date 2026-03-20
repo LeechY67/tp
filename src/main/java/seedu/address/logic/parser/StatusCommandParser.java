@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 
 import java.util.stream.Stream;
@@ -32,7 +33,7 @@ public class StatusCommandParser implements Parser<StatusCommand> {
         try {
             status = Status.valueOf(statusString.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, StatusCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_STATUS, StatusCommand.VALID_STATUS_LIST));
         }
 
         return new StatusCommand(index, status);

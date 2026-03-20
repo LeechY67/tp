@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_APPLICATION;
@@ -82,12 +83,12 @@ class StatusCommandParserTest {
     public void parse_invalidStatus_throwsParseException() {
         // completely invalid status value
         assertThrows(ParseException.class,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StatusCommand.MESSAGE_USAGE), ()
+                String.format(MESSAGE_INVALID_STATUS, StatusCommand.VALID_STATUS_LIST), ()
                         -> parser.parse(" 1 " + PREFIX_STATUS + "INVALID_STATUS"));
 
         // empty status value
         assertThrows(ParseException.class,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StatusCommand.MESSAGE_USAGE), ()
+                String.format(MESSAGE_INVALID_STATUS, StatusCommand.VALID_STATUS_LIST), ()
                         -> parser.parse(" 1 " + PREFIX_STATUS));
     }
 
