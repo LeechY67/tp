@@ -80,4 +80,39 @@ public class VersionedAddressBookTest {
         VersionedAddressBook vbook = new VersionedAddressBook(typicalAddressBook);
         assertThrows(VersionedAddressBook.NoUndoableStateException.class, vbook::undo);
     }
+
+    @Test
+    public void canRedo_afterUndo_returnsTrue() {
+        VersionedAddressBook vbook = new VersionedAddressBook(typicalAddressBook);
+        vbook.addApplication(AMY);
+        vbook.commit();
+        vbook.undo();
+
+        assertTrue(vbook.canRedo());
+    }
+
+    @Test
+    public void redo_afterUndo_restoresState() {
+        VersionedAddressBook vbook = new VersionedAddressBook(typicalAddressBook);
+        vbook.addApplication(AMY);
+        vbook.commit();
+        AddressBook expectedBook = new AddressBook(vbook);
+
+        vbook.undo();
+        vbook.redo();
+
+        assertEquals(expectedBook, new AddressBook(vbook));
+    }
+
+    @Test
+    public void commit_afterUndo_clearsRedoHistory() {
+        VersionedAddressBook vbook = new VersionedAddressBook(typicalAddressBook);
+        vbook.addApplication(AMY);
+        vbook.commit();
+        vbook.undo();
+
+        vbook.commit();
+
+        assertFalse(vbook.canRedo());
+    }
 }
