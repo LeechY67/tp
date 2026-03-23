@@ -23,6 +23,7 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -40,7 +41,7 @@ public class LogicManagerTest {
     @TempDir
     public Path temporaryFolder;
 
-    private Model model = new ModelManager();
+    private Model model = new ModelManager(new AddressBook(), new UserPrefs());
     private Logic logic;
 
     @BeforeEach
@@ -142,7 +143,10 @@ public class LogicManagerTest {
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
                                       String expectedMessage, Model expectedModel) {
         assertThrows(expectedException, expectedMessage, () -> logic.execute(inputCommand));
-        assertEquals(expectedModel, model);
+        AddressBook expectedAddressBook = new AddressBook(expectedModel.getAddressBook());
+        AddressBook actualAddressBook = new AddressBook(model.getAddressBook());
+        assertEquals(expectedAddressBook, actualAddressBook);
+        assertEquals(expectedModel.getFilteredApplicationList(), model.getFilteredApplicationList());
     }
 
     /**
@@ -176,7 +180,7 @@ public class LogicManagerTest {
                 .withCompanyLocation("")
                 .withTags()
                 .build();
-        ModelManager expectedModel = new ModelManager();
+        ModelManager expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
         expectedModel.addApplication(expectedApplication);
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
     }

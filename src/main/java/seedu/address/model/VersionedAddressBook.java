@@ -13,6 +13,11 @@ public class VersionedAddressBook extends AddressBook {
     private final List<ReadOnlyAddressBook> addressBookStateList;
     private int currentStatePointer;
 
+    /**
+     * Creates a {@code VersionedAddressBook} with an initial snapshot.
+     *
+     * @param toBeCopied the initial address book state to be copied.
+     */
     public VersionedAddressBook(ReadOnlyAddressBook toBeCopied) {
         super(toBeCopied);
         addressBookStateList = new ArrayList<>();

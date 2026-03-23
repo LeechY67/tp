@@ -164,6 +164,21 @@ public class AddCommandTest {
         public void updateSortedApplicationList(Comparator<Application> comparator) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void commitAddressBook() {
+            // no-op for these command tests
+        }
+
+        @Override
+        public void undoAddressBook() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean canUndoAddressBook() {
+            return false;
+        }
     }
 
     /**

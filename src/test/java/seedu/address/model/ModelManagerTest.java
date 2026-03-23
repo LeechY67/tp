@@ -20,7 +20,7 @@ import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
 
-    private ModelManager modelManager = new ModelManager();
+    private ModelManager modelManager = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
     public void constructor() {

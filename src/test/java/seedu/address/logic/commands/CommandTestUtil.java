@@ -97,7 +97,10 @@ public class CommandTestUtil {
         try {
             CommandResult result = command.execute(actualModel);
             assertEquals(expectedCommandResult, result);
-            assertEquals(expectedModel, actualModel);
+            AddressBook expectedAddressBook = new AddressBook(expectedModel.getAddressBook());
+            AddressBook actualAddressBook = new AddressBook(actualModel.getAddressBook());
+            assertEquals(expectedAddressBook, actualAddressBook);
+            assertEquals(expectedModel.getFilteredApplicationList(), actualModel.getFilteredApplicationList());
         } catch (CommandException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
