@@ -4,6 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -125,6 +128,18 @@ public class ModelManager implements Model {
     public void updateFilteredApplicationList(Predicate<Application> predicate) {
         requireNonNull(predicate);
         filteredApplications.setPredicate(predicate);
+    }
+
+    // 在 ModelManager.java 内部实现 updateSortedApplicationList
+    @Override
+    public void updateSortedApplicationList(Comparator<Application> comparator) {
+        requireNonNull(comparator);
+
+        List<Application> sortedList = new ArrayList<>(addressBook.getApplicationList());
+
+        sortedList.sort(comparator);
+
+        addressBook.setApplications(sortedList);
     }
 
     @Override
