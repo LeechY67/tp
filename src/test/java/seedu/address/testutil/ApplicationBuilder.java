@@ -141,7 +141,7 @@ public class ApplicationBuilder {
     public Application build() {
         seedu.address.model.application.Company company =
                 new seedu.address.model.application.Company(companyName, companyLocation);
-        return new Application(role, phone, hrEmail, company, tags, status, deadline);
+        return new Application(role, phone, hrEmail, company, tags, status, deadline, null);
     }
 
 }

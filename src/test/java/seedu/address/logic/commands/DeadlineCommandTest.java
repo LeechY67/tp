@@ -26,7 +26,8 @@ public class DeadlineCommandTest {
         // Create the expected updated Application
         Application editedApp = new Application(
                 firstApp.getRole(), firstApp.getPhone(), firstApp.getHrEmail(),
-                firstApp.getCompany(), firstApp.getTags(), firstApp.getStatus(), newDeadline);
+                firstApp.getCompany(), firstApp.getTags(), firstApp.getStatus(), newDeadline,
+                firstApp.getApplicationEvent());
 
         DeadlineCommand deadlineCommand = new DeadlineCommand(INDEX_FIRST_APPLICATION, newDeadline);
 
