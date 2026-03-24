@@ -1,7 +1,5 @@
 package seedu.address.model.application;
 
-import seedu.address.logic.parser.Prefix;
-
 /**
  * Represents online assessment that is appointed during the application
  */
