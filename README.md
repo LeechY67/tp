@@ -6,7 +6,7 @@ This project is based on the AddressBook-Level3 project created by the [SE-EDU i
 # Hired!
 Hired! is a command-line internship application tracker designed for university students who want to efficiently manage internship applications, deadlines, and company contacts.
 
-![Ui](docs/images/Ui.png)
+![Ui](docs/images/Ui_current.png)
 *Figure: Main interface of Hired!*
 
 ## Table of Contents
