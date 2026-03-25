@@ -208,10 +208,9 @@ public class ApplicationCardTest {
     }
 
     @Test
-    public void constructor_withRegularTags_regularTagsDoNotUseReminderRedStyle() throws Exception {
+    public void constructor_withRegularTags_regularTagsDoNotUseUrgentStyle() throws Exception {
         Application application = new ApplicationBuilder()
                 .withCompanyName("Google")
-                .withCompanyLocation("Singapore")
                 .withRole("Intern")
                 .withPhone("91234567")
                 .withHrEmail("hr@google.com")
@@ -226,23 +225,20 @@ public class ApplicationCardTest {
 
         assertEquals("atag", firstTag.getText());
         assertEquals("ztag", secondTag.getText());
-        assertFalse(firstTag.getStyle().contains("#FF0000"));
-        assertFalse(secondTag.getStyle().contains("#FF0000"));
+        assertFalse(firstTag.getStyleClass().contains("tag-urgent"));
+        assertFalse(secondTag.getStyleClass().contains("tag-urgent"));
     }
 
     @Test
-    public void constructor_withUrgentTag_setsRedBackgroundStyle() throws Exception {
-        // 1. 准备带有 ReminderCommand 中定义的 "Urgent" 标签的申请
+    public void constructor_withUrgentTag_hasUrgentStyleClass() throws Exception {
         String reminderTag = seedu.address.logic.commands.ReminderCommand.REMINDER_TAG_NAME;
         Application application = new ApplicationBuilder()
                 .withTags(reminderTag)
                 .build();
 
-        // 2. 创建 Card 实例
         ApplicationCard applicationCard = new ApplicationCard(application, 1);
         FlowPane tagsPane = getTagsPane(applicationCard);
 
-        // 3. 利用反射获取生成的 Label 并验证样式
         Label urgentLabel = (Label) tagsPane.getChildren().stream()
                 .filter(node -> node instanceof Label)
                 .map(node -> (Label) node)
@@ -250,14 +246,12 @@ public class ApplicationCardTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Urgent tag label not found"));
 
-        // 4. 验证是否应用了红色背景样式
-        String style = urgentLabel.getStyle();
-        assertTrue(style.contains("-fx-background-color: #ae3535"),
-                "Urgent tag should be red. Current style: " + style);
+        assertTrue(urgentLabel.getStyleClass().contains("tag-urgent"),
+                "Urgent tag should have 'tag-urgent' CSS class");
     }
 
     @Test
-    public void constructor_withUppercaseUrgentTag_stillSetsRedStyle() throws Exception {
+    public void constructor_withUppercaseUrgentTag_stillHasUrgentStyleClass() throws Exception {
         Application application = new ApplicationBuilder()
                 .withTags("URGENT")
                 .build();
@@ -272,10 +266,7 @@ public class ApplicationCardTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Uppercase urgent tag label not found"));
 
-        assertTrue(urgentLabel.getStyle().contains("#ae3535"));
-        assertTrue(tagsPane.getChildren().stream()
-                .map(node -> (Label) node)
-                .anyMatch(label -> label.getText().equals("applied")));
+        assertTrue(urgentLabel.getStyleClass().contains("tag-urgent"));
     }
 
     @Test
@@ -284,7 +275,6 @@ public class ApplicationCardTest {
         ApplicationCard applicationCard = new ApplicationCard(application, 1);
 
         Label statusTag = getStatusTag(applicationCard, "applied");
-        // 验证是否成功添加了对应的 CSS 类名
         assertTrue(statusTag.getStyleClass().contains("status-applied"),
                 "Status tag should have 'status-applied' CSS class");
     }
