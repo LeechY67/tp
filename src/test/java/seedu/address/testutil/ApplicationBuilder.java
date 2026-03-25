@@ -149,7 +149,7 @@ public class ApplicationBuilder {
      */
     public ApplicationBuilder withApplicationEvent(ApplicationEvent validEvent) {
         this.applicationEvent = validEvent;
-      return this;
+        return this;
     }
     /**
      * Sets the {@code Note} of the {@code Application} that we are building.
