@@ -50,7 +50,8 @@ public class JsonAdaptedApplicationTest {
         JsonAdaptedApplication application = new JsonAdaptedApplication(
                 VALID_ROLE, VALID_PHONE, VALID_HREMAIL, VALID_COMPANY_NAME,
                 VALID_COMPANY_LOCATION, VALID_TAGS, VALID_STATUS, VALID_DEADLINE,
-                "home", VALID_DATETIME, "HackerRank", "www.hackerrank.com", null);
+                "home", VALID_DATETIME, "HackerRank",
+                "www.hackerrank.com", null, VALID_NOTE);
         seedu.address.model.application.Application result = application.toModelType();
         assertEquals("home", result.getApplicationEvent().getLocation());
     }
@@ -60,7 +61,8 @@ public class JsonAdaptedApplicationTest {
         JsonAdaptedApplication application = new JsonAdaptedApplication(
                 VALID_ROLE, VALID_PHONE, VALID_HREMAIL, VALID_COMPANY_NAME,
                 VALID_COMPANY_LOCATION, VALID_TAGS, VALID_STATUS, VALID_DEADLINE,
-                "home", VALID_DATETIME, "HackerRank", "www.hackerrank.com", "some notes");
+                "home", VALID_DATETIME, "HackerRank", "www.hackerrank.com",
+                null, "some notes");
         seedu.address.model.application.Application result = application.toModelType();
         assertEquals("home", result.getApplicationEvent().getLocation());
     }
@@ -70,7 +72,8 @@ public class JsonAdaptedApplicationTest {
         JsonAdaptedApplication application = new JsonAdaptedApplication(
                 VALID_ROLE, VALID_PHONE, VALID_HREMAIL, VALID_COMPANY_NAME,
                 VALID_COMPANY_LOCATION, VALID_TAGS, VALID_STATUS, VALID_DEADLINE,
-                "home", INVALID_DATETIME, "HackerRank", "www.hackerrank.com", null);
+                "home", INVALID_DATETIME, "HackerRank",
+                "www.hackerrank.com", null, VALID_NOTE);
         assertThrows(IllegalValueException.class, application::toModelType);
     }
 
@@ -79,7 +82,8 @@ public class JsonAdaptedApplicationTest {
         JsonAdaptedApplication application =
                 new JsonAdaptedApplication(INVALID_ROLE, VALID_PHONE, VALID_HREMAIL, VALID_COMPANY_NAME,
                         VALID_COMPANY_LOCATION, VALID_TAGS, VALID_STATUS, VALID_DEADLINE,
-                        null, null, null, null, null, VALID_NOTE);
+                        null, null, null,
+                        null, null, VALID_NOTE);
         String expectedMessage = Role.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, application::toModelType);
     }

@@ -62,7 +62,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Application application = new Application(role, phone, hrEmail, company, tagList,
                 seedu.address.model.application.Status.APPLIED,
-                seedu.address.model.application.Deadline.getEmptyDeadline(),
+                seedu.address.model.application.Deadline.getEmptyDeadline(), null,
                 note);
 
         return new AddCommand(application);

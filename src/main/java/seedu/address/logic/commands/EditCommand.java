@@ -125,7 +125,7 @@ public class EditCommand extends Command {
                 .orElse(applicationToEdit.getApplicationEvent());
 
         return new Application(updatedRole, updatedPhone, updatedHrEmail, updatedCompany,
-                updatedTags, updatedStatus, updatedDeadline,  updatedNote, updatedApplicationEvent);
+                updatedTags, updatedStatus, updatedDeadline, updatedApplicationEvent, updatedNote);
     }
 
     @Override
