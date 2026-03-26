@@ -1,0 +1,31 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+Class "{abstract}\nCommand" as Command {
+  +execute(Model): CommandResult
+}
+
+Class SortCommand {
+  +COMMAND_WORD: String
+  +MESSAGE_USAGE: String
+  +MESSAGE_SUCCESS: String
+  -criteria: String
+  +execute(Model): CommandResult
+}
+
+Class CommandException
+Class Model
+Class Application
+Class Deadline
+Class Role
+
+SortCommand -up-|> Command
+Command ..> CommandException: throws >
+SortCommand .right.> CommandException: throws >
+
+SortCommand ..> Application
+SortCommand ..> Deadline
+SortCommand ..> Role
+@enduml
+

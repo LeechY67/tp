@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COMPANY_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COMPANY_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_HREMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -23,9 +24,11 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.application.Application;
+import seedu.address.model.application.ApplicationEvent;
 import seedu.address.model.application.Company;
 import seedu.address.model.application.Deadline;
 import seedu.address.model.application.HrEmail;
+import seedu.address.model.application.Note;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
 import seedu.address.model.application.Status;
@@ -43,14 +46,16 @@ public class EditCommand extends Command {
             + "Existing values will be overwritten by the input values.\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_HREMAIL + "hr@example.com\n"
+            + PREFIX_HREMAIL + "hr@example.com "
+            + PREFIX_NOTE + "Follow up next week\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_ROLE + "ROLE] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_HREMAIL + "EMAIL] "
             + "[" + PREFIX_COMPANY_NAME + "COMPANY_NAME] "
             + "[" + PREFIX_COMPANY_LOCATION + "COMPANY_LOCATION] "
-            + "[" + PREFIX_TAG + "TAG]...";
+            + "[" + PREFIX_TAG + "TAG]... "
+            + "[" + PREFIX_NOTE + "NOTE]";
 
     public static final String MESSAGE_EDIT_APPLICATION_SUCCESS = "Edited Application: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -60,7 +65,7 @@ public class EditCommand extends Command {
     private final EditApplicationDescriptor editApplicationDescriptor;
 
     /**
-     * @param index of the application in the filtered application list to edit
+     * @param index                     of the application in the filtered application list to edit
      * @param editApplicationDescriptor details to edit the application with
      */
     public EditCommand(Index index, EditApplicationDescriptor editApplicationDescriptor) {
@@ -113,12 +118,14 @@ public class EditCommand extends Command {
 
         Set<Tag> updatedTags = editApplicationDescriptor.getTags().orElse(applicationToEdit.getTags());
         Status updatedStatus = editApplicationDescriptor.getStatus().orElse(applicationToEdit.getStatus());
+        Deadline updatedDeadline = editApplicationDescriptor.getDeadline().orElse(applicationToEdit.getDeadline());
+        Note updatedNote = editApplicationDescriptor.getNote().orElse(applicationToEdit.getNote());
 
-        Deadline updatedDeadline = editApplicationDescriptor.getDeadline()
-                .orElse(applicationToEdit.getDeadline());
+        ApplicationEvent updatedApplicationEvent = editApplicationDescriptor.getApplicationEvent()
+                .orElse(applicationToEdit.getApplicationEvent());
 
         return new Application(updatedRole, updatedPhone, updatedHrEmail, updatedCompany,
-                updatedTags, updatedStatus, updatedDeadline);
+                updatedTags, updatedStatus, updatedDeadline, updatedApplicationEvent, updatedNote);
     }
 
     @Override
@@ -127,11 +134,10 @@ public class EditCommand extends Command {
             return true;
         }
 
-        if (!(other instanceof EditCommand)) {
+        if (!(other instanceof EditCommand otherEditCommand)) {
             return false;
         }
 
-        EditCommand otherEditCommand = (EditCommand) other;
         return index.equals(otherEditCommand.index)
                 && editApplicationDescriptor.equals(otherEditCommand.editApplicationDescriptor);
     }
@@ -157,8 +163,10 @@ public class EditCommand extends Command {
         private Set<Tag> tags;
         private Status status;
         private Deadline deadline;
-
-        public EditApplicationDescriptor() {}
+        private Note note;
+        private ApplicationEvent applicationEvent;
+        public EditApplicationDescriptor() {
+        }
 
         /**
          * Copy constructor.
@@ -173,13 +181,15 @@ public class EditCommand extends Command {
             setTags(toCopy.tags);
             setStatus(toCopy.status);
             setDeadline(toCopy.deadline);
+            setNote(toCopy.note);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(role, phone, hrEmail, companyName, companyLocation, tags, deadline);
+            return CollectionUtil.isAnyNonNull(role, phone, hrEmail, companyName, companyLocation,
+                    tags, status, deadline, note);
         }
 
         public void setRole(Role role) {
@@ -218,16 +228,17 @@ public class EditCommand extends Command {
             this.companyLocation = companyLocation;
         }
 
+        public Optional<String> getCompanyLocation() {
+            return Optional.ofNullable(companyLocation);
+        }
+
         public void setDeadline(Deadline deadline) {
             this.deadline = deadline;
         }
 
+
         public Optional<Deadline> getDeadline() {
             return Optional.ofNullable(deadline);
-        }
-
-        public Optional<String> getCompanyLocation() {
-            return Optional.ofNullable(companyLocation);
         }
 
         /**
@@ -249,6 +260,7 @@ public class EditCommand extends Command {
 
         /**
          * Sets {@code status} to this object's {@code status}.
+         *
          * @param status to be set to the object's status
          */
         public void setStatus(Status status) {
@@ -259,10 +271,25 @@ public class EditCommand extends Command {
          * Returns the status of the application to be edited, if specified.
          *
          * @return an {@code Optional} containing the {@code Status} if set,
-         *         or {@code Optional.empty()} if no status was provided.
+         *      or {@code Optional.empty()} if no status was provided
          */
         public Optional<Status> getStatus() {
             return Optional.ofNullable(status);
+        }
+
+        public void setApplicationEvent(ApplicationEvent applicationEvent) {
+            this.applicationEvent = applicationEvent;
+        }
+
+        public Optional<ApplicationEvent> getApplicationEvent() {
+            return Optional.ofNullable(applicationEvent);
+        }
+        public void setNote(Note note) {
+            this.note = note;
+        }
+
+        public Optional<Note> getNote() {
+            return Optional.ofNullable(note);
         }
 
         @Override
@@ -271,11 +298,10 @@ public class EditCommand extends Command {
                 return true;
             }
 
-            if (!(other instanceof EditApplicationDescriptor)) {
+            if (!(other instanceof EditApplicationDescriptor otherEditApplicationDescriptor)) {
                 return false;
             }
 
-            EditApplicationDescriptor otherEditApplicationDescriptor = (EditApplicationDescriptor) other;
             return Objects.equals(role, otherEditApplicationDescriptor.role)
                     && Objects.equals(phone, otherEditApplicationDescriptor.phone)
                     && Objects.equals(hrEmail, otherEditApplicationDescriptor.hrEmail)
@@ -283,7 +309,8 @@ public class EditCommand extends Command {
                     && Objects.equals(companyLocation, otherEditApplicationDescriptor.companyLocation)
                     && Objects.equals(tags, otherEditApplicationDescriptor.tags)
                     && Objects.equals(status, otherEditApplicationDescriptor.status)
-                    && Objects.equals(deadline, otherEditApplicationDescriptor.deadline);
+                    && Objects.equals(deadline, otherEditApplicationDescriptor.deadline)
+                    && Objects.equals(note, otherEditApplicationDescriptor.note);
         }
 
         @Override
@@ -297,6 +324,7 @@ public class EditCommand extends Command {
                     .add("tags", tags)
                     .add("status", status)
                     .add("deadline", deadline)
+                    .add("note", note)
                     .toString();
         }
     }

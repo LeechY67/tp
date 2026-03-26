@@ -70,6 +70,10 @@ public class ApplicationCardTest {
         Label deadlineLabel = getLabel(applicationCard, "deadline");
         assertFalse(deadlineLabel.isVisible());
         assertFalse(deadlineLabel.isManaged());
+
+        Label noteLabel = getLabel(applicationCard, "note");
+        assertFalse(noteLabel.isVisible());
+        assertFalse(noteLabel.isManaged());
     }
 
     @Test
@@ -105,6 +109,24 @@ public class ApplicationCardTest {
         assertTrue(deadlineLabel.isVisible());
         assertTrue(deadlineLabel.isManaged());
         assertEquals("Deadline: " + application.getDeadline().value, getLabelText(applicationCard, "deadline"));
+    }
+
+    @Test
+    public void constructor_withNote_setsNoteVisibleAndText() throws Exception {
+        Application application = new ApplicationBuilder()
+                .withCompanyName("Google")
+                .withRole("Intern")
+                .withPhone("91234567")
+                .withHrEmail("hr@google.com")
+                .withNote("Follow up in 3 days")
+                .build();
+
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label noteLabel = getLabel(applicationCard, "note");
+        assertTrue(noteLabel.isVisible());
+        assertTrue(noteLabel.isManaged());
+        assertEquals("Note: " + application.getNote().value, getLabelText(applicationCard, "note"));
     }
 
     @Test
@@ -208,10 +230,9 @@ public class ApplicationCardTest {
     }
 
     @Test
-    public void constructor_withRegularTags_regularTagsDoNotUseReminderRedStyle() throws Exception {
+    public void constructor_withRegularTags_regularTagsDoNotUseUrgentStyle() throws Exception {
         Application application = new ApplicationBuilder()
                 .withCompanyName("Google")
-                .withCompanyLocation("Singapore")
                 .withRole("Intern")
                 .withPhone("91234567")
                 .withHrEmail("hr@google.com")
@@ -226,23 +247,20 @@ public class ApplicationCardTest {
 
         assertEquals("atag", firstTag.getText());
         assertEquals("ztag", secondTag.getText());
-        assertFalse(firstTag.getStyle().contains("#FF0000"));
-        assertFalse(secondTag.getStyle().contains("#FF0000"));
+        assertFalse(firstTag.getStyleClass().contains("tag-urgent"));
+        assertFalse(secondTag.getStyleClass().contains("tag-urgent"));
     }
 
     @Test
-    public void constructor_withUrgentTag_setsRedBackgroundStyle() throws Exception {
-        // 1. 准备带有 ReminderCommand 中定义的 "Urgent" 标签的申请
+    public void constructor_withUrgentTag_hasUrgentStyleClass() throws Exception {
         String reminderTag = seedu.address.logic.commands.ReminderCommand.REMINDER_TAG_NAME;
         Application application = new ApplicationBuilder()
                 .withTags(reminderTag)
                 .build();
 
-        // 2. 创建 Card 实例
         ApplicationCard applicationCard = new ApplicationCard(application, 1);
         FlowPane tagsPane = getTagsPane(applicationCard);
 
-        // 3. 利用反射获取生成的 Label 并验证样式
         Label urgentLabel = (Label) tagsPane.getChildren().stream()
                 .filter(node -> node instanceof Label)
                 .map(node -> (Label) node)
@@ -250,14 +268,12 @@ public class ApplicationCardTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Urgent tag label not found"));
 
-        // 4. 验证是否应用了红色背景样式
-        String style = urgentLabel.getStyle();
-        assertTrue(style.contains("-fx-background-color: #FF0000"),
-                "Urgent tag should be red. Current style: " + style);
+        assertTrue(urgentLabel.getStyleClass().contains("tag-urgent"),
+                "Urgent tag should have 'tag-urgent' CSS class");
     }
 
     @Test
-    public void constructor_withUppercaseUrgentTag_stillSetsRedStyle() throws Exception {
+    public void constructor_withUppercaseUrgentTag_stillHasUrgentStyleClass() throws Exception {
         Application application = new ApplicationBuilder()
                 .withTags("URGENT")
                 .build();
@@ -272,32 +288,57 @@ public class ApplicationCardTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Uppercase urgent tag label not found"));
 
-        assertTrue(urgentLabel.getStyle().contains("#FF0000"));
-        assertTrue(tagsPane.getChildren().stream()
-                .map(node -> (Label) node)
-                .anyMatch(label -> label.getText().equals("applied")));
+        assertTrue(urgentLabel.getStyleClass().contains("tag-urgent"));
     }
 
     @Test
-    public void constructor_afterRedoState_displaysUpdatedInfo() throws Exception {
-        // 模拟 Redo 执行后，数据被恢复到之前的状态 (例如 Deadline 和 Status 发生了变化)
-        Application redoStateApp = new ApplicationBuilder()
-                .withRole("Cloud Engineer")
-                .withStatus(Status.OFFERED)
-                .withDeadline("2026-05-20")
-                .build();
+    public void constructor_statusApplied_hasAppliedStyleClass() throws Exception {
+        Application application = new ApplicationBuilder().withStatus(Status.APPLIED).build();
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
 
-        ApplicationCard applicationCard = new ApplicationCard(redoStateApp, 2);
+        Label statusTag = getStatusTag(applicationCard, "applied");
+        assertTrue(statusTag.getStyleClass().contains("status-applied"),
+                "Status tag should have 'status-applied' CSS class");
+    }
 
-        // 验证 UI 是否正确展示了恢复后的数据
-        assertEquals("2. ", getLabelText(applicationCard, "id"));
-        assertEquals("Deadline: 2026-05-20", getLabelText(applicationCard, "deadline"));
+    @Test
+    public void constructor_statusOffered_hasOfferedStyleClass() throws Exception {
+        Application application = new ApplicationBuilder().withStatus(Status.OFFERED).build();
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
 
-        // 验证 Status 标签是否正确渲染为小写
-        FlowPane tagsPane = getTagsPane(applicationCard);
-        assertTrue(tagsPane.getChildren().stream()
-                .map(node -> (Label) node)
-                .anyMatch(label -> label.getText().equals("offered")));
+        Label statusTag = getStatusTag(applicationCard, "offered");
+        assertTrue(statusTag.getStyleClass().contains("status-offered"),
+                "Status tag should have 'status-offered' CSS class");
+    }
+
+    @Test
+    public void constructor_statusRejected_hasRejectedStyleClass() throws Exception {
+        Application application = new ApplicationBuilder().withStatus(Status.REJECTED).build();
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label statusTag = getStatusTag(applicationCard, "rejected");
+        assertTrue(statusTag.getStyleClass().contains("status-rejected"),
+                "Status tag should have 'status-rejected' CSS class");
+    }
+
+    @Test
+    public void constructor_statusInterviewing_hasInterviewingStyleClass() throws Exception {
+        Application application = new ApplicationBuilder().withStatus(Status.INTERVIEWING).build();
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label statusTag = getStatusTag(applicationCard, "interviewing");
+        assertTrue(statusTag.getStyleClass().contains("status-interviewing"),
+                "Status tag should have 'status-interviewing' CSS class");
+    }
+
+    @Test
+    public void constructor_statusWithdrawn_hasWithdrawnStyleClass() throws Exception {
+        Application application = new ApplicationBuilder().withStatus(Status.WITHDRAWN).build();
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label statusTag = getStatusTag(applicationCard, "withdrawn");
+        assertTrue(statusTag.getStyleClass().contains("status-withdrawn"),
+                "Status tag should have 'status-withdrawn' CSS class");
     }
 
     private String getLabelText(ApplicationCard card, String fieldName) throws Exception {
@@ -317,5 +358,73 @@ public class ApplicationCardTest {
         Field field = ApplicationCard.class.getDeclaredField("tags");
         field.setAccessible(true);
         return (FlowPane) field.get(card);
+    }
+
+    private Label getStatusTag(ApplicationCard card, String statusText) throws Exception {
+        FlowPane tagsPane = getTagsPane(card);
+        return (Label) tagsPane.getChildren().stream()
+                .filter(node -> node instanceof Label)
+                .map(node -> (Label) node)
+                .filter(label -> label.getText().equals(statusText))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Status tag not found: " + statusText));
+    }
+
+    @Test
+    public void constructor_allStatuses_addsCorrectStyleClass() throws Exception {
+        for (Status s : Status.values()) {
+            Application application = new ApplicationBuilder().withStatus(s).build();
+            ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+            String expectedStatusText = s.toString().toLowerCase();
+            String expectedStyleClass = "status-" + expectedStatusText.replace(" ", "-");
+
+            Label statusTag = getStatusTag(applicationCard, expectedStatusText);
+            assertTrue(statusTag.getStyleClass().contains(expectedStyleClass),
+                    "Tag for status " + s + " should have style class: " + expectedStyleClass);
+        }
+    }
+
+    @Test
+    public void constructor_withMixedCaseUrgentTag_hasUrgentStyleClass() throws Exception {
+        Application application = new ApplicationBuilder()
+                .withTags("uRgEnT")
+                .build();
+
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+        FlowPane tagsPane = getTagsPane(applicationCard);
+
+        Label urgentLabel = (Label) tagsPane.getChildren().stream()
+                .filter(node -> node instanceof Label)
+                .map(node -> (Label) node)
+                .filter(label -> label.getText().equals("uRgEnT"))
+                .findFirst()
+                .orElseThrow();
+
+        assertTrue(urgentLabel.getStyleClass().contains("tag-urgent"),
+                "Mixed case 'uRgEnT' should still trigger 'tag-urgent' style");
+    }
+
+    @Test
+    public void constructor_allOptionalFieldsPresent_allVisible() throws Exception {
+        Application application = new ApplicationBuilder()
+                .withCompanyLocation("Singapore")
+                .withDeadline("2026-12-31")
+                .withNote("Important Note")
+                .build();
+
+        ApplicationCard applicationCard = new ApplicationCard(application, 1);
+
+        Label locLabel = getLabel(applicationCard, "companyLocation");
+        assertTrue(locLabel.isVisible());
+        assertEquals("Singapore", locLabel.getText());
+
+        Label deadlineLabel = getLabel(applicationCard, "deadline");
+        assertTrue(deadlineLabel.isVisible());
+        assertEquals("Deadline: 2026-12-31", deadlineLabel.getText());
+
+        Label noteLabel = getLabel(applicationCard, "note");
+        assertTrue(noteLabel.isVisible());
+        assertEquals("Note: Important Note", noteLabel.getText());
     }
 }

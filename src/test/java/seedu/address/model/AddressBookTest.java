@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalApplications.ALICE;
+import static seedu.address.testutil.TypicalApplications.GOOGLE_SWE;
 import static seedu.address.testutil.TypicalApplications.getTypicalAddressBook;
 
 import java.util.Arrays;
@@ -45,11 +45,11 @@ public class AddressBookTest {
     @Test
     public void resetData_withDuplicateApplications_throwsDuplicateApplicationException() {
         // Two applications with the same identity fields
-        Application editedAlice = new ApplicationBuilder(ALICE)
+        Application editedAlice = new ApplicationBuilder(GOOGLE_SWE)
                 .withPhone("99999999")
                 .withTags(VALID_TAG_HUSBAND)
                 .build();
-        List<Application> newApplications = Arrays.asList(ALICE, editedAlice);
+        List<Application> newApplications = Arrays.asList(GOOGLE_SWE, editedAlice);
         AddressBookStub newData = new AddressBookStub(newApplications);
 
         assertThrows(DuplicateApplicationException.class, () -> companyBook.resetData(newData));
@@ -62,19 +62,19 @@ public class AddressBookTest {
 
     @Test
     public void hasApplication_applicationNotInAddressBook_returnsFalse() {
-        assertFalse(companyBook.hasApplication(ALICE));
+        assertFalse(companyBook.hasApplication(GOOGLE_SWE));
     }
 
     @Test
     public void hasApplication_applicationInAddressBook_returnsTrue() {
-        companyBook.addApplication(ALICE);
-        assertTrue(companyBook.hasApplication(ALICE));
+        companyBook.addApplication(GOOGLE_SWE);
+        assertTrue(companyBook.hasApplication(GOOGLE_SWE));
     }
 
     @Test
     public void hasApplication_applicationWithSameIdentityFieldsInAddressBook_returnsTrue() {
-        companyBook.addApplication(ALICE);
-        Application editedAlice = new ApplicationBuilder(ALICE)
+        companyBook.addApplication(GOOGLE_SWE);
+        Application editedAlice = new ApplicationBuilder(GOOGLE_SWE)
                 .withPhone("99999999")
                 .withTags(VALID_TAG_HUSBAND)
                 .build();

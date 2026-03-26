@@ -12,19 +12,11 @@ import javafx.scene.layout.Region;
 import seedu.address.model.application.Application;
 
 /**
- * An UI component that displays information of a {@code Application}.
+ * A UI component that displays information of a {@code Application}.
  */
 public class ApplicationCard extends UiPart<Region> {
 
     private static final String FXML = "ApplicationListCard.fxml";
-
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
 
     public final Application application;
 
@@ -48,6 +40,10 @@ public class ApplicationCard extends UiPart<Region> {
     private FlowPane tags;
     @FXML
     private Label deadline;
+    @FXML
+    private Label note;
+    @FXML
+    private Label resume;
 
     /**
      * Creates a {@code ApplicationCard} with the given {@code Application} and index to display.
@@ -60,27 +56,35 @@ public class ApplicationCard extends UiPart<Region> {
         phone.setText(application.getPhone().value);
         hrEmail.setText(application.getHrEmail().value);
         companyName.setText(application.getCompany().companyName);
-        deadline.setText("Deadline: " + application.getDeadline().value);
 
-        // company location
-        String loc = application.getCompany().companyLocation;
-        if (loc.isEmpty()) {
+        if (application.getCompany().companyLocation.isEmpty()) {
             companyLocation.setVisible(false);
             companyLocation.setManaged(false);
         } else {
-            companyLocation.setText(loc);
+            companyLocation.setText(application.getCompany().companyLocation);
         }
 
-        // deadline
-        String deadlineValue = application.getDeadline().value;
         if (application.getDeadline().isEmpty()) {
             deadline.setVisible(false);
             deadline.setManaged(false);
         } else {
-            deadline.setText("Deadline: " + deadlineValue);
+            deadline.setText("Deadline: " + application.getDeadline().value);
         }
 
-        // status.setText("Status: " + application.getStatus().toString());
+        if (application.getNote().value.isEmpty()) {
+            note.setVisible(false);
+            note.setManaged(false);
+        } else {
+            note.setText("Note: " + application.getNote().value);
+        }
+
+        if (application.getResume().isEmpty()) {
+            resume.setVisible(false);
+            resume.setManaged(false);
+        } else {
+            resume.setText("Resume: " + application.getResume().value);
+        }
+
         status.setVisible(false);
         status.setManaged(false);
 
@@ -89,13 +93,14 @@ public class ApplicationCard extends UiPart<Region> {
                 .forEach(tag -> {
                     Label tagLabel = new Label(tag.tagName);
                     if (tag.tagName.equalsIgnoreCase(REMINDER_TAG_NAME)) {
-                        tagLabel.setStyle("-fx-background-color: #FF0000; -fx-text-fill: white;");
+                        tagLabel.getStyleClass().add("tag-urgent");
                     }
                     tags.getChildren().add(tagLabel);
                 });
 
         String statusText = application.getStatus().toString().toLowerCase();
         Label statusTag = new Label(statusText);
+        statusTag.getStyleClass().add("status-" + statusText.replace(" ", "-"));
         tags.getChildren().add(statusTag);
     }
 }

@@ -4,18 +4,17 @@ skinparam arrowThickness 1.1
 skinparam arrowColor UI_COLOR_T4
 skinparam classBackgroundColor UI_COLOR
 
-package UI <<Rectangle>> {
-  interface "Ui" as Ui
-  abstract class "UiPart<T>" as UiPart
-  class UiManager
-  class MainWindow
-  class HelpWindow
-  class ResultDisplay
-  class ApplicationListPanel
-  class ApplicationCard
-  class StatusBarFooter
-  class CommandBox
-  interface "CommandExecutor" as CommandExecutor <<functional interface>>
+package UI <<Rectangle>>{
+Class "<<interface>>\nUi" as Ui
+Class "{abstract}\nUiPart" as UiPart
+Class UiManager
+Class MainWindow
+Class HelpWindow
+Class ResultDisplay
+Class PersonListPanel
+Class ApplicationCard
+Class StatusBarFooter
+Class CommandBox
 }
 
 package Model <<Rectangle>> {
@@ -30,8 +29,7 @@ class MainApp #FFFFFF
 
 MainApp ..> Ui
 
-UiManager ..|> Ui
-UiManager *--> "1" MainWindow
+PersonListPanel -down-> "*" ApplicationCard
 
 MainWindow --> Logic
 UiManager --> Logic
@@ -39,16 +37,14 @@ UiManager --> Logic
 MainWindow --|> UiPart
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
-ApplicationListPanel --|> UiPart
+PersonListPanel --|> UiPart
 ApplicationCard --|> UiPart
 StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
 
-MainWindow *--> "1" CommandBox
-MainWindow *--> "1" ResultDisplay
-MainWindow *--> "1" ApplicationListPanel
-MainWindow *--> "1" StatusBarFooter
-MainWindow ..> HelpWindow
+ApplicationCard ..> Model
+UiManager -right-> Logic
+MainWindow -left-> Logic
 
 ApplicationListPanel *--> "*" ApplicationCard
 

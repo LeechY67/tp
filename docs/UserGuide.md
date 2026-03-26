@@ -15,24 +15,25 @@ Hired! is a **desktop app for managing internship applications, optimized for us
 1. Ensure you have Java `17` or above installed on your computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from the [project release page](https://github.com/AY2526S2-CS2103T-T13-3/tp/releases/tag/v1.0).
+2. Download the latest `.jar` file from the [project release page](https://github.com/AY2526S2-CS2103T-T13-3/tp/releases/tag/v1.0).
 
-1. Copy the file to the folder you want to use as the _home folder_ for Hired!.
+3. Copy the file to the folder you want to use as the _home folder_ for Hired!.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and run the application using `java -jar hired.jar`.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and run the application using `java -jar hired.jar`.<br>
    A GUI similar to the one below should appear in a few seconds. Note that the app contains some sample application records.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. For example, typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. For example, typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
     * `list` : Lists all application records.
-    * `add r/Software Engineer p/98765432 e/hr@google.com c/Google t/interview` : Adds an application record for a Software Engineer role at Google.
+    * `add r/Software Engineer p/98765432 e/hr@google.com c/Google t/interview note/Met recruiter at career fair` : Adds an application record for a Software Engineer role at Google with a note.
+    * `findnote recruiter` : Finds applications whose notes contain `recruiter`.
     * `delete 3` : Deletes the 3rd application shown in the current list.
     * `clear` : Deletes all application records.
     * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+6. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -72,22 +73,22 @@ Format: `help`
 
 Adds an application record to Hired!.
 
-Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG]...`
+Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG]... [note/NOTE]`
 
 **Required prefixes:** `r/`, `p/`, `e/`, and `c/` must be provided for a valid `add` command.
 
-**Optional prefixes:** `l/` and `t/` are optional. If provided, they may appear in any order after the required fields.
+**Optional prefixes:** `l/`, `t/`, and `note/` are optional. If provided, they may appear in any order after the required fields.
 
-> **Note:** In Hired!, `r/` is used for the internship role, and `c/` is used for the company name. Applications 
-            with the same role and company name are considered duplicates and cannot be added.
-> **Tip:** An application can have any number of tags (including 0). 
-
+> **Note:** In Hired!, `r/` is used for the internship role, and `c/` is used for the company name. Applications with the same role and company name are considered duplicates and cannot be added.
+> **Tip:** An application can have any number of tags (including 0).
+> **Tip:** A note can be added when creating an application by using `note/`.
 
 Examples:
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google`
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google l/Singapore`
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google t/interview t/priority`
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google l/Boon Lay t/interview`
+* `add r/Data Analyst p/92345678 e/recruitment@meta.com c/Meta l/Singapore t/applied note/Met recruiter at career fair`
 
 ### Listing all applications : `list`
 
@@ -99,7 +100,7 @@ Format: `list`
 
 Edits the details of an existing application in Hired!.
 
-Format: `edit INDEX [r/ROLE] [p/PHONE] [e/EMAIL] [c/COMPANY_NAME] [l/COMPANY_LOCATION] [t/TAG]...`
+Format: `edit INDEX [r/ROLE] [p/PHONE] [e/EMAIL] [c/COMPANY_NAME] [l/COMPANY_LOCATION] [t/TAG] [s/STATUS] [d/DEADLINE]... [note/NOTE]`
 
 * Edits the application at the specified `INDEX`.
 * The index refers to the index number shown in the displayed application list.
@@ -108,12 +109,16 @@ Format: `edit INDEX [r/ROLE] [p/PHONE] [e/EMAIL] [c/COMPANY_NAME] [l/COMPANY_LOC
 * Existing values will be overwritten by the input values.
 * When editing tags, the existing tags of the application will be removed, i.e. tag editing is not cumulative.
 * You can remove all tags by typing `t/` without specifying any tag after it.
+* You can edit an application's note using `note/NOTE`.
+* You can clear an existing note by typing `note/` with nothing after it.
 
 Examples:
 * `edit 1 p/91234567 e/hr@google.com` edits the phone number and email of the 1st application.
 * `edit 2 r/Backend Engineer c/Shopee` edits the role and company of the 2nd application.
 * `edit 3 t/urgent t/interview` replaces the tags of the 3rd application with `urgent` and `interview`.
 * `edit 4 t/` removes all tags from the 4th application.
+* `edit 1 note/Follow up next Monday` updates the note of the 1st application.
+* `edit 1 note/` clears the note of the 1st application.
 
 ### Locating applications by role: `find`
 
@@ -131,6 +136,21 @@ Examples:
 * `find engineer` returns applications with roles containing `engineer`
 * `find backend frontend` returns applications with roles containing `backend` or `frontend`
 
+### Locating applications by note: `findnote`
+
+Finds applications whose notes contain any of the given keywords.
+
+Format: `findnote KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `follow` will match `Follow`
+* The order of the keywords does not matter.
+* Only the note field is searched.
+* Applications matching at least one keyword will be returned (i.e. `OR` search).
+
+Examples:
+* `findnote recruiter` returns applications with notes containing `recruiter`
+* `findnote follow Monday` returns applications with notes containing `follow` or `Monday`
+
 ### Changing the default status: `status`
 
 Changes the status of an application to APPLIED, INTERVIEWING, OFFERED, REJECTED, or WITHDRAWN.
@@ -147,6 +167,27 @@ Examples:
 * `status 1 s/OFFERED` changes the status to `offered`
 * `status 1 s/selected` will result in an error as `selected` is not a given status.
 
+### Setting the deadline for an application : `deadline`
+
+Sets or updates the deadline for the application identified by its index.
+
+Format: `deadline INDEX DATE_TIME`
+
+* The `DATE_TIME` can be `yyyy-MM-dd`, `yyyy-MM-dd HH:mm`.
+* The index refers to the index number shown in the displayed application list.
+* This deadline is used by `reminder` and `sort time`.
+
+Examples:
+* `deadline 1 2026-12-31`
+* `deadline 1 2026-12-31 23:59`
+
+Tips: Note that we can change deadline and status by either using their own command, or using the general edit command.
+Examples:
+* `status 1 s/OFFERED` is equivalent to `edit 1 s/OFFERED`
+* `deadline 2 2026-03-25` is equivalent to `edit 2 d/2026-03-25`
+This is intended to give user more flexibility in entering command.
+This is a feature not a bug.
+
 ### Deleting an application : `delete`
 
 Deletes the specified application record from Hired!.
@@ -160,6 +201,56 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd application in the displayed list.
 * `find engineer` followed by `delete 1` deletes the 1st application in the results of the `find` command.
+
+### Identifying urgent applications : `reminder`
+
+Identifies and highlights applications that are nearing their deadlines.
+
+Format: `reminder`
+
+* The application list will be sorted by deadline in ascending order (nearest first).
+* Applications with the nearest deadlines appear at the top, and those without a deadline are placed at the bottom.
+* Applications with a deadline within the next three days (including today) will be automatically marked with a red `Urgent` tag in the UI.
+
+### Sorting applications : `sort`
+
+Sorts the current list of applications based on a specified criterion.
+
+Format: `sort [CRITERION]`
+
+* The `CRITERION` must be either `time` or `alphabet`.
+* `sort time`: Sorts applications by their deadline (nearest first). Applications without deadlines are placed at the bottom.
+* `sort alphabet`: Sorts applications alphabetically by their role name (A-Z).
+
+Examples:
+* `sort time`
+* `sort alphabet`
+
+### Undoing previous commands : `undo`
+
+Undoes the most recent command that modified the application list.
+
+Format: `undo`
+
+* Keeps track of up to 10 steps of your command history.
+* Commands that can be undone include add, delete, edit, clear, status, reminder, deadline, sort, and assessment.
+* You cannot undo if there are no more states to revert to in the history.
+
+Examples:
+* `delete 1` followed by `undo` restores the deleted application.
+
+### Redoing undone commands : `redo`
+
+Reverses the most recent `undo` command.
+
+Format: redo
+
+* You must perform at least one `undo` command before you can use `redo`.
+* If you attempt to redo when no undoable state exists, an error message "No undoable state to redo. Please perform an undo first." will be shown.
+* If you execute a data-modifying command (e.g.,`add`) after an undo, the `redo` **history** is cleared.
+
+Examples:
+* clear followed by `undo` (restores data), then `redo` (clears data again).
 
 ### Clearing all entries : `clear`
 
@@ -210,11 +301,18 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG]...` <br> e.g. `add r/Software Engineer p/98765432 e/hr@google.com c/Google t/interview t/priority`
+**Add** | `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG]... [note/NOTE]` <br> e.g. `add r/Data Analyst p/92345678 e/recruitment@meta.com c/Meta l/Singapore t/applied note/Met recruiter at career fair`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g. `delete 3`
-**Edit** | `edit INDEX [r/ROLE] [p/PHONE] [e/EMAIL] [c/COMPANY_NAME] [l/COMPANY_LOCATION] [t/TAG]...`<br> e.g. `edit 2 r/Backend Engineer c/Shopee`
+**Edit** | `edit INDEX [r/ROLE] [p/PHONE] [e/EMAIL] [c/COMPANY_NAME] [l/COMPANY_LOCATION] [t/TAG]... [note/NOTE]`<br> e.g. `edit 1 note/Follow up next Monday`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g. `find engineer backend`
+**Find Note** | `findnote KEYWORD [MORE_KEYWORDS]`<br> e.g. `findnote recruiter follow`
 **List** | `list`
 **Status** | `status INDEX s/STATUS` <br> e.g. `status 2 s/offered`
+**Deadline** | `deadline INDEX DATE_TIME` <br> e.g. `deadline 1 2026-12-31 23:59`
+**Reminder** | `reminder` <br> Highlights applications nearing deadlines and sorts by urgency (nearest first). Applications within 3 days are marked as Urgent.
+**Sort** | `sort [CRITERION]` <br> CRITERION: `time` or `alphabet` <br> e.g. `sort time`, `sort alphabet`
+**Undo** | `undo` <br> Reverts the most recent data-modifying command (up to 10 steps).
+**Redo** | `redo` <br> Reapplies the most recently undone command.
+**Exit** | `exit`
 **Help** | `help`

@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalApplications.ALICE;
 import static seedu.address.testutil.TypicalApplications.BOB;
+import static seedu.address.testutil.TypicalApplications.GOOGLE_SWE;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,19 +29,19 @@ public class UniqueApplicationListTest {
 
     @Test
     public void contains_applicationNotInList_returnsFalse() {
-        assertFalse(uniqueApplicationList.contains(ALICE));
+        assertFalse(uniqueApplicationList.contains(GOOGLE_SWE));
     }
 
     @Test
     public void contains_applicationInList_returnsTrue() {
-        uniqueApplicationList.add(ALICE);
-        assertTrue(uniqueApplicationList.contains(ALICE));
+        uniqueApplicationList.add(GOOGLE_SWE);
+        assertTrue(uniqueApplicationList.contains(GOOGLE_SWE));
     }
 
     @Test
     public void contains_applicationWithSameIdentityFieldsInList_returnsTrue() {
-        uniqueApplicationList.add(ALICE);
-        Application editedAlice = new ApplicationBuilder(ALICE)
+        uniqueApplicationList.add(GOOGLE_SWE);
+        Application editedAlice = new ApplicationBuilder(GOOGLE_SWE)
                 .withPhone("99999999")
                 .withTags(VALID_TAG_HUSBAND)
                 .build();
@@ -55,42 +55,43 @@ public class UniqueApplicationListTest {
 
     @Test
     public void add_duplicateApplication_throwsDuplicateApplicationException() {
-        uniqueApplicationList.add(ALICE);
-        assertThrows(DuplicateApplicationException.class, () -> uniqueApplicationList.add(ALICE));
+        uniqueApplicationList.add(GOOGLE_SWE);
+        assertThrows(DuplicateApplicationException.class, () -> uniqueApplicationList.add(GOOGLE_SWE));
     }
 
     @Test
     public void setApplication_nullTargetApplication_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> uniqueApplicationList.setApplication(null, ALICE));
+        assertThrows(NullPointerException.class, () -> uniqueApplicationList.setApplication(null, GOOGLE_SWE));
     }
 
     @Test
     public void setApplication_nullEditedApplication_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> uniqueApplicationList.setApplication(ALICE, null));
+        assertThrows(NullPointerException.class, () -> uniqueApplicationList.setApplication(GOOGLE_SWE, null));
     }
 
     @Test
     public void setApplication_targetApplicationNotInList_throwsApplicationNotFoundException() {
-        assertThrows(ApplicationNotFoundException.class, () -> uniqueApplicationList.setApplication(ALICE, ALICE));
+        assertThrows(ApplicationNotFoundException.class, () -> uniqueApplicationList
+                .setApplication(GOOGLE_SWE, GOOGLE_SWE));
     }
 
     @Test
     public void setApplication_editedApplicationIsSameApplication_success() {
-        uniqueApplicationList.add(ALICE);
-        uniqueApplicationList.setApplication(ALICE, ALICE);
+        uniqueApplicationList.add(GOOGLE_SWE);
+        uniqueApplicationList.setApplication(GOOGLE_SWE, GOOGLE_SWE);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
-        expectedUniqueApplicationList.add(ALICE);
+        expectedUniqueApplicationList.add(GOOGLE_SWE);
         assertEquals(expectedUniqueApplicationList, uniqueApplicationList);
     }
 
     @Test
     public void setApplication_editedApplicationHasSameIdentity_success() {
-        uniqueApplicationList.add(ALICE);
-        Application editedAlice = new ApplicationBuilder(ALICE)
+        uniqueApplicationList.add(GOOGLE_SWE);
+        Application editedAlice = new ApplicationBuilder(GOOGLE_SWE)
                 .withTags(VALID_TAG_HUSBAND)
                 .withTags(VALID_TAG_HUSBAND)
                 .build();
-        uniqueApplicationList.setApplication(ALICE, editedAlice);
+        uniqueApplicationList.setApplication(GOOGLE_SWE, editedAlice);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
         expectedUniqueApplicationList.add(editedAlice);
         assertEquals(expectedUniqueApplicationList, uniqueApplicationList);
@@ -98,8 +99,8 @@ public class UniqueApplicationListTest {
 
     @Test
     public void setApplication_editedApplicationHasDifferentIdentity_success() {
-        uniqueApplicationList.add(ALICE);
-        uniqueApplicationList.setApplication(ALICE, BOB);
+        uniqueApplicationList.add(GOOGLE_SWE);
+        uniqueApplicationList.setApplication(GOOGLE_SWE, BOB);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
         expectedUniqueApplicationList.add(BOB);
         assertEquals(expectedUniqueApplicationList, uniqueApplicationList);
@@ -107,9 +108,9 @@ public class UniqueApplicationListTest {
 
     @Test
     public void setApplication_editedApplicationHasNonUniqueIdentity_throwsDuplicateApplicationException() {
-        uniqueApplicationList.add(ALICE);
+        uniqueApplicationList.add(GOOGLE_SWE);
         uniqueApplicationList.add(BOB);
-        assertThrows(DuplicateApplicationException.class, () -> uniqueApplicationList.setApplication(ALICE, BOB));
+        assertThrows(DuplicateApplicationException.class, () -> uniqueApplicationList.setApplication(GOOGLE_SWE, BOB));
     }
 
     @Test
@@ -119,13 +120,13 @@ public class UniqueApplicationListTest {
 
     @Test
     public void remove_applicationDoesNotExist_throwsApplicationNotFoundException() {
-        assertThrows(ApplicationNotFoundException.class, () -> uniqueApplicationList.remove(ALICE));
+        assertThrows(ApplicationNotFoundException.class, () -> uniqueApplicationList.remove(GOOGLE_SWE));
     }
 
     @Test
     public void remove_existingApplication_removesApplication() {
-        uniqueApplicationList.add(ALICE);
-        uniqueApplicationList.remove(ALICE);
+        uniqueApplicationList.add(GOOGLE_SWE);
+        uniqueApplicationList.remove(GOOGLE_SWE);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
         assertEquals(expectedUniqueApplicationList, uniqueApplicationList);
     }
@@ -138,7 +139,7 @@ public class UniqueApplicationListTest {
 
     @Test
     public void setApplications_uniqueApplicationList_replacesOwnListWithProvidedUniqueApplicationList() {
-        uniqueApplicationList.add(ALICE);
+        uniqueApplicationList.add(GOOGLE_SWE);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
         expectedUniqueApplicationList.add(BOB);
         uniqueApplicationList.setApplications(expectedUniqueApplicationList);
@@ -152,7 +153,7 @@ public class UniqueApplicationListTest {
 
     @Test
     public void setApplications_list_replacesOwnListWithProvidedList() {
-        uniqueApplicationList.add(ALICE);
+        uniqueApplicationList.add(GOOGLE_SWE);
         List<Application> applicationList = Collections.singletonList(BOB);
         uniqueApplicationList.setApplications(applicationList);
         UniqueApplicationList expectedUniqueApplicationList = new UniqueApplicationList();
@@ -162,7 +163,7 @@ public class UniqueApplicationListTest {
 
     @Test
     public void setApplications_listWithDuplicateApplications_throwsDuplicateApplicationException() {
-        List<Application> listWithDuplicateApplications = Arrays.asList(ALICE, ALICE);
+        List<Application> listWithDuplicateApplications = Arrays.asList(GOOGLE_SWE, GOOGLE_SWE);
         assertThrows(DuplicateApplicationException.class, () ->
                 uniqueApplicationList.setApplications(listWithDuplicateApplications));
     }

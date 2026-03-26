@@ -36,7 +36,8 @@ public class JsonSerializableAddressBookTest {
                 "Some Company", "",
                 Collections.emptyList(),
                 "APPLIED",
-                null);
+                null, null,
+                null, null, null, null, "", "");
         JsonSerializableAddressBook serializable =
                 new JsonSerializableAddressBook(Collections.singletonList(invalidApplication));
         assertThrows(IllegalValueException.class, serializable::toModelType);
@@ -44,14 +45,13 @@ public class JsonSerializableAddressBookTest {
 
     @Test
     public void toModelType_duplicateApplications_throwsIllegalValueException() {
-        JsonAdaptedApplication alice = new JsonAdaptedApplication(TypicalApplications.ALICE);
+        JsonAdaptedApplication alice = new JsonAdaptedApplication(TypicalApplications.GOOGLE_SWE);
         // Duplicate by identity (same role)
-        JsonAdaptedApplication duplicateAlice = new JsonAdaptedApplication(TypicalApplications.ALICE);
+        JsonAdaptedApplication duplicateAlice = new JsonAdaptedApplication(TypicalApplications.GOOGLE_SWE);
         List<JsonAdaptedApplication> applications = Arrays.asList(alice, duplicateAlice);
         JsonSerializableAddressBook serializable = new JsonSerializableAddressBook(applications);
 
         assertThrows(IllegalValueException.class, JsonSerializableAddressBook.MESSAGE_DUPLICATE_APPLICATION,
                 serializable::toModelType);
     }
-
 }
