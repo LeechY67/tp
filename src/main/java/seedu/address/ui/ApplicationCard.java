@@ -52,37 +52,37 @@ public class ApplicationCard extends UiPart<Region> {
         super(FXML);
         this.application = application;
         id.setText(displayedIndex + ". ");
-        role.setText(application.getRole().roleName);
-        phone.setText(application.getPhone().value);
-        hrEmail.setText(application.getHrEmail().value);
-        companyName.setText(application.getCompany().companyName);
+        role.setText("💼 " + application.getRole().roleName);
+        phone.setText("📞 " + application.getPhone().value);
+        hrEmail.setText("✉️ " + application.getHrEmail().value);
+        companyName.setText("🏢 " + application.getCompany().companyName);
 
         if (application.getCompany().companyLocation.isEmpty()) {
             companyLocation.setVisible(false);
             companyLocation.setManaged(false);
         } else {
-            companyLocation.setText(application.getCompany().companyLocation);
+            companyLocation.setText("📍 " + application.getCompany().companyLocation);
         }
 
         if (application.getDeadline().isEmpty()) {
             deadline.setVisible(false);
             deadline.setManaged(false);
         } else {
-            deadline.setText("Deadline: " + application.getDeadline().value);
+            deadline.setText("⏰ Deadline: " + application.getDeadline().value);
         }
 
         if (application.getNote().value.isEmpty()) {
             note.setVisible(false);
             note.setManaged(false);
         } else {
-            note.setText("Note: " + application.getNote().value);
+            note.setText("📝 Note: " + application.getNote().value);
         }
 
         if (application.getResume().isEmpty()) {
             resume.setVisible(false);
             resume.setManaged(false);
         } else {
-            resume.setText("Resume: " + application.getResume().value);
+            resume.setText("📄 Resume: " + application.getResume().value);
         }
 
         status.setVisible(false);
