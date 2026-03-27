@@ -21,7 +21,7 @@ Hired! is a **desktop app for managing internship applications, optimized for us
 
 4. Open a command terminal, `cd` into the folder you put the jar file in, and run the application using `java -jar hired.jar`.<br>
    A GUI similar to the one below should appear in a few seconds. Note that the app contains some sample application records.<br>
-   ![Ui](images/Ui.png)
+   ![Ui](images/Ui_current.png)
 
 5. Type the command in the command box and press Enter to execute it. For example, typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
