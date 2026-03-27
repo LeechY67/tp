@@ -56,10 +56,11 @@ public class ApplicationCardTest {
 
         assertEquals(application, applicationCard.application);
         assertEquals("1. ", getLabelText(applicationCard, "id"));
-        assertEquals("▣ Google", getLabelText(applicationCard, "companyName"));
         assertEquals("Intern", getLabelText(applicationCard, "role"));
         assertEquals("☎ 91234567", getLabelText(applicationCard, "phone"));
         assertEquals("✉ hr@google.com", getLabelText(applicationCard, "hrEmail"));
+        assertEquals("▣ Google", getLabelText(applicationCard, "companyName"));
+
         assertFalse(getLabel(applicationCard, "status").isVisible());
         assertFalse(getLabel(applicationCard, "status").isManaged());
 
@@ -74,6 +75,10 @@ public class ApplicationCardTest {
         Label noteLabel = getLabel(applicationCard, "note");
         assertFalse(noteLabel.isVisible());
         assertFalse(noteLabel.isManaged());
+
+        Label resumeLabel = getLabel(applicationCard, "resume");
+        assertFalse(resumeLabel.isVisible());
+        assertFalse(resumeLabel.isManaged());
     }
 
     @Test
@@ -341,35 +346,6 @@ public class ApplicationCardTest {
                 "Status tag should have 'status-withdrawn' CSS class");
     }
 
-    private String getLabelText(ApplicationCard card, String fieldName) throws Exception {
-        Field field = ApplicationCard.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        Label label = (Label) field.get(card);
-        return label.getText();
-    }
-
-    private Label getLabel(ApplicationCard card, String fieldName) throws Exception {
-        Field field = ApplicationCard.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return (Label) field.get(card);
-    }
-
-    private FlowPane getTagsPane(ApplicationCard card) throws Exception {
-        Field field = ApplicationCard.class.getDeclaredField("tags");
-        field.setAccessible(true);
-        return (FlowPane) field.get(card);
-    }
-
-    private Label getStatusTag(ApplicationCard card, String statusText) throws Exception {
-        FlowPane tagsPane = getTagsPane(card);
-        return (Label) tagsPane.getChildren().stream()
-                .filter(node -> node instanceof Label)
-                .map(node -> (Label) node)
-                .filter(label -> label.getText().equals(statusText))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Status tag not found: " + statusText));
-    }
-
     @Test
     public void constructor_allStatuses_addsCorrectStyleClass() throws Exception {
         for (Status s : Status.values()) {
@@ -426,5 +402,34 @@ public class ApplicationCardTest {
         Label noteLabel = getLabel(applicationCard, "note");
         assertTrue(noteLabel.isVisible());
         assertEquals("✎ Important Note", noteLabel.getText());
+    }
+
+    private String getLabelText(ApplicationCard card, String fieldName) throws Exception {
+        Field field = ApplicationCard.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        Label label = (Label) field.get(card);
+        return label.getText();
+    }
+
+    private Label getLabel(ApplicationCard card, String fieldName) throws Exception {
+        Field field = ApplicationCard.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return (Label) field.get(card);
+    }
+
+    private FlowPane getTagsPane(ApplicationCard card) throws Exception {
+        Field field = ApplicationCard.class.getDeclaredField("tags");
+        field.setAccessible(true);
+        return (FlowPane) field.get(card);
+    }
+
+    private Label getStatusTag(ApplicationCard card, String statusText) throws Exception {
+        FlowPane tagsPane = getTagsPane(card);
+        return (Label) tagsPane.getChildren().stream()
+                .filter(node -> node instanceof Label)
+                .map(node -> (Label) node)
+                .filter(label -> label.getText().equals(statusText))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Status tag not found: " + statusText));
     }
 }
