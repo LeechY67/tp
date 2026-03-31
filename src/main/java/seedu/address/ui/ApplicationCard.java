@@ -55,9 +55,8 @@ public class ApplicationCard extends UiPart<Region> {
         }
 
         String statusText = application.getStatus().toString();
-        String statusKey = statusText.toLowerCase().replace("_", "-");
         Label statusChip = new Label(toTitleCase(statusText));
-        statusChip.getStyleClass().addAll("chip", "chip-status-" + statusKey);
+        statusChip.getStyleClass().addAll("chip", "chip-status-" + toStatusKey(statusText));
         tags.getChildren().add(statusChip);
 
         application.getTags().stream()
@@ -71,23 +70,29 @@ public class ApplicationCard extends UiPart<Region> {
                     tags.getChildren().add(chip);
                 });
 
-        detailsBox.getChildren().add(iconRow(FontAwesomeSolid.BUILDING, application.getCompany().companyName));
+        detailsBox.getChildren().add(
+                iconRow(FontAwesomeSolid.BUILDING, application.getCompany().companyName));
 
         if (!application.getCompany().companyLocation.isEmpty()) {
-            detailsBox.getChildren().add(iconRow(FontAwesomeSolid.MAP_MARKER_ALT,
-                    application.getCompany().companyLocation));
+            detailsBox.getChildren().add(
+                    iconRow(FontAwesomeSolid.MAP_MARKER_ALT,
+                            application.getCompany().companyLocation));
         }
 
-        detailsBox.getChildren().add(iconRow(FontAwesomeSolid.PHONE, application.getPhone().value));
+        detailsBox.getChildren().add(
+                iconRow(FontAwesomeSolid.PHONE, application.getPhone().value));
 
-        detailsBox.getChildren().add(iconRow(FontAwesomeSolid.ENVELOPE, application.getHrEmail().value));
+        detailsBox.getChildren().add(
+                iconRow(FontAwesomeSolid.ENVELOPE, application.getHrEmail().value));
 
         if (!application.getNote().value.isEmpty()) {
-            detailsBox.getChildren().add(iconRow(FontAwesomeSolid.STICKY_NOTE, application.getNote().value));
+            detailsBox.getChildren().add(
+                    iconRow(FontAwesomeSolid.STICKY_NOTE, application.getNote().value));
         }
 
         if (!application.getResume().isEmpty()) {
-            detailsBox.getChildren().add(iconRow(FontAwesomeSolid.FILE_ALT, application.getResume().value));
+            detailsBox.getChildren().add(
+                    iconRow(FontAwesomeSolid.FILE_ALT, application.getResume().value));
         }
     }
 
@@ -118,9 +123,21 @@ public class ApplicationCard extends UiPart<Region> {
     }
 
     /**
-     * Converts a string to title case, replacing underscores with spaces.
+     * Converts a status enum string to a CSS class key.
+     * Example: "IN_PROGRESS" becomes "in-progress".
      */
-    private static String toTitleCase(String s) {
+    static String toStatusKey(String status) {
+        if (status == null || status.isEmpty()) {
+            return "";
+        }
+        return status.toLowerCase().replace("_", "-");
+    }
+
+    /**
+     * Converts a string to title case, replacing underscores with spaces.
+     * Example: "IN_PROGRESS" becomes "In progress".
+     */
+    static String toTitleCase(String s) {
         if (s == null || s.isEmpty()) {
             return s;
         }

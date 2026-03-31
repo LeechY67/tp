@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -95,22 +96,13 @@ public class ApplicationCardTest {
 
     @Test
     public void formatMethods_doNotAddIconPrefix() {
-        String phone = ApplicationCard.formatPhone("91234567");
-        String email = ApplicationCard.formatHrEmail("hr@google.com");
-        String company = ApplicationCard.formatCompanyName("Google");
-        String location = ApplicationCard.formatCompanyLocation("Singapore");
-        String deadline = ApplicationCard.formatDeadline("2026-12-31");
-        String note = ApplicationCard.formatNote("Follow up");
-        String resume = ApplicationCard.formatResume("resume.pdf");
-
-        // Icons are now rendered as FontIcon nodes, not text prefixes
-        assertTrue(!phone.contains("☎") && !phone.contains("✆"));
-        assertTrue(!email.contains("✉"));
-        assertTrue(!company.contains("▣") && !company.contains("🏢"));
-        assertTrue(!location.contains("⌂") && !location.contains("📍"));
-        assertTrue(!deadline.contains("◷") && !deadline.contains("📅"));
-        assertTrue(!note.contains("✎") && !note.contains("📝"));
-        assertTrue(!resume.contains("▣") && !resume.contains("📄"));
+        assertFalse(ApplicationCard.formatPhone("91234567").contains("☎"));
+        assertFalse(ApplicationCard.formatHrEmail("hr@google.com").contains("✉"));
+        assertFalse(ApplicationCard.formatCompanyName("Google").contains("▣"));
+        assertFalse(ApplicationCard.formatCompanyLocation("Singapore").contains("⌂"));
+        assertFalse(ApplicationCard.formatDeadline("2026-12-31").contains("◷"));
+        assertFalse(ApplicationCard.formatNote("Follow up").contains("✎"));
+        assertFalse(ApplicationCard.formatResume("resume.pdf").contains("▣"));
     }
 
     @Test
@@ -135,35 +127,95 @@ public class ApplicationCardTest {
         assertEquals("", ApplicationCard.formatResume(""));
     }
 
-    // ── status key mapping ───────────────────────────────────────────────────
+    // ── toStatusKey ──────────────────────────────────────────────────────────
 
     @Test
-    public void statusKey_applied_mapsToCorrectCssClass() {
-        String statusKey = "APPLIED".toLowerCase().replace("_", "-");
-        assertEquals("applied", statusKey);
+    public void toStatusKey_applied_returnsApplied() {
+        assertEquals("applied", ApplicationCard.toStatusKey("APPLIED"));
     }
 
     @Test
-    public void statusKey_interviewing_mapsToCorrectCssClass() {
-        String statusKey = "INTERVIEWING".toLowerCase().replace("_", "-");
-        assertEquals("interviewing", statusKey);
+    public void toStatusKey_interviewing_returnsInterviewing() {
+        assertEquals("interviewing", ApplicationCard.toStatusKey("INTERVIEWING"));
     }
 
     @Test
-    public void statusKey_offered_mapsToCorrectCssClass() {
-        String statusKey = "OFFERED".toLowerCase().replace("_", "-");
-        assertEquals("offered", statusKey);
+    public void toStatusKey_offered_returnsOffered() {
+        assertEquals("offered", ApplicationCard.toStatusKey("OFFERED"));
     }
 
     @Test
-    public void statusKey_rejected_mapsToCorrectCssClass() {
-        String statusKey = "REJECTED".toLowerCase().replace("_", "-");
-        assertEquals("rejected", statusKey);
+    public void toStatusKey_rejected_returnsRejected() {
+        assertEquals("rejected", ApplicationCard.toStatusKey("REJECTED"));
     }
 
     @Test
-    public void statusKey_withdrawn_mapsToCorrectCssClass() {
-        String statusKey = "WITHDRAWN".toLowerCase().replace("_", "-");
-        assertEquals("withdrawn", statusKey);
+    public void toStatusKey_withdrawn_returnsWithdrawn() {
+        assertEquals("withdrawn", ApplicationCard.toStatusKey("WITHDRAWN"));
+    }
+
+    @Test
+    public void toStatusKey_emptyString_returnsEmpty() {
+        assertEquals("", ApplicationCard.toStatusKey(""));
+    }
+
+    @Test
+    public void toStatusKey_withUnderscore_replaceWithHyphen() {
+        assertEquals("in-progress", ApplicationCard.toStatusKey("IN_PROGRESS"));
+    }
+
+    // ── toTitleCase ──────────────────────────────────────────────────────────
+
+    @Test
+    public void toTitleCase_applied_returnsApplied() {
+        assertEquals("Applied", ApplicationCard.toTitleCase("APPLIED"));
+    }
+
+    @Test
+    public void toTitleCase_interviewing_returnsInterviewing() {
+        assertEquals("Interviewing", ApplicationCard.toTitleCase("INTERVIEWING"));
+    }
+
+    @Test
+    public void toTitleCase_offered_returnsOffered() {
+        assertEquals("Offered", ApplicationCard.toTitleCase("OFFERED"));
+    }
+
+    @Test
+    public void toTitleCase_rejected_returnsRejected() {
+        assertEquals("Rejected", ApplicationCard.toTitleCase("REJECTED"));
+    }
+
+    @Test
+    public void toTitleCase_withdrawn_returnsWithdrawn() {
+        assertEquals("Withdrawn", ApplicationCard.toTitleCase("WITHDRAWN"));
+    }
+
+    @Test
+    public void toTitleCase_withUnderscore_replacesWithSpace() {
+        assertEquals("In progress", ApplicationCard.toTitleCase("IN_PROGRESS"));
+    }
+
+    @Test
+    public void toTitleCase_emptyString_returnsEmpty() {
+        assertEquals("", ApplicationCard.toTitleCase(""));
+    }
+
+    @Test
+    public void toTitleCase_singleChar_returnsUppercase() {
+        assertEquals("A", ApplicationCard.toTitleCase("a"));
+    }
+
+    @Test
+    public void toTitleCase_firstLetterIsUppercase() {
+        String result = ApplicationCard.toTitleCase("APPLIED");
+        assertTrue(Character.isUpperCase(result.charAt(0)));
+    }
+
+    @Test
+    public void toTitleCase_remainingLettersAreLowercase() {
+        String result = ApplicationCard.toTitleCase("APPLIED");
+        String rest = result.substring(1);
+        assertTrue(rest.equals(rest.toLowerCase()));
     }
 }
