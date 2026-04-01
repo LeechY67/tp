@@ -26,6 +26,8 @@ public class DeadlineTest {
         // invalid deadlines
         assertFalse(Deadline.isValidDeadline("")); // empty string
         assertFalse(Deadline.isValidDeadline(" ")); // spaces only
+        assertFalse(Deadline.isValidDeadline("2026-04-01 12:60")); // invalid minute
+        assertFalse(Deadline.isValidDeadline("2026-04-01 24:00")); // invalid hour
 
         // valid deadlines
         assertTrue(Deadline.isValidDeadline("2026-12-31"));

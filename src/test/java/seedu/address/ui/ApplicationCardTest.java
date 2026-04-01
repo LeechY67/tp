@@ -4,7 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
+
+import javafx.scene.paint.Color;
+import seedu.address.testutil.ApplicationBuilder;
 
 public class ApplicationCardTest {
 
@@ -217,5 +222,45 @@ public class ApplicationCardTest {
         String result = ApplicationCard.toTitleCase("APPLIED");
         String rest = result.substring(1);
         assertTrue(rest.equals(rest.toLowerCase()));
+    }
+
+    @Test
+    public void getRoleColor_deadlineWithinThreeDays_returnsUrgentRed() {
+        LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
+        Color color = ApplicationCard.getRoleColor(
+                new ApplicationBuilder().withDeadline("2026-03-12 21:00").build(), now);
+        assertEquals(Color.web("#e53935"), color);
+    }
+
+    @Test
+    public void getRoleColor_overdueDeadline_returnsGray() {
+        LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
+        Color color = ApplicationCard.getRoleColor(
+                new ApplicationBuilder().withDeadline("2026-03-10 21:00").build(), now);
+        assertEquals(Color.web("#fb8c00"), color);
+    }
+
+    @Test
+    public void getRoleColor_noDeadline_returnsDefaultWhite() {
+        LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
+        Color color = ApplicationCard.getRoleColor(
+                new ApplicationBuilder().withDeadline("-").build(), now);
+        assertEquals(Color.WHITE, color);
+    }
+
+    @Test
+    public void getRoleColor_dateOnlyTodayNotOverdue_returnsUrgentRed() {
+        LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
+        Color color = ApplicationCard.getRoleColor(
+                new ApplicationBuilder().withDeadline("2026-03-10").build(), now);
+        assertEquals(Color.web("#e53935"), color);
+    }
+
+    @Test
+    public void getDeadlineIconColor_overdue_returnsOrange() {
+        LocalDateTime now = LocalDateTime.of(2026, 4, 1, 21, 44);
+        Color color = ApplicationCard.getDeadlineIconColor(
+                new ApplicationBuilder().withDeadline("2026-04-01 21:00").build(), now);
+        assertEquals(Color.web("#fb8c00"), color);
     }
 }

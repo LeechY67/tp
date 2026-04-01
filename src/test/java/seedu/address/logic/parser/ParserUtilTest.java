@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.application.Company;
+import seedu.address.model.application.Deadline;
 import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
@@ -203,5 +204,17 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseDeadline_invalidTime_throwsParseException() {
+        assertThrows(ParseException.class, Deadline.MESSAGE_CONSTRAINTS,
+                () -> ParserUtil.parseDeadline("2026-04-01 12:60"));
+    }
+
+    @Test
+    public void parseDeadline_validDateTime_success() throws Exception {
+        assertEquals(new Deadline("2026-04-01 12:59"),
+                ParserUtil.parseDeadline("2026-04-01 12:59"));
     }
 }

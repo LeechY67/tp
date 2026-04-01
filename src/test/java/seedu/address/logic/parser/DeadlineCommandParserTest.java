@@ -46,4 +46,9 @@ public class DeadlineCommandParserTest {
         // Non-digital index
         assertParseFailure(parser, "a " + nonEmptyDeadline, ParserUtil.MESSAGE_INVALID_INDEX);
     }
+
+    @Test
+    public void parse_invalidDeadline_failure() {
+        assertParseFailure(parser, "1 2026-04-01 12:60", Deadline.MESSAGE_CONSTRAINTS);
+    }
 }

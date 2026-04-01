@@ -1,6 +1,9 @@
 package seedu.address.model.application;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.Objects;
 
 /**
@@ -12,6 +15,10 @@ public class Deadline implements Comparable<Deadline> {
 
     public static final String EMPTY_DEADLINE_VALUE = "No deadline set";
     public static final String PLACEHOLDER_DEADLINE = "-";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd")
+            .withResolverStyle(ResolverStyle.STRICT);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm")
+            .withResolverStyle(ResolverStyle.STRICT);
     public final String value;
 
     /**
@@ -56,8 +63,19 @@ public class Deadline implements Comparable<Deadline> {
             return true;
         }
 
-        return test.matches("\\d{4}-\\d{2}-\\d{2}")
-                || test.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}");
+        try {
+            if (test.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                LocalDate.parse(test, DATE_FORMATTER);
+                return true;
+            }
+            if (test.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}")) {
+                LocalDateTime.parse(test, DATE_TIME_FORMATTER);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public LocalDate getLocalDate() {
