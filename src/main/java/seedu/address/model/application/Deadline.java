@@ -14,8 +14,8 @@ public class Deadline implements Comparable<Deadline> {
     public static final String MESSAGE_CONSTRAINTS_FORMAT =
             "Deadlines must follow yyyy-MM-dd or yyyy-MM-dd HH:mm format.";
     public static final String MESSAGE_CONSTRAINTS_DATE =
-            "The deadline provided is not a valid date on the calendar " +
-                    "(e.g., 2026-01-90 or Feb 29th on a non-leap year).";
+            "The deadline provided is not a valid date on the calendar "
+                    + "(e.g., 2026-01-90 or Feb 29th on a non-leap year).";
 
     public static final String MESSAGE_CONSTRAINTS =
             "Deadlines should not be blank, must follow yyyy-MM-dd format, and be a valid calendar date.";
