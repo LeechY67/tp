@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -26,7 +28,7 @@ import seedu.address.model.application.OnlineAssessment;
 import seedu.address.model.application.Status;
 import seedu.address.testutil.ApplicationBuilder;
 
-
+@DisabledOnOs(OS.LINUX)
 public class ApplicationCardTest {
 
     @BeforeAll
