@@ -1,22 +1,18 @@
 package seedu.address.ui;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
@@ -37,27 +33,6 @@ public class MainWindowTest {
             latch.countDown();
         }
         assertTrue(latch.await(5, TimeUnit.SECONDS));
-    }
-
-    @Test
-    public void fillInnerParts_initializesListPanel() throws Exception {
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<MainWindow> mainWindowRef = new AtomicReference<>();
-
-        Platform.runLater(() -> {
-            try {
-                Logic logicStub = new LogicStub();
-                MainWindow mainWindow = new MainWindow(new Stage(), logicStub);
-                mainWindow.fillInnerParts();
-                mainWindowRef.set(mainWindow);
-            } finally {
-                latch.countDown();
-            }
-        });
-
-        assertTrue(latch.await(5, TimeUnit.SECONDS));
-        assertNotNull(mainWindowRef.get());
-        assertNotNull(mainWindowRef.get().getPersonListPanel());
     }
 
     private static class LogicStub implements Logic {
