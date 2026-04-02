@@ -79,7 +79,17 @@ Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG].
 
 **Optional prefixes:** `l/`, `t/`, and `note/` are optional. If provided, they may appear in any order after the required fields.
 
-> **Note:** In Hired!, `r/` is used for the internship role, and `c/` is used for the company name. Applications with the same role and company name are considered duplicates and cannot be added.
+> **Note:** In Hired!,
+> * `r/` is used for the internship role,
+> * `c/` is used for the company name, and
+> * `l/` (optional) is used for the company location.
+>
+> Applications are considered duplicates (and cannot be added) only when they have the same identity:
+> 1) the same `role`,
+> 2) the same `company name`, and
+> 3) the same `company location`:
+>    * if both locations are empty (e.g. `l/` is omitted), they are treated as the same;
+>    * if one location is empty and the other is not, they are treated as different.
 > **Tip:** An application can have any number of tags (including 0).
 > **Tip:** A note can be added when creating an application by using `note/`.
 
@@ -209,7 +219,7 @@ Examples:
 
 ### Identifying urgent applications : `reminder`
 
-Identifies and highlights applications according to how close their `deadline` is to the current local time.  
+Identifies and highlights applications according to how close their `deadline` is to the current local time.
 This feature is UI-only: it does **not** add or remove any tags.
 
 Format: `reminder`
@@ -358,7 +368,7 @@ Action | Format, Examples
 **List** | `list`
 **Status** | `status INDEX s/STATUS` <br> e.g. `status 2 s/offered`
 **Deadline** | `deadline INDEX DATE_TIME` <br> e.g. `deadline 1 2026-12-31 23:59`
-**Reminder** | `reminder` <br> Re-sorts by deadline (nearest first) and highlights the `role` color based on current local time: red within 3 days (incl. today), orange if overdue. Does not add/remove any tags.
+**Reminder** | `reminder` <br> Re-sorts by deadline (nearest first) and highlights the `role` color based on current local time: red within 3 days (incl. today), orange if overdue, default is white.
 **Sort** | `sort [CRITERION]` <br> CRITERION: `time` or `alphabet` <br> e.g. `sort time`, `sort alphabet`
 **Undo** | `undo` <br> Reverts the most recent data-modifying command (up to 10 steps).
 **Redo** | `redo` <br> Reapplies the most recently undone command.
