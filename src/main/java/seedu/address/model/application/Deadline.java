@@ -14,7 +14,8 @@ public class Deadline implements Comparable<Deadline> {
     public static final String MESSAGE_CONSTRAINTS_FORMAT =
             "Deadlines must follow yyyy-MM-dd or yyyy-MM-dd HH:mm format.";
     public static final String MESSAGE_CONSTRAINTS_DATE =
-            "The deadline provided is not a valid date on the calendar (e.g., 2026-01-90 or Feb 29th on a non-leap year).";
+            "The deadline provided is not a valid date on the calendar " +
+                    "(e.g., 2026-01-90 or Feb 29th on a non-leap year).";
 
     public static final String MESSAGE_CONSTRAINTS =
             "Deadlines should not be blank, must follow yyyy-MM-dd format, and be a valid calendar date.";
@@ -70,6 +71,17 @@ public class Deadline implements Comparable<Deadline> {
         return test.matches("\\d{4}-\\d{2}-\\d{2}") || test.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}");
     }
 
+    /**
+     * Returns true if the given string represents a valid date on the calendar.
+     * <p>
+     * This method assumes the string has already passed basic format validation
+     * (e.g., "yyyy-MM-dd"). It strictly checks if the date actually exists
+     * (e.g., rejecting "2026-01-90" or "2023-02-29" since 2023 is not a leap year).
+     * The placeholder deadline "-" is also considered valid.
+     *
+     * @param test The string to be tested.
+     * @return true if the string is a valid calendar date or the placeholder.
+     */
     public static boolean isValidCalendarDate(String test) {
         if (test.equals(PLACEHOLDER_DEADLINE)) {
             return true;
