@@ -13,4 +13,9 @@ public interface ReadOnlyUserPrefs {
 
     Path getAddressBookFilePath();
 
+    /**
+     * Returns true if reminder highlighting should be enabled in the UI.
+     */
+    boolean isReminderHighlightEnabled();
+
 }

@@ -181,11 +181,34 @@ public class ApplicationCard extends UiPart<Region> {
     }
 
     static Color getRoleColor(Application application, LocalDateTime now) {
-        LocalDateTime deadlineDateTime = parseDeadlineAsDateTime(application.getDeadline().value);
+        if (!ReminderHighlightState.isEnabled()) {
+            return ROLE_COLOR_DEFAULT;
+        }
+
+        String rawDeadline = application.getDeadline().value;
+        LocalDateTime deadlineDateTime = parseDeadlineAsDateTime(rawDeadline);
         if (deadlineDateTime == null) {
             return ROLE_COLOR_DEFAULT;
         }
 
+        // For date-only deadlines (yyyy-MM-dd), compare using dates (ignore current time).
+        if (rawDeadline.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            LocalDate deadlineDate = parseDeadlineAsLocalDate(rawDeadline);
+            if (deadlineDate == null) {
+                return ROLE_COLOR_DEFAULT;
+            }
+
+            LocalDate today = now.toLocalDate();
+            if (deadlineDate.isBefore(today)) {
+                return ROLE_COLOR_OVERDUE;
+            }
+            if (!deadlineDate.isAfter(today.plusDays(3))) {
+                return ROLE_COLOR_URGENT;
+            }
+            return ROLE_COLOR_DEFAULT;
+        }
+
+        // For datetime deadlines (yyyy-MM-dd HH:mm), compare with minute precision.
         if (deadlineDateTime.isBefore(now)) {
             return ROLE_COLOR_OVERDUE;
         }
@@ -198,11 +221,20 @@ public class ApplicationCard extends UiPart<Region> {
     }
 
     static Color getDeadlineIconColor(Application application, LocalDateTime now) {
+        if (!ReminderHighlightState.isEnabled()) {
+            return ROLE_COLOR_DEFAULT;
+        }
+
         Color roleColor = getRoleColor(application, now);
         if (ROLE_COLOR_OVERDUE.equals(roleColor)) {
             return ROLE_COLOR_OVERDUE;
         }
-        return ROLE_COLOR_URGENT;
+
+        if (ROLE_COLOR_URGENT.equals(roleColor)) {
+            return ROLE_COLOR_URGENT;
+        }
+
+        return ROLE_COLOR_DEFAULT;
     }
 
     private static LocalDateTime parseDeadlineAsDateTime(String rawDeadline) {
@@ -212,6 +244,17 @@ public class ApplicationCard extends UiPart<Region> {
             }
             if (rawDeadline.matches("\\d{4}-\\d{2}-\\d{2}")) {
                 return LocalDate.parse(rawDeadline).atTime(LocalTime.MAX);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
+    private static LocalDate parseDeadlineAsLocalDate(String rawDeadline) {
+        try {
+            if (rawDeadline.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                return LocalDate.parse(rawDeadline);
             }
         } catch (Exception e) {
             return null;

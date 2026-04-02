@@ -1,5 +1,7 @@
 package seedu.address.model;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -18,4 +20,16 @@ public class UserPrefsTest {
         assertThrows(NullPointerException.class, () -> userPrefs.setAddressBookFilePath(null));
     }
 
+    @Test
+    public void isReminderHighlightEnabled_defaultFalse() {
+        UserPrefs userPrefs = new UserPrefs();
+        assertFalse(userPrefs.isReminderHighlightEnabled());
+    }
+
+    @Test
+    public void setReminderHighlightEnabled_setTrue_success() {
+        UserPrefs userPrefs = new UserPrefs();
+        userPrefs.setReminderHighlightEnabled(true);
+        assertTrue(userPrefs.isReminderHighlightEnabled());
+    }
 }

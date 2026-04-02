@@ -28,6 +28,7 @@ import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
+import seedu.address.ui.ReminderHighlightState;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -164,6 +165,9 @@ public class MainApp extends Application {
         } catch (IOException e) {
             logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
         }
+
+        // Initialise UI reminder highlighting from user preferences.
+        ReminderHighlightState.setEnabled(initializedPrefs.isReminderHighlightEnabled());
 
         return initializedPrefs;
     }

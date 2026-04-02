@@ -21,6 +21,13 @@ public class ReminderCommand extends Command {
         requireNonNull(model);
         logger.info("Starting reminder command execution...");
 
+        seedu.address.ui.ReminderHighlightState.setEnabled(true);
+
+        // Persist the toggle in user preferences so the highlighting remains across app restarts.
+        seedu.address.model.UserPrefs updatedPrefs = new seedu.address.model.UserPrefs(model.getUserPrefs());
+        updatedPrefs.setReminderHighlightEnabled(true);
+        model.setUserPrefs(updatedPrefs);
+
         Comparator<Application> comparator = (a1, a2) ->
                 a1.getDeadline().compareTo(a2.getDeadline());
         model.updateSortedApplicationList(comparator);
