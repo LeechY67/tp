@@ -79,7 +79,17 @@ Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG].
 
 **Optional prefixes:** `l/`, `t/`, and `note/` are optional. If provided, they may appear in any order after the required fields.
 
-> **Note:** In Hired!, `r/` is used for the internship role, and `c/` is used for the company name. Applications with the same role and company name are considered duplicates and cannot be added.
+> **Note:** In Hired!,
+> * `r/` is used for the internship role,
+> * `c/` is used for the company name, and
+> * `l/` (optional) is used for the company location.
+>
+> Applications are considered duplicates (and cannot be added) only when they have the same identity:
+> 1) the same `role`,
+> 2) the same `company name`, and
+> 3) the same `company location`:
+>    * if both locations are empty (e.g. `l/` is omitted), they are treated as the same;
+>    * if one location is empty and the other is not, they are treated as different.
 > **Tip:** An application can have any number of tags (including 0).
 > **Tip:** A note can be added when creating an application by using `note/`.
 
@@ -153,12 +163,15 @@ Examples:
 
 ### Changing the default status: `status`
 
-Changes the status of an application to APPLIED, INTERVIEWING, OFFERED, REJECTED, or WITHDRAWN.
-The accepted input keywords are apply, interviewing, offered, rejected, and withdraw, and they are not case-sensitive.
+* Changes the status of an application to APPLIED, INTERVIEWING, OFFERED, REJECTED, or WITHDRAWN.
+* The accepted input keywords are apply, interviewing, offered, rejected, and withdraw, and they are not case-sensitive.
 
 Format: `status INDEX s/STATUS`
 
-* The status is case-insensitive. e.g. `REJECTED` will turn out to be `rejected`
+* Edits the application at the specified `INDEX`.
+* The index refers to the index number shown in the displayed application list.
+* The index **must be a positive integer** `1, 2, 3, ...`
+* * The status is case-insensitive. e.g. `REJECTED` will turn out to be `rejected`
 * Only status given above can be chosen.
 * Only one application can be changed at a time.
 * Status will appear as a tag in the UI.
@@ -174,6 +187,7 @@ Sets or updates the deadline for the application identified by its index.
 Format: `deadline INDEX DATE_TIME`
 
 * The `DATE_TIME` can be `yyyy-MM-dd`, `yyyy-MM-dd HH:mm`.
+* We are not accept `yyyy-MM-dd HH:60`
 * The index refers to the index number shown in the displayed application list.
 * This deadline is used by `reminder` and `sort time`.
 
@@ -187,6 +201,7 @@ Examples:
 * `deadline 2 2026-03-25` is equivalent to `edit 2 d/2026-03-25`
 This is intended to give user more flexibility in entering command.
 This is a feature not a bug.
+
 
 ### Deleting an application : `delete`
 
@@ -204,13 +219,40 @@ Examples:
 
 ### Identifying urgent applications : `reminder`
 
-Identifies and highlights applications that are nearing their deadlines.
+Identifies and highlights applications according to how close their `deadline` is to the current local time.
+This feature is UI-only: it does **not** add or remove any tags.
 
 Format: `reminder`
 
-* The application list will be sorted by deadline in ascending order (nearest first).
-* Applications with the nearest deadlines appear at the top, and those without a deadline are placed at the bottom.
-* Applications with a deadline within the next three days (including today) will be automatically marked with a red `Urgent` tag in the UI.
+* After executing `reminder`, the application list is re-sorted by `deadline` in ascending order (nearest first).
+* Applications with no deadline (i.e. deadline is `-` / “No deadline set”) are placed at the bottom and are not highlighted.
+* Highlighting is based on the comparison between each application's `deadline` and your current local time:
+  * **Red** `role` text: the deadline is within the next **3 days**, including today.
+  * ![reminder_red.png](reminder_red.png)
+  * **Orange** `role` text: the deadline is already **in the past** (i.e. earlier than the current local time).
+  * ![reminder_orange.png](reminder_orange.png)
+  * Otherwise, `role` keeps the default color (white).
+  * ![reminder_default.png](reminder_default.png)
+* Once you have executed `reminder`, the highlighting preference is saved, so restarting the app will keep the red/orange coloring behaviour.
+* Deadline format affects how the comparison is done:
+  * If you enter `deadline` as `yyyy-MM-dd`, it is treated as a date and compared using the day window (end of day is handled implicitly for highlighting).
+  * If you enter `deadline` as `yyyy-MM-dd HH:mm`, the comparison is accurate to **minutes**.
+* Interaction with `deadline` and `edit`:
+  * If you change a deadline using `deadline INDEX DATE_TIME` or `edit INDEX d/DATE_TIME`, the UI will re-render and the `role` color will immediately reflect the updated deadline (red/orange based on current local time).
+  * The **list order** is re-sorted by deadline **only** when you run either:
+    * `reminder`, or
+    * `sort time`.
+
+* Updating color at an exact time point (datetime `yyyy-MM-dd HH:mm`):
+  * **Precondition:** You have already executed `reminder` at least once in this application (otherwise the highlighting is kept disabled and the `role`/calendar icon will stay at default colors until you run `reminder`).
+  * Suppose your current local time is `2026-04-02 15:48` and you set an application deadline to `2026-04-02 15:48` (using `deadline INDEX 2026-04-02 15:48` or `edit INDEX d/2026-04-02 15:48`).
+  * After setting the deadline:
+    * If the current time is still within the same minute (e.g. `15:48:00`), the deadline is **not considered overdue yet** and the `role` stays **red**.
+  * After the deadline minute has passed (e.g. `15:48:01` or any time after that), the deadline becomes **overdue** per the rule above.
+  * To make the UI apply the new color at that moment:
+    * Click the corresponding application list item (the big box / card area of that `INDEX`) so that the UI re-renders that card, **or**
+    * Enter `reminder`.
+  * Note: this action refreshes **colors** (to reflect the newly overdue deadline).
 
 ### Sorting applications : `sort`
 
@@ -258,6 +300,9 @@ Attaches your resume to a specific application.
 
 Format: `resume INDEX rp/RESUME_PATH` / `openresume INDEX` / `removeresume INDEX`
 
+* Edits the application at the specified `INDEX`.
+* The index refers to the index number shown in the displayed application list.
+* The index **must be a positive integer** `1, 2, 3, ...`
 * You must specify the path of you resume。
 * This feature will not save your resume in the storage, but just a reference to your own documentation.
 * Please don't change the path of the file or it will result in unexpected errors.
@@ -323,10 +368,13 @@ Action | Format, Examples
 **List** | `list`
 **Status** | `status INDEX s/STATUS` <br> e.g. `status 2 s/offered`
 **Deadline** | `deadline INDEX DATE_TIME` <br> e.g. `deadline 1 2026-12-31 23:59`
-**Reminder** | `reminder` <br> Highlights applications nearing deadlines and sorts by urgency (nearest first). Applications within 3 days are marked as Urgent.
+**Reminder** | `reminder` <br> Re-sorts by deadline (nearest first) and highlights the `role` color based on current local time: red within 3 days (incl. today), orange if overdue, default is white.
 **Sort** | `sort [CRITERION]` <br> CRITERION: `time` or `alphabet` <br> e.g. `sort time`, `sort alphabet`
 **Undo** | `undo` <br> Reverts the most recent data-modifying command (up to 10 steps).
 **Redo** | `redo` <br> Reapplies the most recently undone command.
 **Resume** | `resume` <br> Attaches you resume to a specific application.
 **Exit** | `exit`
 **Help** | `help`
+
+
+## Future Improvement

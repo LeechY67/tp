@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalApplications.getTypicalAddressBook;
 
@@ -40,6 +41,8 @@ public class ReminderCommandTest {
         expectedModel.commitAddressBook();
 
         assertCommandSuccess(new ReminderCommand(), model, ReminderCommand.MESSAGE_SUCCESS, expectedModel);
+
+        assertTrue(model.getUserPrefs().isReminderHighlightEnabled());
     }
 
     @Test
@@ -60,5 +63,7 @@ public class ReminderCommandTest {
                 .findFirst()
                 .orElseThrow()
                 .getTags());
+
+        assertTrue(model.getUserPrefs().isReminderHighlightEnabled());
     }
 }

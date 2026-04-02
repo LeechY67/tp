@@ -83,6 +83,13 @@ public class ApplicationTest {
                 .withCompanyLocation(GOOGLE_SWE.getCompany().companyLocation.toUpperCase())
                 .build();
         assertTrue(GOOGLE_SWE.isSameApplication(caseChangedCompanyLocation));
+
+        // company name differs (not just in case), same role -> returns false
+        Application differentCompanyName = new ApplicationBuilder(GOOGLE_SWE)
+                .withCompanyName("Some Other Company")
+                .withCompanyLocation(GOOGLE_SWE.getCompany().companyLocation)
+                .build();
+        assertFalse(GOOGLE_SWE.isSameApplication(differentCompanyName));
     }
 
     @Test
@@ -118,6 +125,14 @@ public class ApplicationTest {
 
         // different tags -> returns false
         editedAlice = new ApplicationBuilder(GOOGLE_SWE).withTags(VALID_TAG_HUSBAND).build();
+        assertFalse(GOOGLE_SWE.equals(editedAlice));
+    }
+
+    @Test
+    public void equals_sameValuesDifferentStatus_returnsFalse() {
+        Application editedAlice = new ApplicationBuilder(GOOGLE_SWE)
+                .withStatus(Status.REJECTED)
+                .build();
         assertFalse(GOOGLE_SWE.equals(editedAlice));
     }
 

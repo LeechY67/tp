@@ -254,6 +254,7 @@ public class ApplicationCardTest {
 
     @Test
     public void getRoleColor_deadlineWithinThreeDays_returnsUrgentRed() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getRoleColor(
                 new ApplicationBuilder().withDeadline("2026-03-12 21:00").build(), now);
@@ -262,6 +263,7 @@ public class ApplicationCardTest {
 
     @Test
     public void getRoleColor_overdueDeadline_returnsGray() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getRoleColor(
                 new ApplicationBuilder().withDeadline("2026-03-10 21:00").build(), now);
@@ -270,6 +272,7 @@ public class ApplicationCardTest {
 
     @Test
     public void getRoleColor_noDeadline_returnsDefaultWhite() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getRoleColor(
                 new ApplicationBuilder().withDeadline("-").build(), now);
@@ -278,6 +281,7 @@ public class ApplicationCardTest {
 
     @Test
     public void getRoleColor_dateOnlyTodayNotOverdue_returnsUrgentRed() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getRoleColor(
                 new ApplicationBuilder().withDeadline("2026-03-10").build(), now);
@@ -286,6 +290,7 @@ public class ApplicationCardTest {
 
     @Test
     public void getDeadlineIconColor_overdue_returnsOrange() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 4, 1, 21, 44);
         Color color = ApplicationCard.getDeadlineIconColor(
                 new ApplicationBuilder().withDeadline("2026-04-01 21:00").build(), now);
@@ -294,6 +299,7 @@ public class ApplicationCardTest {
 
     @Test
     public void getDeadlineIconColor_deadlineUrgent_returnsRed() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getDeadlineIconColor(
                 new ApplicationBuilder().withDeadline("2026-03-12 21:00").build(), now);
@@ -302,12 +308,11 @@ public class ApplicationCardTest {
 
     @Test
     public void getDeadlineIconColor_deadlineFarFuture_returnsDefaultWhite() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getDeadlineIconColor(
                 new ApplicationBuilder().withDeadline("2026-03-20 21:00").build(), now);
-        // For far-future deadlines the role text is default white, but the calendar icon is
-        // still colored as "urgent" (red) unless the role color is overdue (orange).
-        assertEquals(Color.web("#e53935"), color);
+        assertEquals(Color.WHITE, color);
     }
 
     @Test
@@ -344,10 +349,11 @@ public class ApplicationCardTest {
 
     @Test
     public void getDeadlineIconColor_noDeadline_returnsUrgentRed() {
+        ReminderHighlightState.setEnabled(true);
         LocalDateTime now = LocalDateTime.of(2026, 3, 10, 21, 44);
         Color color = ApplicationCard.getDeadlineIconColor(
                 new ApplicationBuilder().withDeadline("-").build(), now);
-        assertEquals(Color.web("#e53935"), color);
+        assertEquals(Color.WHITE, color);
     }
 
     @Test
