@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import seedu.address.model.application.ApplicationEvent;
 import seedu.address.model.application.Deadline;
 import seedu.address.model.application.HrEmail;
 import seedu.address.model.application.Note;
+import seedu.address.model.application.OnlineAssessment;
 import seedu.address.model.application.Phone;
 import seedu.address.model.application.Role;
 import seedu.address.model.application.Status;
@@ -26,6 +28,9 @@ public class ApplicationBuilder {
     public static final String DEFAULT_COMPANY_LOCATION = "Singapore";
     public static final Status DEFAULT_STATUS = Status.APPLIED;
     public static final String DEFAULT_NOTE = "";
+    public static final ApplicationEvent DEFAULT_APPLICATION_EVENT = new OnlineAssessment(
+            "Home", LocalDateTime.of(2026, 4, 3, 14, 30),
+            "HackerRank", "www.HackerRank.com");
 
     private Role role;
     private Phone phone;
@@ -50,7 +55,7 @@ public class ApplicationBuilder {
         tags = new HashSet<>();
         status = DEFAULT_STATUS;
         deadline = Deadline.getEmptyDeadline();
-        applicationEvent = null;
+        applicationEvent = DEFAULT_APPLICATION_EVENT;
         note = new Note(DEFAULT_NOTE);
     }
 

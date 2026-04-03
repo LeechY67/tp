@@ -24,54 +24,9 @@ checkstyle {
     toolVersion = '11.0.0'
 }
 
-// ---------------------------------------------------------------------------
-// Detect whether Monocle headless mode should be active.
-//
-// Monocle is activated when ANY of the following are true:
-//   1. The build is running in a CI environment (CI=true env var, set by
-//      GitHub Actions automatically on all platforms).
-//   2. The caller passes -Pheadless on the Gradle command line.
-//   3. The system property java.awt.headless is already "true".
-//
-// On macOS and Windows the runners have a real display, so Monocle is still
-// activated there via the CI env-var — this is intentional: it keeps test
-// behaviour identical across all three platforms and avoids any accidental
-// window pop-ups on the hosted runners.
-// ---------------------------------------------------------------------------
-def isHeadless = System.getenv('CI') == 'true'
-        || project.hasProperty('headless')
-        || System.getProperty('java.awt.headless') == 'true'
-
-// JVM arguments required to open internal JavaFX packages that Monocle
-// (and the reflection-based tests) need to access.
-def jfxOpenArgs = [
-        '--add-opens', 'javafx.graphics/com.sun.javafx.application=ALL-UNNAMED',
-        '--add-opens', 'javafx.graphics/com.sun.glass.ui=ALL-UNNAMED',
-        '--add-opens', 'javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED',
-        '--add-opens', 'javafx.base/com.sun.javafx.logging=ALL-UNNAMED',
-]
-
-// System properties that switch the JavaFX glass/prism stack to the
-// Monocle software renderer.  These are only injected when running headless.
-def monocleProps = [
-        'glass.platform'      : 'Monocle',
-        'monocle.platform'    : 'Headless',
-        'prism.order'         : 'sw',
-        'prism.verbose'       : 'false',
-        'java.awt.headless'   : 'true',
-]
-
 test {
     useJUnitPlatform()
     enableAssertions = true
-
-    // Always open the internal packages needed for reflection-based UI tests.
-    jvmArgs jfxOpenArgs
-
-    if (isHeadless) {
-        monocleProps.each { key, value -> systemProperty key, value }
-    }
-
     finalizedBy jacocoTestReport
 }
 
@@ -91,49 +46,30 @@ task coverage(type: JacocoReport) {
 }
 
 dependencies {
-    String jUnitVersion    = '5.4.0'
-    String javaFxVersion   = '17.0.7'
-    String testFxVersion   = '4.0.18'
-    // Must match the JavaFX version in use.  17.0.10 is the TestFX/Monocle
-    // release that targets the JavaFX 17 glass/prism internals.
-    String monocleVersion  = '17.0.10'
+    String jUnitVersion = '5.4.0'
+    String javaFxVersion = '17.0.7'
 
-    // ── JavaFX runtime (all three platform classifiers so the fat jar and
-    //    local dev work on Windows, macOS, and Linux without extra config) ──
-    implementation group: 'org.openjfx', name: 'javafx-base',     version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-base',     version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-base',     version: javaFxVersion, classifier: 'linux'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-fxml',     version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-fxml',     version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-fxml',     version: javaFxVersion, classifier: 'linux'
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'linux'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
-
-    // ── Icon library ─────────────────────────────────────────────────────────
     implementation 'org.kordamp.ikonli:ikonli-javafx:12.3.1'
     implementation 'org.kordamp.ikonli:ikonli-fontawesome5-pack:12.3.1'
 
-    // ── JSON ─────────────────────────────────────────────────────────────────
-    implementation group: 'com.fasterxml.jackson.core',     name: 'jackson-databind',          version: '2.7.0'
-    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310',   version: '2.7.4'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.0'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.7.4'
 
-    // ── JUnit 5 ───────────────────────────────────────────────────────────────
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api',    version: jUnitVersion
-    testRuntimeOnly    group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
 
-    // ── TestFX core + JUnit 5 extension ──────────────────────────────────────
-    testImplementation "org.testfx:testfx-core:${testFxVersion}"
-    testImplementation "org.testfx:testfx-junit5:${testFxVersion}"
-
-    // ── Monocle – headless JavaFX glass implementation ────────────────────────
-    // Version must align with the JavaFX version above (17.x → 17.0.10).
-    testImplementation "org.testfx:openjfx-monocle:${monocleVersion}"
-
-    testImplementation 'org.hamcrest:hamcrest-core:2.2'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
 }
 
 run {
