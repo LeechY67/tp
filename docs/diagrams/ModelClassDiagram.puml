@@ -4,7 +4,7 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-Package Model as ModelPackage <<Rectangle>> {
+Package Model as ModelPackage <<Rectangle>>{
 Class "<<interface>>\nReadOnlyAddressBook" as ReadOnlyAddressBook
 Class "<<interface>>\nReadOnlyUserPrefs" as ReadOnlyUserPrefs
 Class "<<interface>>\nModel" as Model
@@ -22,14 +22,10 @@ Class Phone
 Class Status
 Class Deadline
 Class Note
+Class Resume
+Class ApplicationEvent
+Class OnlineAssessment
 Class Tag
-
-' ===== Resume Feature =====
-Class Resume {
-    +value : String
-    +getValue() : String
-}
-' =========================
 
 Class I #FFFFFF
 }
@@ -56,8 +52,10 @@ Application *--> Company
 Application *--> Status
 Application *--> Deadline
 Application *--> Note
+Application *--> Resume
+Application --> "0..1" ApplicationEvent
+ApplicationEvent <|-- OnlineAssessment
 Application *--> "*" Tag
-Application --> "0..1" Resume
 
 Application -[hidden]up--> I
 UniqueApplicationList -[hidden]right-> I
@@ -68,6 +66,7 @@ Company -[hidden]right-> HrEmail
 HrEmail -[hidden]right-> Status
 Status -[hidden]right-> Deadline
 Deadline -[hidden]right-> Note
+Note -[hidden]right-> Resume
 
 ModelManager --> "~* filtered" Application
 @enduml
