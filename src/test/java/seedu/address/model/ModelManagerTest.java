@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_APPLICATIONS;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalApplications.GOOGLE_SWE;
-import static seedu.address.testutil.TypicalApplications.META_DA;
+import static seedu.address.testutil.TypicalApplications.ALICE;
+import static seedu.address.testutil.TypicalApplications.BENSON;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +20,7 @@ import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
 
-    private ModelManager modelManager = new ModelManager(new AddressBook(), new UserPrefs());
+    private ModelManager modelManager = new ModelManager();
 
     @Test
     public void constructor() {
@@ -79,13 +79,13 @@ public class ModelManagerTest {
 
     @Test
     public void hasApplication_applicationNotInAddressBook_returnsFalse() {
-        assertFalse(modelManager.hasApplication(GOOGLE_SWE));
+        assertFalse(modelManager.hasApplication(ALICE));
     }
 
     @Test
     public void hasApplication_applicationInAddressBook_returnsTrue() {
-        modelManager.addApplication(GOOGLE_SWE);
-        assertTrue(modelManager.hasApplication(GOOGLE_SWE));
+        modelManager.addApplication(ALICE);
+        assertTrue(modelManager.hasApplication(ALICE));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        AddressBook companyBook = new AddressBookBuilder().withApplication(GOOGLE_SWE).withApplication(META_DA).build();
+        AddressBook companyBook = new AddressBookBuilder().withApplication(ALICE).withApplication(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -117,7 +117,7 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
 
         // different filteredList -> returns false
-        String[] keywords = GOOGLE_SWE.getRole().roleName.split("\\s+");
+        String[] keywords = ALICE.getRole().roleName.split("\\s+");
         modelManager.updateFilteredApplicationList(new RoleContainsKeywordsPredicate(Arrays.asList(keywords)));
         assertFalse(modelManager.equals(new ModelManager(companyBook, userPrefs)));
 
