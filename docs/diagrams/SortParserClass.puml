@@ -2,13 +2,13 @@
 hide circle
 skinparam classAttributeIconSize 0
 
-Class "<<interface>>\nParser" as Parser
-Class SortCommandParser {
+class "<<interface>>\nParser" as Parser
+class SortCommandParser {
   +parse(args): SortCommand
 }
-Class ParseException
+class ParseException
 
-Class SortCommand {
+class SortCommand {
   +COMMAND_WORD: String
 }
 
@@ -16,4 +16,3 @@ SortCommandParser .up.|> Parser
 Parser .right.> ParseException: throws >
 SortCommandParser .right.> ParseException: throws >
 @enduml
-

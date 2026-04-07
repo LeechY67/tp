@@ -6,25 +6,25 @@ skinparam classBackgroundColor STORAGE_COLOR
 
 package Storage as StoragePackage {
 
-package "UserPrefs Storage" #F4F6F6{
-Class "<<interface>>\nUserPrefsStorage" as UserPrefsStorage
-Class JsonUserPrefsStorage
+package "UserPrefs Storage" #F4F6F6 {
+class "<<interface>>\nUserPrefsStorage" as UserPrefsStorage
+class JsonUserPrefsStorage
 }
 
-Class "<<interface>>\nStorage" as Storage
-Class StorageManager
+class "<<interface>>\nStorage" as Storage
+class StorageManager
 
-package "Application Storage" #F4F6F6{
-Class "<<interface>>\nAddressBookStorage" as AddressBookStorage
-Class JsonAddressBookStorage
-Class JsonSerializableAddressBook
-Class JsonAdaptedApplication
-Class JsonAdaptedTag
+package "Application Storage" #F4F6F6 {
+class "<<interface>>\nAddressBookStorage" as AddressBookStorage
+class JsonAddressBookStorage
+class JsonSerializableAddressBook
+class JsonAdaptedApplication
+class JsonAdaptedTag
 }
 
 }
 
-Class HiddenOutside #FFFFFF
+class HiddenOutside #FFFFFF
 HiddenOutside ..> Storage
 
 StorageManager .up.|> Storage
