@@ -4,18 +4,37 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
+class AddressBook
+class UniqueApplicationList
+class UniqueTagList
+class Application
+class Tag
+class Company
+class Role
+class Phone
+class HrEmail
+class Status
+class Deadline
+class Note
+class Resume
+class ApplicationEvent
+
 AddressBook *-right-> "1" UniqueApplicationList
 AddressBook *-right-> "1" UniqueTagList
 UniqueTagList -[hidden]down- UniqueApplicationList
-UniqueTagList -[hidden]down- UniqueApplicationList
 
 UniqueTagList -right-> "*" Tag
-UniqueApplicationList -right-> Application
+UniqueApplicationList -right-> "*" Application
 
 Application -up-> "*" Tag
 
-Application *--> Company
-Application *--> Role
-Application *--> Phone
-Application *--> HrEmail
+Application *--> "1" Company
+Application *--> "1" Role
+Application *--> "1" Phone
+Application *--> "1" HrEmail
+Application *--> "1" Status
+Application *--> "1" Deadline
+Application *--> "1" Note
+Application *--> "1" Resume
+Application *--> "0..1" ApplicationEvent
 @enduml
