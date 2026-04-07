@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_APPLICATIONS;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalApplications.ALICE;
-import static seedu.address.testutil.TypicalApplications.BENSON;
+import static seedu.address.testutil.TypicalApplications.AMY;
+import static seedu.address.testutil.TypicalApplications.BOB;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +20,7 @@ import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
 
-    private ModelManager modelManager = new ModelManager();
+    private ModelManager modelManager = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
     public void constructor() {
@@ -79,13 +79,13 @@ public class ModelManagerTest {
 
     @Test
     public void hasApplication_applicationNotInAddressBook_returnsFalse() {
-        assertFalse(modelManager.hasApplication(ALICE));
+        assertFalse(modelManager.hasApplication(AMY));
     }
 
     @Test
     public void hasApplication_applicationInAddressBook_returnsTrue() {
-        modelManager.addApplication(ALICE);
-        assertTrue(modelManager.hasApplication(ALICE));
+        modelManager.addApplication(AMY);
+        assertTrue(modelManager.hasApplication(AMY));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        AddressBook companyBook = new AddressBookBuilder().withApplication(ALICE).withApplication(BENSON).build();
+        AddressBook companyBook = new AddressBookBuilder().withApplication(AMY).withApplication(BOB).build();
         AddressBook differentAddressBook = new AddressBook();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -117,7 +117,7 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
 
         // different filteredList -> returns false
-        String[] keywords = ALICE.getRole().roleName.split("\\s+");
+        String[] keywords = AMY.getRole().roleName.split("\\s+");
         modelManager.updateFilteredApplicationList(new RoleContainsKeywordsPredicate(Arrays.asList(keywords)));
         assertFalse(modelManager.equals(new ModelManager(companyBook, userPrefs)));
 

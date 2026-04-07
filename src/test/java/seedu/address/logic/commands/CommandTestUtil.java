@@ -1,26 +1,26 @@
 package seedu.address.logic.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.exceptions.CommandException;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COMPANY_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COMPANY_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_HREMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.testutil.Assert.assertThrows;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.application.Application;
 import seedu.address.model.application.RoleContainsKeywordsPredicate;
 import seedu.address.model.application.Status;
-import static seedu.address.testutil.Assert.assertThrows;
 import seedu.address.testutil.EditApplicationDescriptorBuilder;
 
 /**
@@ -97,7 +97,10 @@ public class CommandTestUtil {
         try {
             CommandResult result = command.execute(actualModel);
             assertEquals(expectedCommandResult, result);
-            assertEquals(expectedModel, actualModel);
+            assertEquals(new AddressBook(expectedModel.getAddressBook()),
+                    new AddressBook(actualModel.getAddressBook()));
+            assertEquals(expectedModel.getFilteredApplicationList(), actualModel.getFilteredApplicationList());
+            assertEquals(expectedModel.getUserPrefs(), actualModel.getUserPrefs());
         } catch (CommandException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
