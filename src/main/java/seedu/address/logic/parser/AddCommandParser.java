@@ -10,6 +10,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
@@ -27,6 +29,18 @@ import seedu.address.model.tag.Tag;
  */
 public class AddCommandParser implements Parser<AddCommand> {
 
+    private static final Set<String> VALID_PREFIXES = Set.of(
+            PREFIX_ROLE.getPrefix(),
+            PREFIX_PHONE.getPrefix(),
+            PREFIX_HREMAIL.getPrefix(),
+            PREFIX_COMPANY_NAME.getPrefix(),
+            PREFIX_COMPANY_LOCATION.getPrefix(),
+            PREFIX_TAG.getPrefix(),
+            PREFIX_NOTE.getPrefix()
+    );
+
+    private static final Pattern PREFIX_LIKE_PATTERN = Pattern.compile("(^|\\s)([A-Za-z]+/)");
+
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
@@ -34,6 +48,8 @@ public class AddCommandParser implements Parser<AddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
+        checkForInvalidPrefixes(args, VALID_PREFIXES);
+
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_ROLE, PREFIX_PHONE, PREFIX_HREMAIL,
                         PREFIX_COMPANY_NAME, PREFIX_COMPANY_LOCATION, PREFIX_TAG, PREFIX_NOTE);
@@ -72,5 +88,19 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    /**
+     * Rejects any prefix-like token that is not in the allowed prefix set for this command.
+     */
+    private static void checkForInvalidPrefixes(String args, Set<String> validPrefixes) throws ParseException {
+        Matcher matcher = PREFIX_LIKE_PATTERN.matcher(args);
+
+        while (matcher.find()) {
+            String foundPrefix = matcher.group(2);
+            if (!validPrefixes.contains(foundPrefix)) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            }
+        }
     }
 }
