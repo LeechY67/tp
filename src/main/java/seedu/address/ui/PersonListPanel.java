@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -41,7 +42,12 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new ApplicationCard(application, getIndex() + 1).getRoot());
+                Region cardRoot = new ApplicationCard(application, getIndex() + 1).getRoot();
+                cardRoot.setMaxWidth(Double.MAX_VALUE);
+                cardRoot.prefWidthProperty().bind(getListView().widthProperty().subtract(20));
+                setPrefWidth(0);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                setGraphic(cardRoot);
             }
         }
     }

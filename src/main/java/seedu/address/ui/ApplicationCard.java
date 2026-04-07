@@ -13,8 +13,10 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -44,6 +46,7 @@ public class ApplicationCard extends UiPart<Region> {
     @FXML private FlowPane tags;
     @FXML private Label deadline;
     @FXML private VBox detailsBox;
+    @FXML private VBox contentBox;
     @FXML private Button eventButton;
 
     private final EventDetailsWindow eventDetailsWindow;
@@ -56,8 +59,28 @@ public class ApplicationCard extends UiPart<Region> {
         this.application = application;
         this.eventDetailsWindow = new EventDetailsWindow();
 
+        cardPane.setMinWidth(0);
+        contentBox.setMinWidth(0);
+        contentBox.setMaxWidth(Double.MAX_VALUE);
+        detailsBox.setMinWidth(0);
+        detailsBox.setMaxWidth(Double.MAX_VALUE);
+        tags.setMinWidth(0);
+        tags.setMaxWidth(Double.MAX_VALUE);
+        tags.prefWrapLengthProperty().bind(contentBox.widthProperty());
+
         id.setText(displayedIndex + ". ");
+        id.setWrapText(false);
+        id.setTextOverrun(OverrunStyle.CLIP);
+        id.setMinWidth(Region.USE_PREF_SIZE);
+        id.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        id.setMaxWidth(Region.USE_PREF_SIZE);
+
         role.setText(application.getRole().roleName);
+        role.setWrapText(true);
+        role.setMinWidth(0);
+        role.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(role, Priority.ALWAYS);
+
         LocalDateTime now = LocalDateTime.now();
         Color roleColor = getRoleColor(application, now);
         role.setStyle("-fx-text-fill: " + toHexColor(roleColor) + ";");
@@ -68,6 +91,10 @@ public class ApplicationCard extends UiPart<Region> {
         } else {
             deadline.setText(application.getDeadline().value);
             deadline.setGraphic(calendarIcon(getDeadlineIconColor(application, now)));
+            deadline.setWrapText(true);
+            deadline.setMinWidth(0);
+            deadline.setMaxWidth(Double.MAX_VALUE);
+            deadline.prefWidthProperty().bind(contentBox.widthProperty());
         }
 
         String statusText = application.getStatus().toString();
@@ -142,9 +169,17 @@ public class ApplicationCard extends UiPart<Region> {
 
         Label lbl = new Label(text);
         lbl.getStyleClass().add("detail-label");
+        lbl.setWrapText(true);
+        lbl.setMinWidth(0);
+        lbl.setMaxWidth(Double.MAX_VALUE);
 
         HBox row = new HBox(8, fi, lbl);
         row.setAlignment(Pos.CENTER_LEFT);
+        row.setMinWidth(0);
+        row.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(lbl, Priority.ALWAYS);
+        row.prefWidthProperty().bind(detailsBox.widthProperty());
+        lbl.prefWidthProperty().bind(row.widthProperty().subtract(ICON_SIZE + 20));
         return row;
     }
 

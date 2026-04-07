@@ -323,6 +323,41 @@
     -fx-text-fill: white;
 }
 
+/* Keep TextArea-based command box consistent with dark theme. */
+#commandTextField .content {
+    -fx-background-color: #383838;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+/* Command box: horizontal scrollbar at bottom, no vertical scrollbar. */
+#commandTextField .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-hbar-policy: always;
+    -fx-vbar-policy: never;
+}
+
+#commandTextField .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+#commandTextField .scroll-bar:horizontal {
+    -fx-pref-height: 12;
+}
+
+#personListView .scroll-bar:horizontal {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+}
+
+#commandTextField .scroll-bar:vertical {
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-opacity: 0;
+}
+
 #filterField, #personListPanel, #personWebpage {
     -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
 }

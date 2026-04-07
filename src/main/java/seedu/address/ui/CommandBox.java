@@ -2,7 +2,10 @@ package seedu.address.ui;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -19,7 +22,7 @@ public class CommandBox extends UiPart<Region> {
     private final CommandExecutor commandExecutor;
 
     @FXML
-    private TextField commandTextField;
+    private TextArea commandTextField;
 
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
@@ -28,13 +31,24 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
-        commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+        // Also keep caret at the end so long pasted/typed commands stay visible.
+        commandTextField.textProperty().addListener((unused, oldText, newText) -> {
+            setStyleToDefault();
+            if (commandTextField.isFocused()) {
+                commandTextField.positionCaret(newText.length());
+            }
+        });
+
+        // Keep command input strictly single-line.
+        commandTextField.setTextFormatter(new TextFormatter<String>(change -> {
+            String text = change.getText();
+            if (text != null && (text.contains("\n") || text.contains("\r"))) {
+                return null;
+            }
+            return change;
+        }));
     }
 
-    /**
-     * Handles the Enter button pressed event.
-     */
-    @FXML
     private void handleCommandEntered() {
         String commandText = commandTextField.getText();
         if (commandText.equals("")) {
@@ -46,6 +60,18 @@ public class CommandBox extends UiPart<Region> {
             commandTextField.setText("");
         } catch (CommandException | ParseException e) {
             setStyleToIndicateCommandFailure();
+        }
+    }
+
+    /**
+     * Handles command input key events.
+     * Enter executes the command; newline insertion is suppressed.
+     */
+    @FXML
+    private void handleCommandInputKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            event.consume();
+            handleCommandEntered();
         }
     }
 

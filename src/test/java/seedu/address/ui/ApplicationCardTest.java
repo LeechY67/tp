@@ -15,6 +15,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import seedu.address.testutil.ApplicationBuilder;
 
@@ -364,26 +370,49 @@ public class ApplicationCardTest {
     public void constructor_noDeadline_hidesDeadlineField() throws Exception {
         Assumptions.assumeTrue(jfxToolkitAvailable);
 
-        CountDownLatch latch = new CountDownLatch(1);
-        final ApplicationCard[] cardHolder = new ApplicationCard[1];
-        final Throwable[] errorHolder = new Throwable[1];
+        ApplicationCard card = createCardOnFxThread(new ApplicationBuilder().build(), 1);
+        assertNotNull(card);
+    }
 
-        Platform.runLater(() -> {
-            try {
-                cardHolder[0] = new ApplicationCard(new ApplicationBuilder().build(), 1);
-            } catch (Throwable t) {
-                errorHolder[0] = t;
-            } finally {
-                latch.countDown();
-            }
-        });
+    @Test
+    public void constructor_idLabel_hasFixedWidthAndNoEllipsis() throws Exception {
+        Assumptions.assumeTrue(jfxToolkitAvailable);
 
-        assertTrue(latch.await(5, TimeUnit.SECONDS), "Timed out waiting for FX task");
-        if (errorHolder[0] != null) {
-            throw new AssertionError("Failed to create ApplicationCard on FX thread", errorHolder[0]);
-        }
+        ApplicationCard card = createCardOnFxThread(new ApplicationBuilder().build(), 6);
+        Label idLabel = getPrivateField(card, "id", Label.class);
 
-        assertNotNull(cardHolder[0]);
+        assertFalse(idLabel.isWrapText());
+        assertEquals(OverrunStyle.CLIP, idLabel.getTextOverrun());
+        assertEquals(Region.USE_PREF_SIZE, idLabel.getMinWidth());
+        assertEquals(Region.USE_COMPUTED_SIZE, idLabel.getPrefWidth());
+        assertEquals(Region.USE_PREF_SIZE, idLabel.getMaxWidth());
+    }
+
+    @Test
+    public void constructor_longTextFields_enableWrapLayout() throws Exception {
+        Assumptions.assumeTrue(jfxToolkitAvailable);
+
+        ApplicationCard card = createCardOnFxThread(new ApplicationBuilder()
+                .withRole("Software Engineer Engineer Engineer Engineer Engineer")
+                .withNote("Met recruiter at career fair Met recruiter at career fair")
+                .build(), 1);
+        Label roleLabel = getPrivateField(card, "role", Label.class);
+        Label deadlineLabel = getPrivateField(card, "deadline", Label.class);
+        FlowPane tagsPane = getPrivateField(card, "tags", FlowPane.class);
+        VBox details = getPrivateField(card, "detailsBox", VBox.class);
+        VBox content = getPrivateField(card, "contentBox", VBox.class);
+
+        assertTrue(roleLabel.isWrapText());
+        assertEquals(Double.MAX_VALUE, roleLabel.getMaxWidth());
+        assertTrue(deadlineLabel.isWrapText() || !deadlineLabel.isManaged());
+        assertEquals(Double.MAX_VALUE, tagsPane.getMaxWidth());
+        assertEquals(Double.MAX_VALUE, content.getMaxWidth());
+        assertEquals(Double.MAX_VALUE, details.getMaxWidth());
+
+        HBox detailRow = (HBox) details.getChildren().get(0);
+        Label detailText = (Label) detailRow.getChildren().get(1);
+        assertTrue(detailText.isWrapText());
+        assertEquals(Double.MAX_VALUE, detailText.getMaxWidth());
     }
 
 
@@ -395,5 +424,34 @@ public class ApplicationCardTest {
     @Test
     public void toTitleCase_null_returnsNull() {
         assertNull(ApplicationCard.toTitleCase(null));
+    }
+
+    private static ApplicationCard createCardOnFxThread(seedu.address.model.application.Application application,
+                                                         int displayedIndex) throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        final ApplicationCard[] cardHolder = new ApplicationCard[1];
+        final Throwable[] errorHolder = new Throwable[1];
+
+        Platform.runLater(() -> {
+            try {
+                cardHolder[0] = new ApplicationCard(application, displayedIndex);
+            } catch (Throwable t) {
+                errorHolder[0] = t;
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        assertTrue(latch.await(5, TimeUnit.SECONDS), "Timed out waiting for FX task");
+        if (errorHolder[0] != null) {
+            throw new AssertionError("Failed to create ApplicationCard on FX thread", errorHolder[0]);
+        }
+        return cardHolder[0];
+    }
+
+    private static <T> T getPrivateField(Object target, String fieldName, Class<T> fieldType) throws Exception {
+        var field = target.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return fieldType.cast(field.get(target));
     }
 }
