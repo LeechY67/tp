@@ -61,6 +61,10 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code name} is invalid.
      */
+    public static Role parseRole(String role) throws ParseException {
+        requireNonNull(role);
+        String normalizedRole = role.trim().replaceAll("\\s+", " ");
+        if (!Role.isValidRole(normalizedRole)) {
             throw new ParseException(Role.MESSAGE_CONSTRAINTS);
         }
         return new Role(normalizedRole);
