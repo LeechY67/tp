@@ -1,0 +1,35 @@
+@startuml
+skinparam object {
+  BackgroundColor #F5F5F5
+  BorderColor #444444
+  FontSize 14
+}
+
+object "appBefore:Application" as before {
+  company = "Acme"
+  role = "Backend Intern"
+  deadline = "2026-05-01"
+  status = "APPLIED"
+}
+
+object "editDescriptor:EditApplicationDescriptor" as descriptor {
+  deadline = "2026-05-10"
+  note = "updated after extension"
+  other fields = ...
+}
+
+object "appAfter:Application" as after {
+  company = "Acme"
+  role = "Backend Intern"
+  deadline = "2026-05-10"
+  status = "APPLIED"
+}
+
+before --> descriptor : apply edit
+descriptor --> after : create updated object
+
+note bottom
+Object-level view only.
+Constructor and validation internals are omitted.
+end note
+@enduml

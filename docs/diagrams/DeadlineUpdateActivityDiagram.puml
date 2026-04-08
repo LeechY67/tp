@@ -1,0 +1,24 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User enters deadline command;
+:Parse index and deadline;
+
+if (valid command?) then (yes)
+  :Find target application;
+  if (index in range?) then (yes)
+    :Update deadline;
+    :Commit application state;
+    :Show success message;
+  else (no)
+    :Show invalid index error;
+  endif
+else (no)
+  :Show format error;
+endif
+
+stop
+@enduml

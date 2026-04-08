@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam arrowThickness 1.1
+
+package Logic {
+class "{abstract}\nCommand" as Command
+class EditCommand
+class DeadlineCommand
+class EditCommandParser
+class DeadlineCommandParser
+}
+
+package Model {
+class Application #9D0012
+class Deadline #9D0012
+class Model #9D0012
+}
+
+EditCommand -up-|> Command
+DeadlineCommand -up-|> Command
+
+EditCommandParser ..> EditCommand : <<create>>
+DeadlineCommandParser ..> DeadlineCommand : <<create>>
+
+EditCommand ..> Application : <<updates>>
+DeadlineCommand ..> Application : <<updates deadline>>
+Application --> Deadline : has
+
+EditCommand ..> Model : <<call>>
+DeadlineCommand ..> Model : <<call>>
+
+note right of EditCommand
+Only key classes are shown.
+Utility/parser helper classes are omitted.
+end note
+@enduml
