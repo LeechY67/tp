@@ -29,7 +29,7 @@ deactivate ReminderCommand
 AddressBookParser --> LogicManager : m
 deactivate AddressBookParser
 
-LogicManager -> ReminderCommand : execute()
+LogicManager -> ReminderCommand : execute(m)
 activate ReminderCommand
 
 ReminderCommand -> ReminderHighlightState : setEnabled(true)

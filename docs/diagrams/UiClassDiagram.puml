@@ -42,17 +42,16 @@ ApplicationCard --|> UiPart
 StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
 
-ApplicationCard ..> Model
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
-ApplicationListPanel *--> "*" ApplicationCard
+PersonListPanel *--> "*" ApplicationCard
 
-ApplicationListPanel ..> Application
+PersonListPanel ..> Application
 ApplicationCard ..> Application
 CommandBox --> CommandExecutor
 
-ApplicationListPanel -[hidden]left- HelpWindow
+PersonListPanel -[hidden]left- HelpWindow
 HelpWindow -[hidden]left- CommandBox
 CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter

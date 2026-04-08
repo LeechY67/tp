@@ -7,22 +7,15 @@ Class "{abstract}\nCommand" as Command {
 }
 Class ReminderCommand {
   +COMMAND_WORD: String
-  +REMINDER_TAG_NAME: String
   +MESSAGE_SUCCESS: String
   +execute(Model): CommandResult
-  +addReminderTag(app): Application
 }
-Class CommandException
 Class Model
 Class Application
 Class Deadline
-Class Tag
 
 ReminderCommand -up-|> Command
-Command ..> CommandException: throws >
-ReminderCommand .right.> CommandException: throws >
 
 ReminderCommand ..> Deadline
 ReminderCommand ..> Application
-ReminderCommand ..> Tag
 @enduml
