@@ -281,7 +281,7 @@ How the `add` command works:
 1. The updated application book state is committed through `Model#commitAddressBook()`.
 
 
-(just my idea, you can change)
+## (just idea, you can change)
 ## Delete Feature
 
 ## Edit Feature

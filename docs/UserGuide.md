@@ -298,6 +298,8 @@ Format: `reminder`
     * ![reminder_default.png](reminder_default.png)
 * Once you have executed `reminder`, the highlighting preference is saved, so restarting the app will keep the red/orange coloring behaviour.
 * Before you run `reminder` at least once, reminder highlighting is disabled and `role`/calendar colors stay at default.
+* Re-running `reminder` repeatedly without any meaningful change (e.g., highlighting already enabled and deadline order unchanged) is treated as a single effective reminder state in undo/redo history.
+  * Practical effect: if you entered `reminder` many times in a row, `undo` usually only needs to cross the first effective `reminder` state once to turn highlighting off.
 * Deadline format affects how the comparison is done:
     * If you enter `deadline` as `yyyy-MM-dd`, it is treated as a date and compared using the day window (end of day is handled implicitly for highlighting).
     * If you enter `deadline` as `yyyy-MM-dd HH:mm`, the comparison is accurate to **minutes**.
@@ -339,8 +341,9 @@ Undoes the most recent command that modified the application list.
 Format: `undo`
 
 * Keeps track of up to 10 steps of your command history.
-* Commands that can be undone include add, delete, edit, clear, status, reminder, deadline, sort, assessment, and removeevent.
+* Commands that can be undone include add, delete, edit, clear, status, reminder, deadline, sort, resume, removeresume, assessment, and removeevent.
 * You cannot undo if there are no more states to revert to in the history.
+* For `reminder`: undo/redo restores both list order and reminder highlighting state together.
 
 Examples:
 * `delete 1` followed by `undo` restores the deleted application.
@@ -372,6 +375,7 @@ Format: `resume INDEX rp/RESUME_PATH`
 * This feature will not save your resume in the storage, but just a reference to your own documentation.
 * Make sure your file is ended with ".pdf, .doc, or .docx", no other format will be accepted.
 * Please don't change the path of the file, or it will result in unexpected errors.
+* This action can be undone using `undo`.
 
 Examples:
 * (For Windows) `resume 1 rp/C:\Users\john\Documents\resume.pdf` will attach your resume to the first application.
@@ -400,6 +404,7 @@ Format: `removeresume INDEX`
 * The index refers to the index number shown in the displayed application list.
 * The index **must be a positive integer** `1, 2, 3, ...`
 * This feature will not delete your resume file in your computer, but just remove the reference.
+* This action can be undone using `undo`.
 
 Examples:
 * `removeresume 3` will remove your resume of the third application.
@@ -493,11 +498,11 @@ _Details coming soon ..._
 
 ## Known issues
 
-1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **Displayed indexes are context-dependent**: index-based commands (`edit`, `delete`, `status`, `deadline`, etc.) act on the currently displayed list. After `find`, `findnote`, `sort`, or `list`, the same index may refer to a different application.
-4. **Reminder color updates are not timer-driven**: when real time crosses a deadline minute, colors update on UI refresh actions (e.g., selecting a card, re-running `reminder`, or other list re-render triggers), not by a background timer.
-5. **Date-only deadlines are day-based**: `yyyy-MM-dd` deadlines are compared at the date level, while `yyyy-MM-dd HH:mm` uses minute-level comparison.
+* **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
+* **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+* **Displayed indexes are context-dependent**: index-based commands (`edit`, `delete`, `status`, `deadline`, etc.) act on the currently displayed list. After `find`, `findnote`, `sort`, or `list`, the same index may refer to a different application.
+* **Reminder color updates are not timer-driven**: when real time crosses a deadline minute, colors update on UI refresh actions (e.g., selecting a card, re-running `reminder`, or other list re-render triggers), not by a background timer.
+* **Date-only deadlines are day-based**: `yyyy-MM-dd` deadlines are compared at the date level, while `yyyy-MM-dd HH:mm` uses minute-level comparison.
 
 --------------------------------------------------------------------------------------------------------------------
 

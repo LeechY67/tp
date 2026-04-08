@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalApplications.getTypicalAddressBook;
@@ -25,6 +26,7 @@ public class ReminderCommandTest {
     public void setUp() {
         model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        seedu.address.ui.ReminderHighlightState.setEnabled(false);
     }
 
     @Test
@@ -71,5 +73,17 @@ public class ReminderCommandTest {
                 .getTags());
 
         assertTrue(model.getUserPrefs().isReminderHighlightEnabled());
+    }
+
+    @Test
+    public void execute_twiceWithoutFurtherChanges_singleUndoDisablesReminderHighlight() {
+        ReminderCommand reminderCommand = new ReminderCommand();
+        reminderCommand.execute(model);
+        reminderCommand.execute(model);
+
+        assertTrue(model.canUndoAddressBook());
+        model.undoAddressBook();
+
+        assertFalse(model.getUserPrefs().isReminderHighlightEnabled());
     }
 }

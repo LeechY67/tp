@@ -94,6 +94,31 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void undoAddressBook_afterReminderCommit_restoresReminderHighlightPreference() {
+        UserPrefs updatedPrefs = new UserPrefs(modelManager.getUserPrefs());
+        updatedPrefs.setReminderHighlightEnabled(true);
+        modelManager.setUserPrefs(updatedPrefs);
+        modelManager.commitAddressBook();
+
+        modelManager.undoAddressBook();
+
+        assertFalse(modelManager.getUserPrefs().isReminderHighlightEnabled());
+    }
+
+    @Test
+    public void redoAddressBook_afterUndoReminderCommit_reappliesReminderHighlightPreference() {
+        UserPrefs updatedPrefs = new UserPrefs(modelManager.getUserPrefs());
+        updatedPrefs.setReminderHighlightEnabled(true);
+        modelManager.setUserPrefs(updatedPrefs);
+        modelManager.commitAddressBook();
+        modelManager.undoAddressBook();
+
+        modelManager.redoAddressBook();
+
+        assertTrue(modelManager.getUserPrefs().isReminderHighlightEnabled());
+    }
+
+    @Test
     public void equals() {
         AddressBook companyBook = new AddressBookBuilder().withApplication(AMY).withApplication(BOB).build();
         AddressBook differentAddressBook = new AddressBook();

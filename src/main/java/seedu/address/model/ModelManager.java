@@ -21,10 +21,13 @@ import seedu.address.model.application.Application;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+    private static final int MAX_UNDO_LIMIT = 10;
 
     private final VersionedAddressBook versionedAddressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Application> filteredApplications;
+    private final List<Boolean> reminderHighlightStateList;
+    private int currentReminderStatePointer;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -37,6 +40,9 @@ public class ModelManager implements Model {
         this.versionedAddressBook = new VersionedAddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredApplications = new FilteredList<>(this.versionedAddressBook.getApplicationList());
+        reminderHighlightStateList = new ArrayList<>();
+        reminderHighlightStateList.add(this.userPrefs.isReminderHighlightEnabled());
+        currentReminderStatePointer = 0;
     }
 
     //    public ModelManager() {
@@ -53,11 +59,14 @@ public class ModelManager implements Model {
     @Override
     public void undoAddressBook() {
         versionedAddressBook.undo();
+        currentReminderStatePointer--;
+        userPrefs.setReminderHighlightEnabled(reminderHighlightStateList.get(currentReminderStatePointer));
     }
 
     @Override
     public void commitAddressBook() {
         versionedAddressBook.commit();
+        commitReminderHighlightState();
     }
 
     //=========== Undo ==================================================================================
@@ -70,6 +79,19 @@ public class ModelManager implements Model {
     @Override
     public void redoAddressBook() {
         versionedAddressBook.redo();
+        currentReminderStatePointer++;
+        userPrefs.setReminderHighlightEnabled(reminderHighlightStateList.get(currentReminderStatePointer));
+    }
+
+    private void commitReminderHighlightState() {
+        reminderHighlightStateList.subList(currentReminderStatePointer + 1, reminderHighlightStateList.size()).clear();
+        reminderHighlightStateList.add(userPrefs.isReminderHighlightEnabled());
+        currentReminderStatePointer++;
+
+        if (reminderHighlightStateList.size() > MAX_UNDO_LIMIT) {
+            reminderHighlightStateList.remove(0);
+            currentReminderStatePointer--;
+        }
     }
 
     //=========== UserPrefs ==================================================================================

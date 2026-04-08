@@ -24,6 +24,9 @@ public class RedoCommand extends Command {
         }
 
         model.redoAddressBook();
+        seedu.address.ui.ReminderHighlightState.setEnabled(model.getUserPrefs().isReminderHighlightEnabled());
+        // Force list-cell re-render so role/deadline colors reflect reminder toggle changes immediately.
+        model.updateFilteredApplicationList(application -> false);
         model.updateFilteredApplicationList(PREDICATE_SHOW_ALL_APPLICATIONS);
         return new CommandResult(MESSAGE_SUCCESS);
     }

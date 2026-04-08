@@ -2,7 +2,9 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import seedu.address.model.Model;
 import seedu.address.model.application.Application;
@@ -20,6 +22,8 @@ public class ReminderCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         logger.info("Starting reminder command execution...");
+        boolean wasReminderEnabled = model.getUserPrefs().isReminderHighlightEnabled();
+        List<Application> beforeSortOrder = new ArrayList<>(model.getAddressBook().getApplicationList());
 
         seedu.address.ui.ReminderHighlightState.setEnabled(true);
 
@@ -31,7 +35,12 @@ public class ReminderCommand extends Command {
         Comparator<Application> comparator = (a1, a2) ->
                 a1.getDeadline().compareTo(a2.getDeadline());
         model.updateSortedApplicationList(comparator);
-        model.commitAddressBook();
+        List<Application> afterSortOrder = new ArrayList<>(model.getAddressBook().getApplicationList());
+        boolean sortOrderChanged = !beforeSortOrder.equals(afterSortOrder);
+
+        if (!wasReminderEnabled || sortOrderChanged) {
+            model.commitAddressBook();
+        }
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
