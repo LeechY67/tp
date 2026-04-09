@@ -19,7 +19,8 @@ public class RoleContainsKeywordsPredicate implements Predicate<Application> {
     @Override
     public boolean test(Application application) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsSubstringIgnoreCase(application.getRole().roleName, keyword));
+                .anyMatch(keyword -> StringUtil
+                        .containsAllKeywordsAsSubstrings(application.getRole().roleName, keyword));
     }
 
     @Override

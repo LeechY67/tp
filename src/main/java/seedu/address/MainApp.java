@@ -49,7 +49,7 @@ public class MainApp extends Application {
 
     @Override
     public void init() throws Exception {
-        logger.info("=============================[ Initializing AddressBook ]===========================");
+        logger.info("=============================[ Initializing Hired! ]===========================");
         super.init();
 
         AppParameters appParameters = AppParameters.parse(getParameters());
@@ -69,9 +69,7 @@ public class MainApp extends Application {
     }
 
     /**
-     * Returns a {@code ModelManager} with the data from {@code storage}'s Hired! and {@code userPrefs}. <br>
-     * The data from the sample Hired! will be used instead if {@code storage}'s Hired! is not found,
-     * or an empty Hired! will be used instead if errors occur when reading {@code storage}'s Hired!.
+     * Returns a {@code ModelManager} with the data from {@code storage}'s Hired! and {@code userPrefs}.
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getAddressBookFilePath());
@@ -82,12 +80,12 @@ public class MainApp extends Application {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " populated with a sample AddressBook.");
+                        + " populated with a sample Hired!.");
             }
             initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook.");
+                    + " Will be starting with an empty Hired!.");
             initialData = new AddressBook();
         }
 
@@ -174,13 +172,13 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("Starting AddressBook " + MainApp.VERSION);
+        logger.info("Starting Hired! " + MainApp.VERSION);
         ui.start(primaryStage);
     }
 
     @Override
     public void stop() {
-        logger.info("============================ [ Stopping AddressBook ] =============================");
+        logger.info("============================ [ Stopping Hired! ] =============================");
         try {
             storage.saveUserPrefs(model.getUserPrefs());
         } catch (IOException e) {

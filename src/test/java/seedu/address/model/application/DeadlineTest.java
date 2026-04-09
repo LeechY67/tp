@@ -3,8 +3,8 @@ package seedu.address.model.application;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.testutil.Assert.assertThrows;
 
 import java.time.LocalDate;
 
@@ -13,8 +13,7 @@ import org.junit.jupiter.api.Test;
 public class DeadlineTest {
 
     @Test
-    public void constructor_null_throwsNullPointerException() {
-        // In this codebase, null input is treated as an empty deadline.
+    public void constructor_null_treatedAsEmptyDeadline() {
         assertTrue(new Deadline(null).isEmpty());
     }
 
@@ -30,6 +29,11 @@ public class DeadlineTest {
         assertTrue(late.compareTo(early) > 0);
         // empty 排在最后 (假设你在 compareTo 里写了空值检查)
         assertTrue(late.compareTo(empty) < 0);
+    }
+
+    @Test
+    public void compareTo_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new Deadline("2026-01-01").compareTo(null));
     }
 
     @Test
@@ -79,6 +83,8 @@ public class DeadlineTest {
 
     @Test
     public void isValidCalendarDate() {
+        assertThrows(NullPointerException.class, () -> Deadline.isValidCalendarDate(null));
+
         // format is correct, but date does NOT exist on the calendar -> should return false
         assertFalse(Deadline.isValidCalendarDate("2026-01-90")); // 90th day of Jan does not exist
         assertFalse(Deadline.isValidCalendarDate("2026-13-01")); // 13th month does not exist

@@ -49,7 +49,7 @@ public class EditCommand extends Command {
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_ROLE + "ROLE] "
             + "[" + PREFIX_PHONE + "PHONE] "
-            + "[" + PREFIX_HREMAIL + "EMAIL] "
+            + "[" + PREFIX_HREMAIL + "HREMAIL] "
             + "[" + PREFIX_COMPANY_NAME + "COMPANY_NAME] "
             + "[" + PREFIX_COMPANY_LOCATION + "COMPANY_LOCATION] "
             + "[" + PREFIX_TAG + "TAG]... "

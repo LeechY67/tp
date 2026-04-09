@@ -4,6 +4,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -146,18 +147,26 @@ public class Application {
             return false;
         }
 
-        String thisRole = getRole().roleName.replaceAll("\\s+", "").toLowerCase();
-        String otherRole = otherApplication.getRole().roleName.replaceAll("\\s+", "").toLowerCase();
+        String thisRole = normalizeIdentityText(getRole().roleName);
+        String otherRole = normalizeIdentityText(otherApplication.getRole().roleName);
 
-        String thisCompany = getCompany().companyName.replaceAll("\\s+", "").toLowerCase();
-        String otherCompany = otherApplication.getCompany().companyName.replaceAll("\\s+", "").toLowerCase();
+        String thisCompany = normalizeIdentityText(getCompany().companyName);
+        String otherCompany = normalizeIdentityText(otherApplication.getCompany().companyName);
 
-        String thisLocation = getCompany().companyLocation.replaceAll("\\s+", "").toLowerCase();
-        String otherLocation = otherApplication.getCompany().companyLocation.replaceAll("\\s+", "").toLowerCase();
+        String thisLocation = normalizeIdentityText(getCompany().companyLocation);
+        String otherLocation = normalizeIdentityText(otherApplication.getCompany().companyLocation);
 
         return thisRole.equals(otherRole)
                 && thisCompany.equals(otherCompany)
                 && thisLocation.equals(otherLocation);
+    }
+
+    /**
+     * Normalizes identity text for duplicate detection by removing all spaces
+     * and converting to lower-case in a locale-stable manner.
+     */
+    private static String normalizeIdentityText(String rawText) {
+        return rawText.replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
     }
 
     /**

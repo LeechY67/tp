@@ -34,7 +34,6 @@ public class Deadline implements Comparable<Deadline> {
      * <p>Blank input will be treated as an empty deadline placeholder.
      *
      * @param value the deadline value.
-     * @throws NullPointerException if {@code value} is {@code null}.
      */
     public Deadline(String value) {
         this.value = (value == null || value.isBlank()) ? EMPTY_DEADLINE_VALUE : value;
@@ -83,6 +82,7 @@ public class Deadline implements Comparable<Deadline> {
      * @return true if the string is a valid calendar date or the placeholder.
      */
     public static boolean isValidCalendarDate(String test) {
+        Objects.requireNonNull(test);
         if (test.equals(PLACEHOLDER_DEADLINE)) {
             return true;
         }
@@ -118,6 +118,7 @@ public class Deadline implements Comparable<Deadline> {
 
     @Override
     public int compareTo(Deadline other) {
+        Objects.requireNonNull(other);
         if (this.isEmpty() && !other.isEmpty()) {
             return 1;
         }

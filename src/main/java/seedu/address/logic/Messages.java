@@ -12,7 +12,7 @@ import seedu.address.model.application.Application;
  */
 public class Messages {
 
-    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
+    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command! Type 'help' to check out our command. ";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_APPLICATION_DISPLAYED_INDEX =
             "The application index provided is invalid";

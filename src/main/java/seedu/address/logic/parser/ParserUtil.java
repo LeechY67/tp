@@ -47,19 +47,16 @@ public class ParserUtil {
     public static Resume parseResume(String resume) throws ParseException {
         requireNonNull(resume);
         String trimmedResume = resume.trim();
-
         if (!Resume.isValidResume(trimmedResume)) {
             throw new ParseException(Resume.MESSAGE_CONSTRAINTS);
         }
-
         return new Resume(trimmedResume);
     }
 
     /**
-     * Parses a {@code String name} into a {@code Name}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code name} is invalid.
+     * Parses a {@code String role} into a {@code Role}.
+     * Normalizes the input by trimming whitespaces and compressing multiple internal spaces into a single space.
+     * @throws ParseException if the given {@code role} is invalid.
      */
     public static Role parseRole(String role) throws ParseException {
         requireNonNull(role);
@@ -86,10 +83,9 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code address} is invalid.
+     * Parses a {@code String companyName} and returns a sanitized string.
+     * Normalizes internal whitespaces to ensure consistent duplicate detection and UI display.
+     * @throws ParseException if the given {@code companyName} is invalid.
      */
     public static String parseCompanyName(String companyName) throws ParseException {
         requireNonNull(companyName);
@@ -101,7 +97,8 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String location} into a {@code String}.
+     * Parses a {@code String location} and returns a sanitized string.
+     * Normalizes whitespaces to maintain data integrity across different input formats.
      */
     public static String parseCompanyLocation(String location) throws ParseException {
         requireNonNull(location);
@@ -158,7 +155,7 @@ public class ParserUtil {
      * Parses a {@code String deadline} into a {@code Deadline}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code deadline} is invalid.
+     * @throws ParseException if the format or the date value is invalid.
      */
     public static Deadline parseDeadline(String deadline) throws ParseException {
         if (deadline == null || deadline.isBlank()) {
@@ -184,18 +181,15 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String note} into a {@code Note}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code note} is invalid.
+     * Normalizes the note content by trimming and compressing redundant internal whitespaces.
+     * @throws ParseException if the given {@code note} fails length constraints.
      */
     public static Note parseNote(String note) throws ParseException {
         requireNonNull(note);
-        String trimmedNote = note.trim(); // defensive programming: remove blank chars
-
-        if (!Note.isValidNote(trimmedNote)) {
-            // defensive programming: set constraints on note length
+        String normalizedNote = note.trim().replaceAll("\\s+", " ");
+        if (!Note.isValidNote(normalizedNote)) {
             throw new ParseException(Note.MESSAGE_CONSTRAINTS);
         }
-        return new Note(trimmedNote);
+        return new Note(normalizedNote);
     }
 }
