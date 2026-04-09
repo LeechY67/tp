@@ -134,18 +134,30 @@ public class Application {
     }
 
     /**
-     * Returns true if both applications have the same role.
-     * This defines a weaker notion of equality between two applications, used for identity.
+     * Returns true if both applications have the same identity fields (Role and Company).
+     * This defines a weaker notion of equality between two applications, used for duplicate detection.
      */
     public boolean isSameApplication(Application otherApplication) {
         if (otherApplication == this) {
             return true;
         }
 
-        return otherApplication != null
-                && otherApplication.getRole().equals(getRole())
-                && otherApplication.getCompany().companyName.equalsIgnoreCase(getCompany().companyName)
-                && otherApplication.getCompany().companyLocation.equalsIgnoreCase(getCompany().companyLocation);
+        if (otherApplication == null) {
+            return false;
+        }
+
+        String thisRole = getRole().roleName.replaceAll("\\s+", "").toLowerCase();
+        String otherRole = otherApplication.getRole().roleName.replaceAll("\\s+", "").toLowerCase();
+
+        String thisCompany = getCompany().companyName.replaceAll("\\s+", "").toLowerCase();
+        String otherCompany = otherApplication.getCompany().companyName.replaceAll("\\s+", "").toLowerCase();
+
+        String thisLocation = getCompany().companyLocation.replaceAll("\\s+", "").toLowerCase();
+        String otherLocation = otherApplication.getCompany().companyLocation.replaceAll("\\s+", "").toLowerCase();
+
+        return thisRole.equals(otherRole)
+                && thisCompany.equals(otherCompany)
+                && thisLocation.equals(otherLocation);
     }
 
     /**

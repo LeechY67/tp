@@ -28,11 +28,11 @@ public class ParserUtilTest {
     private static final String INVALID_HREMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
 
-    private static final String VALID_ROLE = "Rachel Walker";
+    private static final String VALID_ROLE = "Software Engineer";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_COMPANY_NAME = "Google";
     private static final String VALID_COMPANY_LOCATION = "Singapore";
-    private static final String VALID_HREMAIL = "rachel@example.com";
+    private static final String VALID_HREMAIL = "hr@google.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
 
@@ -60,25 +60,25 @@ public class ParserUtilTest {
 
     @Test
     public void parseRole_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseName((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseRole((String) null));
     }
 
     @Test
     public void parseRole_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseName(INVALID_ROLE));
+        assertThrows(ParseException.class, () -> ParserUtil.parseRole(INVALID_ROLE));
     }
 
     @Test
     public void parseRole_validValueWithoutWhitespace_returnsRole() throws Exception {
         Role expectedRole = new Role(VALID_ROLE);
-        assertEquals(expectedRole, ParserUtil.parseName(VALID_ROLE));
+        assertEquals(expectedRole, ParserUtil.parseRole(VALID_ROLE));
     }
 
     @Test
     public void parseRole_validValueWithWhitespace_returnsTrimmedRole() throws Exception {
         String roleWithWhitespace = WHITESPACE + VALID_ROLE + WHITESPACE;
         Role expectedRole = new Role(VALID_ROLE);
-        assertEquals(expectedRole, ParserUtil.parseName(roleWithWhitespace));
+        assertEquals(expectedRole, ParserUtil.parseRole(roleWithWhitespace));
     }
 
     @Test
@@ -139,25 +139,25 @@ public class ParserUtilTest {
 
     @Test
     public void parseHrEmail_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseHrEmail((String) null));
     }
 
     @Test
     public void parseHrEmail_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseEmail(INVALID_HREMAIL));
+        assertThrows(ParseException.class, () -> ParserUtil.parseHrEmail(INVALID_HREMAIL));
     }
 
     @Test
     public void parseHrEmail_validValueWithoutWhitespace_returnsHrEmail() throws Exception {
         HrEmail expectedHrEmail = new HrEmail(VALID_HREMAIL);
-        assertEquals(expectedHrEmail, ParserUtil.parseEmail(VALID_HREMAIL));
+        assertEquals(expectedHrEmail, ParserUtil.parseHrEmail(VALID_HREMAIL));
     }
 
     @Test
     public void parseHrEmail_validValueWithWhitespace_returnsTrimmedHrEmail() throws Exception {
         String hrEmailWithWhitespace = WHITESPACE + VALID_HREMAIL + WHITESPACE;
         HrEmail expectedHrEmail = new HrEmail(VALID_HREMAIL);
-        assertEquals(expectedHrEmail, ParserUtil.parseEmail(hrEmailWithWhitespace));
+        assertEquals(expectedHrEmail, ParserUtil.parseHrEmail(hrEmailWithWhitespace));
     }
 
     @Test
@@ -216,4 +216,27 @@ public class ParserUtilTest {
         assertEquals(new Deadline("2026-04-01 12:59"),
                 ParserUtil.parseDeadline("2026-04-01 12:59"));
     }
+
+    @Test
+    public void parseRole_validValueWithInternalWhitespace_returnsNormalizedRole() throws Exception {
+        String roleWithInternalWhitespace = "Software    Engineer";
+        Role expectedRole = new Role(VALID_ROLE);
+        assertEquals(expectedRole, ParserUtil.parseRole(roleWithInternalWhitespace));
+    }
+
+    @Test
+    public void parseRole_validValueWithLeadingTrailingWhitespace_returnsTrimmedRole() throws Exception {
+        String roleWithWhitespace = WHITESPACE + VALID_ROLE + WHITESPACE;
+        Role expectedRole = new Role(VALID_ROLE);
+        assertEquals(expectedRole, ParserUtil.parseRole(roleWithWhitespace));
+    }
+
+    @Test
+    public void parseCompanyName_internalWhitespace_returnsNormalizedName() throws Exception {
+        String nameWithInternalWhitespace = "Google    Inc";
+        String expectedName = "Google Inc";
+        assertEquals(expectedName, ParserUtil.parseCompanyName(nameWithInternalWhitespace));
+    }
+
+
 }

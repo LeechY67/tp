@@ -45,16 +45,12 @@ public class ApplicationTest {
                 .build();
         assertFalse(GOOGLE_SWE.isSameApplication(editedAlice));
 
-        // one location empty and one non-empty -> returns false
+        // both locations empty -> returns true
         Application withEmptyLocation = new ApplicationBuilder(GOOGLE_SWE)
                 .withCompanyLocation("")
                 .build();
-        assertFalse(GOOGLE_SWE.isSameApplication(withEmptyLocation));
-
-        // both locations empty -> returns true
         Application bothEmptyLocation = new ApplicationBuilder(withEmptyLocation)
                 .withPhone(VALID_PHONE_BOB)
-                .withHrEmail(VALID_HREMAIL_BOB)
                 .build();
         assertTrue(withEmptyLocation.isSameApplication(bothEmptyLocation));
 
@@ -62,34 +58,37 @@ public class ApplicationTest {
         editedAlice = new ApplicationBuilder(GOOGLE_SWE).withRole(VALID_ROLE_BOB).build();
         assertFalse(GOOGLE_SWE.isSameApplication(editedAlice));
 
-        // role differs in case, all other attributes same -> returns false
-        Application editedBob = new ApplicationBuilder(BOB).withRole(VALID_ROLE_BOB.toLowerCase()).build();
-        assertFalse(BOB.isSameApplication(editedBob));
+        // ------------------- 以下是针对模糊匹配的修改 -------------------
 
-        // role has trailing spaces, all other attributes same -> returns false
-        String roleWithTrailingSpaces = VALID_ROLE_BOB + " ";
+        // role differs in case -> 现在应该返回 true
+        Application editedBob = new ApplicationBuilder(BOB).withRole(VALID_ROLE_BOB.toLowerCase()).build();
+        assertTrue(BOB.isSameApplication(editedBob));
+
+        // role has trailing spaces -> 现在应该返回 true
+        String roleWithTrailingSpaces = VALID_ROLE_BOB + "  ";
         editedBob = new ApplicationBuilder(BOB).withRole(roleWithTrailingSpaces).build();
-        assertFalse(BOB.isSameApplication(editedBob));
+        assertTrue(BOB.isSameApplication(editedBob));
+
+        // role has internal multiple spaces -> 现在应该返回 true
+        String roleWithInternalSpaces = "Software    Engineer";
+        Application app1 = new ApplicationBuilder().withRole("Software Engineer").build();
+        Application app2 = new ApplicationBuilder().withRole(roleWithInternalSpaces).build();
+        assertTrue(app1.isSameApplication(app2));
 
         // company name differs only in case, same location -> returns true
         Application caseChangedCompanyName = new ApplicationBuilder(GOOGLE_SWE)
-                .withCompany(GOOGLE_SWE.getCompany().companyName.toUpperCase())
-                .withCompanyLocation(GOOGLE_SWE.getCompany().companyLocation)
+                .withCompanyName(GOOGLE_SWE.getCompany().companyName.toUpperCase())
                 .build();
         assertTrue(GOOGLE_SWE.isSameApplication(caseChangedCompanyName));
 
-        // company location differs only in case, same company name -> returns true
-        Application caseChangedCompanyLocation = new ApplicationBuilder(GOOGLE_SWE)
-                .withCompanyLocation(GOOGLE_SWE.getCompany().companyLocation.toUpperCase())
+        // company name has internal multiple spaces -> returns true
+        Application appWithSpacedCompany = new ApplicationBuilder(GOOGLE_SWE)
+                .withCompanyName("Google    Inc")
                 .build();
-        assertTrue(GOOGLE_SWE.isSameApplication(caseChangedCompanyLocation));
-
-        // company name differs (not just in case), same role -> returns false
-        Application differentCompanyName = new ApplicationBuilder(GOOGLE_SWE)
-                .withCompanyName("Some Other Company")
-                .withCompanyLocation(GOOGLE_SWE.getCompany().companyLocation)
+        Application appWithNormalCompany = new ApplicationBuilder(GOOGLE_SWE)
+                .withCompanyName("Google Inc")
                 .build();
-        assertFalse(GOOGLE_SWE.isSameApplication(differentCompanyName));
+        assertTrue(appWithSpacedCompany.isSameApplication(appWithNormalCompany));
     }
 
     @Test

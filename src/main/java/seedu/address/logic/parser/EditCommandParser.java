@@ -55,13 +55,13 @@ public class EditCommandParser implements Parser<EditCommand> {
         EditApplicationDescriptor editApplicationDescriptor = new EditApplicationDescriptor();
 
         if (argMultimap.getValue(PREFIX_ROLE).isPresent()) {
-            editApplicationDescriptor.setRole(ParserUtil.parseName(argMultimap.getValue(PREFIX_ROLE).get()));
+            editApplicationDescriptor.setRole(ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get()));
         }
         if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
             editApplicationDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
         }
         if (argMultimap.getValue(PREFIX_HREMAIL).isPresent()) {
-            editApplicationDescriptor.setHrEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_HREMAIL).get()));
+            editApplicationDescriptor.setHrEmail(ParserUtil.parseHrEmail(argMultimap.getValue(PREFIX_HREMAIL).get()));
         }
         if (argMultimap.getValue(PREFIX_COMPANY_NAME).isPresent()) {
             editApplicationDescriptor.setCompanyName(

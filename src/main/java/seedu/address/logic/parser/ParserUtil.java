@@ -61,13 +61,13 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code name} is invalid.
      */
-    public static Role parseName(String name) throws ParseException {
-        requireNonNull(name);
-        String trimmedName = name.trim();
-        if (!Role.isValidRole(trimmedName)) {
+    public static Role parseRole(String role) throws ParseException {
+        requireNonNull(role);
+        String normalizedRole = role.trim().replaceAll("\\s+", " ");
+        if (!Role.isValidRole(normalizedRole)) {
             throw new ParseException(Role.MESSAGE_CONSTRAINTS);
         }
-        return new Role(trimmedName);
+        return new Role(normalizedRole);
     }
 
     /**
@@ -91,13 +91,13 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code address} is invalid.
      */
-    public static String parseCompanyName(String name) throws ParseException {
-        requireNonNull(name);
-        String trimmedName = name.trim();
-        if (!Company.isValidCompanyName(trimmedName)) {
+    public static String parseCompanyName(String companyName) throws ParseException {
+        requireNonNull(companyName);
+        String normalizedName = companyName.trim().replaceAll("\\s+", " ");
+        if (!Company.isValidCompanyName(normalizedName)) {
             throw new ParseException(Company.MESSAGE_CONSTRAINTS_NAME);
         }
-        return trimmedName;
+        return normalizedName;
     }
 
     /**
@@ -105,11 +105,11 @@ public class ParserUtil {
      */
     public static String parseCompanyLocation(String location) throws ParseException {
         requireNonNull(location);
-        String trimmedLocation = location.trim();
-        if (!Company.isValidCompanyLocation(trimmedLocation)) {
+        String normalizedLocation = location.trim().replaceAll("\\s+", " ");
+        if (!Company.isValidCompanyLocation(normalizedLocation)) {
             throw new ParseException(Company.MESSAGE_CONSTRAINTS_LOCATION);
         }
-        return trimmedLocation;
+        return normalizedLocation;
     }
 
     /**
@@ -118,7 +118,7 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code email} is invalid.
      */
-    public static HrEmail parseEmail(String email) throws ParseException {
+    public static HrEmail parseHrEmail(String email) throws ParseException {
         requireNonNull(email);
         String trimmedEmail = email.trim();
         if (!HrEmail.isValidHrEmail(trimmedEmail)) {

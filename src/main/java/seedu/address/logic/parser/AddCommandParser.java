@@ -46,9 +46,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_ROLE, PREFIX_PHONE, PREFIX_HREMAIL,
                 PREFIX_COMPANY_NAME, PREFIX_COMPANY_LOCATION, PREFIX_NOTE);
 
-        Role role = ParserUtil.parseName(argMultimap.getValue(PREFIX_ROLE).get());
+        Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-        HrEmail hrEmail = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_HREMAIL).get());
+        HrEmail hrEmail = ParserUtil.parseHrEmail(argMultimap.getValue(PREFIX_HREMAIL).get());
         String companyName = ParserUtil.parseCompanyName(argMultimap.getValue(PREFIX_COMPANY_NAME).get());
 
         String locationValue = argMultimap.getValue(PREFIX_COMPANY_LOCATION).orElse("");
