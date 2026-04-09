@@ -19,6 +19,7 @@ import seedu.address.model.application.ApplicationEvent;
 import seedu.address.model.application.Company;
 import seedu.address.model.application.Deadline;
 import seedu.address.model.application.HrEmail;
+import seedu.address.model.application.Interview;
 import seedu.address.model.application.Note;
 import seedu.address.model.application.OnlineAssessment;
 import seedu.address.model.application.Phone;
@@ -50,6 +51,11 @@ class JsonAdaptedApplication {
     // OnlineAssessment fields — stored flat, all nullable (assessment is optional)
     private final String assessmentPlatform;
     private final String assessmentLink;
+
+    // Interview fields — stored flat, all nullable (interview is optional)
+    private final String interviewerName;
+    private final String interviewType;
+
     private final String note;
 
     /**
@@ -69,6 +75,8 @@ class JsonAdaptedApplication {
                                   @JsonProperty("assessmentPlatform") String assessmentPlatform,
                                   @JsonProperty("assessmentLink") String assessmentLink,
                                   @JsonProperty("assessmentNotes") String assessmentNotes,
+                                  @JsonProperty("interviewerName") String interviewerName,
+                                  @JsonProperty("interviewType") String interviewType,
                                   @JsonProperty("note") String note,
                                   @JsonProperty("resume") String resume) {
         this.role = role;
@@ -85,6 +93,8 @@ class JsonAdaptedApplication {
         this.eventTime = eventTime;
         this.assessmentPlatform = assessmentPlatform;
         this.assessmentLink = assessmentLink;
+        this.interviewerName = interviewerName;
+        this.interviewType = interviewType;
         this.note = note;
         this.resume = resume;
     }
@@ -106,18 +116,29 @@ class JsonAdaptedApplication {
                 ? source.getDeadline().value
                 : null;
 
-        // Serialize OnlineAssessment fields if present, otherwise null
+        // Serialize event fields based on event type, otherwise null
         ApplicationEvent event = source.getApplicationEvent();
         if (event instanceof OnlineAssessment oa) {
             this.eventLocation = oa.getLocation();
-            this.eventTime = oa.getLocalDate().format(DATETIME_FORMATTER);;
+            this.eventTime = oa.getLocalDate().format(DATETIME_FORMATTER);
             this.assessmentPlatform = oa.getPlatform();
             this.assessmentLink = oa.getLink();
+            this.interviewerName = null;
+            this.interviewType = null;
+        } else if (event instanceof Interview iv) {
+            this.eventLocation = iv.getLocation();
+            this.eventTime = iv.getLocalDate().format(DATETIME_FORMATTER);
+            this.assessmentPlatform = null;
+            this.assessmentLink = null;
+            this.interviewerName = iv.getInterviewerName().isEmpty() ? null : iv.getInterviewerName();
+            this.interviewType = iv.getInterviewType().isEmpty() ? null : iv.getInterviewType();
         } else {
             this.eventLocation = null;
             this.eventTime = null;
             this.assessmentPlatform = null;
             this.assessmentLink = null;
+            this.interviewerName = null;
+            this.interviewType = null;
         }
         this.note = source.getNote().value;
         this.resume = source.getResume().value;
@@ -188,13 +209,19 @@ class JsonAdaptedApplication {
         }
 
         ApplicationEvent modelEvent = null;
-        if (eventLocation != null && eventTime != null
-                && assessmentPlatform != null && assessmentLink != null) {
+        if (eventLocation != null && eventTime != null) {
             if (!isValidDateTime(eventTime)) {
                 throw new IllegalValueException(ApplicationEvent.DATETIME_CONSTRAINTS);
             }
             LocalDateTime modelDateTime = LocalDateTime.parse(eventTime, DATETIME_FORMATTER);
-            modelEvent = new OnlineAssessment(eventLocation, modelDateTime, assessmentPlatform, assessmentLink);
+
+            // Check if this is an OnlineAssessment (has platform and link)
+            if (assessmentPlatform != null && assessmentLink != null) {
+                modelEvent = new OnlineAssessment(eventLocation, modelDateTime, assessmentPlatform, assessmentLink);
+            } else {
+                // This is an Interview (may have interviewer name and/or interview type)
+                modelEvent = new Interview(eventLocation, modelDateTime, interviewerName, interviewType);
+            }
         }
 
         final Note modelNote = new Note(note != null ? note : "");

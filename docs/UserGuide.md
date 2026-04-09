@@ -3,42 +3,43 @@ layout: page
 title: User Guide
 ---
 
-# Hired! 
+# Hired!
 A **desktop app for managing internship applications**, optimized for use via a Command Line Interface (CLI) while still providing the benefits of a Graphical User Interface (GUI).
 
 It is designed for users who prefer typing commands and want to track application progress, deadlines, reminders, and notes in one place.
 
 * Table of Contents
-  * [Quick start](#quick-start)
-  * [Features](#features)
-    * [Default behavior at a glance](#default-behavior-at-a-glance)
-    * [Viewing help : `help`](#viewing-help--help)
-    * [Adding an application: `add`](#adding-an-application-add)
-    * [Listing all applications : `list`](#listing-all-applications--list)
-    * [Editing an application : `edit`](#editing-an-application--edit)
-    * [Locating applications by role: `find`](#locating-applications-by-role-find)
-    * [Locating applications by note: `findnote`](#locating-applications-by-note-findnote)
-    * [Changing an application's status: `status`](#changing-an-applications-status-status)
-    * [Setting the deadline for an application : `deadline`](#setting-the-deadline-for-an-application--deadline)
-    * [Deleting an application : `delete`](#deleting-an-application--delete)
-    * [Identifying urgent applications : `reminder`](#identifying-urgent-applications--reminder)
-    * [Sorting applications : `sort`](#sorting-applications--sort)
-    * [Undoing previous commands : `undo`](#undoing-previous-commands--undo)
-    * [Redoing undone commands : `redo`](#redoing-undone-commands--redo)
-    * [Attaching your resume : `resume`](#attaching-your-resume--resume)
-    * [Opening your resume : `openresume`](#opening-your-resume--openresume)
-    * [Removing your resume : `removeresume`](#removing-your-resume--removeresume)
-    * [Setting an online assessment : `assessment`](#setting-an-online-assessment--assessment)
-    * [Removing an online assessment : `removeevent`](#removing-an-online-assessment--removeevent)
-    * [Clearing all entries : `clear`](#clearing-all-entries--clear)
-    * [Exiting the program : `exit`](#exiting-the-program--exit)
-    * [Saving the data](#saving-the-data)
-    * [Editing the data file](#editing-the-data-file)
-    * [Archiving data files `[coming in v6.0]`](#archiving-data-files-coming-in-v60)
-  * [FAQ](#faq)
-  * [Known issues](#known-issues)
-  * [Command summary](#command-summary)
-  * [Future Improvement](#future-improvement)
+    * [Quick start](#quick-start)
+    * [Features](#features)
+        * [Default behavior at a glance](#default-behavior-at-a-glance)
+        * [Viewing help : `help`](#viewing-help--help)
+        * [Adding an application: `add`](#adding-an-application-add)
+        * [Listing all applications : `list`](#listing-all-applications--list)
+        * [Editing an application : `edit`](#editing-an-application--edit)
+        * [Locating applications by role: `find`](#locating-applications-by-role-find)
+        * [Locating applications by note: `findnote`](#locating-applications-by-note-findnote)
+        * [Changing an application's status: `status`](#changing-an-applications-status-status)
+        * [Setting the deadline for an application : `deadline`](#setting-the-deadline-for-an-application--deadline)
+        * [Deleting an application : `delete`](#deleting-an-application--delete)
+        * [Identifying urgent applications : `reminder`](#identifying-urgent-applications--reminder)
+        * [Sorting applications : `sort`](#sorting-applications--sort)
+        * [Undoing previous commands : `undo`](#undoing-previous-commands--undo)
+        * [Redoing undone commands : `redo`](#redoing-undone-commands--redo)
+        * [Attaching your resume : `resume`](#attaching-your-resume--resume)
+        * [Opening your resume : `openresume`](#opening-your-resume--openresume)
+        * [Removing your resume : `removeresume`](#removing-your-resume--removeresume)
+        * [Setting an online assessment : `assessment`](#setting-an-online-assessment--assessment)
+        * [Setting an interview : `interview`](#setting-an-interview--interview)
+        * [Removing an event : `removeevent`](#removing-an-event--removeevent)
+        * [Clearing all entries : `clear`](#clearing-all-entries--clear)
+        * [Exiting the program : `exit`](#exiting-the-program--exit)
+        * [Saving the data](#saving-the-data)
+        * [Editing the data file](#editing-the-data-file)
+        * [Archiving data files `[coming in v6.0]`](#archiving-data-files-coming-in-v60)
+    * [FAQ](#faq)
+    * [Known issues](#known-issues)
+    * [Command summary](#command-summary)
+    * [Future Improvement](#future-improvement)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -103,9 +104,9 @@ These defaults are useful when you are trying commands for the first time:
 
 * If no data file exists yet, Hired! starts with sample applications.
 * `add` creates an application with default values unless you explicitly set them:
-  * status defaults to `APPLIED`
-  * deadline defaults to `No deadline set` (shown as no deadline in UI)
-  * note defaults to empty
+    * status defaults to `APPLIED`
+    * deadline defaults to `No deadline set` (shown as no deadline in UI)
+    * note defaults to empty
 * Reminder highlighting is **disabled by default** until you run `reminder` at least once.
 * `list`, `find`, and `findnote` change which applications are currently shown; all index-based commands (`edit`, `delete`, `status`, `deadline`, etc.) use the **currently displayed** list indexes.
 
@@ -134,14 +135,16 @@ Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG].
 > * `l/` (optional) is used for the company location.
 >
 > > Phone numbers are intentionally not restricted to a fixed length, as valid phone number lengths and formats vary across countries.
-> 
+>
 > Applications are considered duplicates (and cannot be added) only when they have the same identity:
 > 1) the same `role`,
 > 2) the same `company name`, and
 > 3) the same `company location`:
      >    * if both locations are empty (e.g. `l/` is omitted), they are treated as the same;
->    * if one location is empty and the other is not, they are treated as different.
-> 
+     >    * if one location is empty and the other is not, they are treated as different.
+            > **Tip:** An application can have any number of tags (including 0).
+            > **Tip:** A note can be added when creating an application by using `note/`.
+            > **Default after successful add:** status is `APPLIED`, deadline is unset, and reminder color remains default until `reminder` is enabled.
 > For duplicate checking, the comparison ignores letter case and whitespace differences in `role`, `company name`, and `company location`.
 > For example, `Software Engineer` and `softwareengineer` are treated as the same role.
 > **Tip:** An application can have any number of tags (including 0).
@@ -253,9 +256,9 @@ Format: `deadline INDEX DATE_TIME`
 * The index refers to the index number shown in the displayed application list.
 * This `deadline` refers to the **interview / application-process deadline** for that application.
 * This deadline is used by `reminder` and `sort time`.
-* This deadline is **not** the same as online assessment time:
-  * If you set an OA time via `assessment ... et/...`, that `et/` value belongs to the assessment event only.
-  * `reminder` compares only this `deadline` field, not the OA `et/` time.
+* This deadline is **not** the same as online assessment or interview time:
+    * If you set an event time via `assessment ... et/...` or `interview ... et/...`, that `et/` value belongs to the event only.
+    * `reminder` compares only this `deadline` field, not the event `et/` time.
 
 Examples:
 * `deadline 1 2026-12-31`
@@ -302,7 +305,7 @@ Format: `reminder`
 * Once you have executed `reminder`, the highlighting preference is saved, so restarting the app will keep the red/orange coloring behaviour.
 * Before you run `reminder` at least once, reminder highlighting is disabled and `role`/calendar colors stay at default.
 * Re-running `reminder` repeatedly without any meaningful change (e.g., highlighting already enabled and deadline order unchanged) is treated as a single effective reminder state in undo/redo history.
-  * Practical effect: if you entered `reminder` many times in a row, `undo` usually only needs to cross the first effective `reminder` state once to turn highlighting off.
+    * Practical effect: if you entered `reminder` many times in a row, `undo` usually only needs to cross the first effective `reminder` state once to turn highlighting off.
 * Deadline format affects how the comparison is done:
     * If you enter `deadline` as `yyyy-MM-dd`, it is treated as a date and compared using the day window (end of day is handled implicitly for highlighting).
     * If you enter `deadline` as `yyyy-MM-dd HH:mm`, the comparison is accurate to **minutes**.
@@ -344,7 +347,7 @@ Undoes the most recent command that modified the application list.
 Format: `undo`
 
 * Keeps track of up to 10 steps of your command history.
-* Commands that can be undone include add, delete, edit, clear, status, reminder, deadline, sort, resume, removeresume, assessment, and removeevent.
+* Commands that can be undone include add, delete, edit, clear, status, reminder, deadline, sort, resume, removeresume, assessment, interview, and removeevent.
 * You cannot undo if there are no more states to revert to in the history.
 * For `reminder`: undo/redo restores both list order and reminder highlighting state together.
 
@@ -426,8 +429,8 @@ Format: `assessment INDEX el/LOCATION et/DATE_TIME ap/PLATFORM al/LINK`
     * `et/` — date and time of the assessment in `yyyy-MM-dd HH:mm` format.
     * `ap/` — platform used for the assessment (e.g. `HackerRank`, `Codility`).
     * `al/` — link to the assessment (e.g. `www.hackerrank.com`).
-* If the application already has an assessment, running `assessment` again will **overwrite** the existing one.
-* To remove an existing assessment, use the [`removeevent`](#removing-an-online-assessment--removeevent) command.
+* If the application already has an event (assessment or interview), running `assessment` again will **overwrite** the existing one.
+* To remove an existing event, use the [`removeevent`](#removing-an-event--removeevent) command.
 
 > **Note:** The datetime must be in `yyyy-MM-dd HH:mm` format exactly. Invalid dates or times (e.g. `2026-13-01 10:00` or `2026-03-24 10:60`) will not be accepted.
 
@@ -435,9 +438,35 @@ Examples:
 * `assessment 1 el/home et/2026-03-24 10:00 ap/HackerRank al/www.hackerrank.com`
 * `assessment 2 el/office et/2026-06-15 14:30 ap/Codility al/www.codility.com`
 
-### Removing an online assessment : `removeevent`
+### Setting an interview : `interview`
 
-Removes the online assessment (event) attached to a specific application.
+Attaches interview details to a specific application. Once set, an **Event** button will appear on the application card — clicking it opens a window showing the full interview details.
+
+Format: `interview INDEX el/LOCATION et/DATE_TIME [in/INTERVIEWER_NAME] [it/INTERVIEW_TYPE]`
+
+* Sets the interview for the application at the specified `INDEX`.
+* The index refers to the index number shown in the displayed application list.
+* The index **must be a positive integer** `1, 2, 3, ...`
+* Two prefixes are **required**:
+    * `el/` — location of the interview (e.g. `Google HQ`, `Zoom`).
+    * `et/` — date and time of the interview in `yyyy-MM-dd HH:mm` format.
+* Two prefixes are **optional**:
+    * `in/` — name of the interviewer (e.g. `John Doe`). Omit if unknown.
+    * `it/` — type of interview (e.g. `technical`, `behavioural`, `panel`). Omit if unknown.
+* If the application already has an event (assessment or interview), running `interview` again will **overwrite** the existing one.
+* To remove an existing event, use the [`removeevent`](#removing-an-event--removeevent) command.
+* This action can be undone using `undo`.
+
+> **Note:** The datetime must be in `yyyy-MM-dd HH:mm` format exactly. Invalid dates or times (e.g. `2026-13-01 10:00` or `2026-03-24 10:60`) will not be accepted.
+
+Examples:
+* `interview 1 el/Google HQ et/2026-05-10 14:00 in/John Doe it/technical` — sets a technical interview with an interviewer.
+* `interview 2 el/Zoom et/2026-06-01 10:00 it/behavioural` — sets a behavioural interview; interviewer name omitted.
+* `interview 3 el/Office et/2026-07-15 09:30` — sets an interview with only the required fields.
+
+### Removing an event : `removeevent`
+
+Removes the event (online assessment or interview) attached to a specific application.
 
 Format: `removeevent INDEX`
 
@@ -449,8 +478,8 @@ Format: `removeevent INDEX`
 * This action can be undone using `undo`.
 
 Examples:
-* `removeevent 1` removes the online assessment from the 1st application.
-* `removeevent 3` removes the online assessment from the 3rd application.
+* `removeevent 1` removes the event from the 1st application.
+* `removeevent 3` removes the event from the 3rd application.
 
 ### Clearing all entries : `clear`
 
@@ -530,6 +559,7 @@ Action | Format, Examples
 **Open Resume** | `openresume INDEX` <br> Opens a resume of a specific application.
 **Remove Resume** | `removeresume INDEX` <br> Removes a resume of a specific application.
 **Assessment** | `assessment INDEX el/LOCATION et/DATE_TIME ap/PLATFORM al/LINK` <br> e.g. `assessment 1 el/home et/2026-03-24 10:00 ap/HackerRank al/www.hackerrank.com`
+**Interview** | `interview INDEX el/LOCATION et/DATE_TIME [in/INTERVIEWER_NAME] [it/INTERVIEW_TYPE]` <br> e.g. `interview 1 el/Google HQ et/2026-05-10 14:00 in/John Doe it/technical`
 **Remove Event** | `removeevent INDEX` <br> e.g. `removeevent 1`
 **Exit** | `exit`
 **Help** | `help`

@@ -13,7 +13,7 @@
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1"
          title="Event Details"
-         minWidth="400"
+         minWidth="420"
          minHeight="300"
          resizable="false">
 
@@ -34,10 +34,11 @@
                 <!-- Details grid -->
                 <GridPane hgap="15" vgap="10">
                     <columnConstraints>
-                        <ColumnConstraints minWidth="80" prefWidth="100" />
+                        <ColumnConstraints minWidth="110" prefWidth="120" />
                         <ColumnConstraints hgrow="ALWAYS" minWidth="150" />
                     </columnConstraints>
 
+                    <!-- Row 0: Location (always shown) -->
                     <Label text="Location:"
                            styleClass="event-detail-key"
                            GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -46,6 +47,7 @@
                            wrapText="true"
                            GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
+                    <!-- Row 1: Date &amp; Time (always shown) -->
                     <Label text="Date &amp; Time:"
                            styleClass="event-detail-key"
                            GridPane.columnIndex="0" GridPane.rowIndex="1" />
@@ -53,20 +55,44 @@
                            styleClass="event-detail-value"
                            GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                    <Label text="Platform:"
+                    <!-- Row 2: Platform (OnlineAssessment only) -->
+                    <Label fx:id="platformKey"
+                           text="Platform:"
                            styleClass="event-detail-key"
                            GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <Label fx:id="platformLabel"
                            styleClass="event-detail-value"
                            GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                    <Label text="Link:"
+                    <!-- Row 3: Link (OnlineAssessment only) -->
+                    <Label fx:id="linkKey"
+                           text="Link:"
                            styleClass="event-detail-key"
                            GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <Label fx:id="linkLabel"
                            styleClass="event-detail-value"
                            wrapText="true"
                            GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <!-- Row 4: Interviewer (Interview only) -->
+                    <Label fx:id="interviewerKey"
+                           text="Interviewer:"
+                           styleClass="event-detail-key"
+                           GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="interviewerLabel"
+                           styleClass="event-detail-value"
+                           wrapText="true"
+                           GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                    <!-- Row 5: Interview Type (Interview only) -->
+                    <Label fx:id="interviewTypeKey"
+                           text="Interview Type:"
+                           styleClass="event-detail-key"
+                           GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label fx:id="interviewTypeLabel"
+                           styleClass="event-detail-value"
+                           GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
                 </GridPane>
 
                 <Separator />

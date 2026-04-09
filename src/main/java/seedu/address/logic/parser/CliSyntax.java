@@ -18,7 +18,8 @@ public class CliSyntax {
     public static final Prefix PREFIX_EVENT_TIME = new Prefix("et/");
     public static final Prefix PREFIX_ASSESSMENT_PLATFORM = new Prefix("ap/");
     public static final Prefix PREFIX_ASSESSMENT_LINK = new Prefix("al/");
+    public static final Prefix PREFIX_INTERVIEW_INTERVIEWER = new Prefix("in/");
+    public static final Prefix PREFIX_INTERVIEW_TYPE = new Prefix("it/");
     public static final Prefix PREFIX_NOTE = new Prefix("note/");
     public static final Prefix PREFIX_RESUME = new Prefix("rp/");
 }
-
