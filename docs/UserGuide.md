@@ -116,7 +116,7 @@ This is where you type commands such as `add`, `find`, `deadline`, or `status`.
 After each command, Hired! shows a success or error message to tell you what happened.
 
 ### Application list
-This is the main list of applications currently being shown.  
+This is the main list of applications currently being shown.
 Commands such as `list`, `find`, `findnote`, and `sort` can change which applications appear here and in what order.
 
 ### Application card
@@ -132,7 +132,7 @@ Each application is shown as a card containing details such as:
 * assessment information, if available
 
 ### Displayed index
-Each card has an index based on the **currently displayed list**.  
+Each card has an index based on the **currently displayed list**.
 Index-based commands such as `edit`, `delete`, `status`, `deadline`, `resume`, and `removeevent` always use the displayed indexes, not a permanent index.
 
 ### Event button
@@ -194,7 +194,7 @@ Command:
 `reminder`
 
 Expected result:
-The displayed list is sorted by deadline, nearest first.  
+The displayed list is sorted by deadline, nearest first.
 Applications may now be highlighted based on deadline urgency.
 
 ### Step 7: Attach a resume
@@ -235,7 +235,7 @@ Command:
 Expected result:
 All applications are deleted.
 
-You are all set! Time to start creating your first application! 
+You are all set! Time to start creating your first application!
 After this tutorial, continue with [Features](#features) for the full command reference.
 --------------------------------------------------------------------------------------------------------------------
 
