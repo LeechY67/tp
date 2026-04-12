@@ -273,7 +273,7 @@ How the `sort` command works:
 
 The sequence diagram below illustrates the interactions within the `Logic` component for a `findnote` command.
 
-![Interactions Inside the Logic Component for the `findnote` Command](images/FindNoteSequenceDiagram.png)
+<img src="images/FindNoteSequenceDiagram.png" width="900" />
 
 The class diagram below shows the parsing-related structure for the `findnote` command.
 
