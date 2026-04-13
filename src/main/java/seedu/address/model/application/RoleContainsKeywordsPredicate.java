@@ -20,7 +20,7 @@ public class RoleContainsKeywordsPredicate implements Predicate<Application> {
     public boolean test(Application application) {
         return keywords.stream()
                 .anyMatch(keyword -> StringUtil
-                        .containsAllKeywordsAsSubstrings(application.getRole().roleName, keyword));
+                        .containsSubstringIgnoreCase(application.getRole().roleName, keyword));
     }
 
     @Override

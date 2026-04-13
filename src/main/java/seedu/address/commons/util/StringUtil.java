@@ -39,38 +39,21 @@ public class StringUtil {
     }
 
     /**
-     * Checks if the {@code sentence} contains all keywords provided in the {@code input} string.
-     * Each keyword is treated as a case-insensitive substring. This is particularly useful
-     * for flexible searches (e.g., searching "sof dev" to find "Software Developer").
-     * * <p>Data Normalization:
-     * <ul>
-     * <li>The {@code input} is trimmed and split by one or more whitespace characters.</li>
-     * <li>Comparison is strictly case-insensitive.</li>
-     * </ul>
-     * * <p>Example usage:
-     * <pre>
-     * containsAllKeywordsAsSubstrings("Software Engineer", "soft eng") == true
-     * containsAllKeywordsAsSubstrings("Google Singapore", "Goo SING") == true
-     * containsAllKeywordsAsSubstrings("Frontend", "back") == false
-     * </pre>
+     * Checks if the {@code sentence} contains the {@code keyword} as a case-insensitive substring.
+     *
      * @param sentence The target text to be searched. Must not be null.
-     * @param input A string containing one or more whitespace-separated keywords. Must not be null.
-     * @return True if every keyword in the input is found as a substring within the sentence.
-     * @throws NullPointerException if {@code sentence} or {@code input} is null.
+     * @param keyword A single keyword to be matched as a substring. Must not be null/blank.
+     * @return True if the sentence contains the keyword as a substring.
+     * @throws NullPointerException if {@code sentence} or {@code keyword} is null.
      */
-    public static boolean containsAllKeywordsAsSubstrings(String sentence, String input) {
+    public static boolean containsSubstringIgnoreCase(String sentence, String keyword) {
         requireNonNull(sentence);
-        requireNonNull(input);
+        requireNonNull(keyword);
 
-        String preppedKeyword = input.trim().toLowerCase();
+        String preppedKeyword = keyword.trim().toLowerCase();
         checkArgument(!preppedKeyword.isEmpty(), "Keyword parameter cannot be empty");
-        String[] keywords = preppedKeyword.split("\\s+");
-
         String lowerSentence = sentence.toLowerCase();
-
-        // Ensure every keyword exists within the sentence (AND logic)
-        return Arrays.stream(keywords)
-                .allMatch(lowerSentence::contains);
+        return lowerSentence.contains(preppedKeyword);
     }
 
     /**

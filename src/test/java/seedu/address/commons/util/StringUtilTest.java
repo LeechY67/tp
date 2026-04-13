@@ -128,43 +128,43 @@ public class StringUtilTest {
     @Test
     public void containsSubstringIgnoreCase_nullKeyword_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> StringUtil
-                .containsAllKeywordsAsSubstrings("typical sentence", null));
+                .containsSubstringIgnoreCase("typical sentence", null));
     }
 
     @Test
     public void containsSubstringIgnoreCase_emptyKeyword_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, "Keyword parameter cannot be empty", ()
-                -> StringUtil.containsAllKeywordsAsSubstrings("typical sentence", "  "));
+                -> StringUtil.containsSubstringIgnoreCase("typical sentence", "  "));
     }
 
     @Test
     public void containsSubstringIgnoreCase_nullSentence_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> StringUtil.containsAllKeywordsAsSubstrings(null, "abc"));
+        assertThrows(NullPointerException.class, () -> StringUtil.containsSubstringIgnoreCase(null, "abc"));
     }
 
     @Test
     public void containsSubstringIgnoreCase_validInputs_correctResult() {
 
         // Empty sentence
-        assertFalse(StringUtil.containsAllKeywordsAsSubstrings("", "abc"));
+        assertFalse(StringUtil.containsSubstringIgnoreCase("", "abc"));
 
         // Exact match
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Software Engineer", "Software"));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Software Engineer", "Software"));
 
         // Matches a partial word (Partial matching)
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Software Engineer", "soft"));
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Software Engineer", "engin"));
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Data Analyst", "naly"));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Software Engineer", "soft"));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Software Engineer", "engin"));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Data Analyst", "naly"));
 
         // Matches with different cases (Case-insensitive)
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Product Manager", "mAnAgEr"));
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Product Manager", "PROD"));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Product Manager", "mAnAgEr"));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Product Manager", "PROD"));
 
         // Sentence missing keyword
-        assertFalse(StringUtil.containsAllKeywordsAsSubstrings("Software Engineer", "dev"));
+        assertFalse(StringUtil.containsSubstringIgnoreCase("Software Engineer", "dev"));
 
         // Keyword has leading/trailing spaces (should be trimmed and match)
-        assertTrue(StringUtil.containsAllKeywordsAsSubstrings("Software Engineer", "  soft  "));
+        assertTrue(StringUtil.containsSubstringIgnoreCase("Software Engineer", "  soft  "));
     }
 
     //---------------- Tests for getDetails --------------------------------------

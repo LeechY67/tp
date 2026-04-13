@@ -19,7 +19,7 @@ public class NoteContainsKeywordsPredicate implements Predicate<Application> {
     public boolean test(Application application) {
         return keywords.stream()
                 .anyMatch(keyword -> StringUtil
-                        .containsAllKeywordsAsSubstrings(application.getNote().toString(), keyword));
+                        .containsSubstringIgnoreCase(application.getNote().toString(), keyword));
     }
 
     @Override

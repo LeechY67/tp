@@ -365,7 +365,7 @@ Examples:
 
 ### Locating applications by role: `find`
 
-Finds applications whose roles contain all given keywords.
+Finds applications whose roles contain any of the given keywords.
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
@@ -373,12 +373,12 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * The order of the keywords does not matter. e.g. both `find software engineer` and `find engineer software` can match `Software Engineer`.
 * Only the role is searched.
 * Partial words will also be matched. e.g. `eng` will match `Engineer`
-* Applications matching all keywords will be returned, if given more than 1 keyword (i.e. `AND` search).
+* Applications matching at least one keyword will be returned, if given more than 1 keyword (i.e. `OR` search).
 * At least one keyword must be provided (e.g. `find` alone is invalid).
 
 Examples:
 * `find engineer` returns applications with roles containing `engineer`
-* `find quant research` returns applications with roles containing `quant` and `research`
+* `find quant research` returns applications with roles containing `quant` or `research`
 
 ### Locating applications by note: `findnote`
 
