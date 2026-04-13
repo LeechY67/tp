@@ -313,9 +313,7 @@ Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG].
             > **Default after successful add:** status is `APPLIED`, deadline is unset, and reminder color remains default until `reminder` is enabled.
 > For duplicate checking, the comparison ignores letter case and whitespace differences in `role`, `company name`, and `company location`.
 > For example, `Software Engineer` and `softwareengineer` are treated as the same role.
-> **Tip:** An application can have any number of tags (including 0).
-> **Tip:** A note can be added when creating an application by using `note/`.
-> **Default after successful add:** status is `APPLIED`, deadline is unset, and reminder color remains default until `reminder` is enabled.
+
 
 Examples:
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google`
