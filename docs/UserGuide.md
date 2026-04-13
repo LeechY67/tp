@@ -364,7 +364,7 @@ Finds applications whose roles contain all given keywords.
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `engineer` will match `Engineer`
-* The order of the keywords matters. e.g. `soft eng` will match `Software Engineer`.
+* The order of the keywords does not matter. e.g. both `find software engineer` and `find engineer software` can match `Software Engineer`.
 * Only the role is searched.
 * Partial words will also be matched. e.g. `eng` will match `Engineer`
 * Applications matching all keywords will be returned, if given more than 1 keyword (i.e. `AND` search).
