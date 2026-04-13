@@ -446,10 +446,10 @@ Examples:
 * `deadline 1 2026-12-31`
 * `deadline 1 2026-12-31 23:59`
 
-Tips: Note that we can change deadline and status by either using their own command, or using the general edit command.
+>Tips: Note that we can change deadline and status by either using their own command, or using the general edit command.
 Examples:
-* `status 1 s/OFFERED` is equivalent to `edit 1 s/OFFERED`
-* `deadline 2 2026-03-25` is equivalent to `edit 2 d/2026-03-25`
+>* `status 1 s/OFFERED` is equivalent to `edit 1 s/OFFERED`
+>* `deadline 2 2026-03-25` is equivalent to `edit 2 d/2026-03-25`
   This is intended to give user more flexibility in entering command.
   This is a feature not a bug.
 
@@ -760,10 +760,6 @@ If your changes to the data file make its format invalid, Hired! may discard all
 Furthermore, certain edits can cause Hired! to behave in unexpected ways (for example, if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
-### Archiving data files `[coming in v6.0]`
-
-_Details coming soon ..._
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -806,6 +802,12 @@ _Details coming soon ..._
 * **Displayed indexes are context-dependent**: index-based commands (`edit`, `delete`, `status`, `deadline`, etc.) act on the currently displayed list. After `find`, `findnote`, `sort`, or `list`, the same index may refer to a different application.
 * **Reminder color updates are not timer-driven**: when real time crosses a deadline minute, colors update on UI refresh actions (e.g., selecting a card, re-running `reminder`, or other list re-render triggers), not by a background timer.
 * **Date-only deadlines are day-based**: `yyyy-MM-dd` deadlines are compared at the date level, while `yyyy-MM-dd HH:mm` uses minute-level comparison.
+* **Limited Near-Duplicate Detection for Companies**: When adding new applications, the system currently prevents exact duplicates (ignoring case and extra spaces in between). However, it does not detect near-duplicates with slight variations in the company name.<br/>
+For example: Adding an application for "GSK" and another for "GSK plc" (with the same role and company location) will be treated as two completely separate entries without any warning.<br/>
+Workaround: For now, users are advised to be consistent with their naming conventions (e.g., choosing to either always include or always exclude suffixes like "Pte Ltd" or "LLC"). Enhancing this with fuzzy matching is planned for a future release to better help users avoid accidental double-entries.
+* **Inconsistent Parameter Support Between add and edit**: Currently, the `add` command is designed to be ***lightweight***, focusing only on the ***foundational details*** of an application (Role, Phone, Email, Company (name and location), Note and Tags). Therefore, it does not accept the Status (s/) or Deadline (d/) prefixes during the initial creation.<br/>
+Impact: Applications are strictly initialized with a default status of APPLIED and no deadline is set.<br/>
+Workaround: As mentioned in [our Command Tips](#deleting-an-application--delete), Hired! provides flexible ways to update these fields post-creation. You can immediately append a status or deadline using their dedicated commands (e.g., status 1 s/OFFERED) or by utilizing the general edit command (e.g., edit 1 s/OFFERED d/2026-04-10).
 
 --------------------------------------------------------------------------------------------------------------------
 ## What you can do with Hired!
@@ -859,3 +861,8 @@ Action | Format, Examples
    | First `reminder` in the session, **or** the sorted order **changes** | `Sorted by deadline and refreshed reminder highlighting!` |
    | Order **unchanged**, but reminder-relevant state **changes** (e.g. role colour crosses a rule as time passes; white → red within 3 days, red → overdue orange; or the **deadline value** changed since last refresh) | `Reminder status updated.` |
    | **No change** to order or highlight state (nothing new to apply) | `Already up to date.` or `No changes to highlighting or sort order.` |
+6. **Smarter Duplicate Detection for Applications:**
+   Currently, the duplicate detection mechanism only normalizes case and whitespace. As a result, it enforces strict equality and misses likely near-duplicates, such as entering "Shopee" versus "Shopee Pte Ltd", or "Google" versus "Google LLC".<br/>
+   We plan to upgrade the isSameApplication logic to incorporate fuzzy matching or similarity thresholds. The system could normalize common company suffixes (e.g., "Pte Ltd", "LLC", "Inc.") before comparison. <br/>
+   Alternatively, it could introduce a "soft warning" system where the app alerts the user about a highly similar existing entry and asks for explicit confirmation before proceeding with the addition. <br/>
+   This will greatly improve usability and help users maintain a cleaner application tracker. <br/>
