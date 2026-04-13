@@ -564,7 +564,7 @@ Format: `openresume INDEX`
 * The index **must be a positive integer** `1, 2, 3, ...`
 
 Examples:
-* `openresume 2` will open your resume of the first application in the default way.
+* `openresume 2` will open the resume of the second application in the default way.
 
 ### Removing your resume : `removeresume`
 
