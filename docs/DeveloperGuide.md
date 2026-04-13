@@ -7,8 +7,9 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
-
+* This project is adapted from [AddressBook-Level3 (AB3)](https://github.com/se-edu/addressbook-level3) by the SE-EDU initiative.
+* Diagrams are created using [PlantUML](https://plantuml.com/).
+* The project uses the [JavaFX](https://openjfx.io/) framework.
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
@@ -86,6 +87,10 @@ The `UI` component,
 **API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
+
+<div markdown="span" class="alert alert-info">
+:information_source: **Note:** Only representative concrete `Command` subclasses are shown here (e.g., `AddCommand`, `DeleteCommand`, `FindCommand`) to keep the diagram readable. The diagram is not an exhaustive list of all command classes.
+</div>
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
@@ -229,7 +234,6 @@ The following activity diagram summarizes what happens when a user executes a ne
     * Pros: Will use less memory (e.g. for `delete`, just save the application being deleted).
     * Cons: We must ensure that the implementation of each individual command are correct.
 
-_{more aspects and alternatives to be added}_
 
 ## Reminder Feature
 
@@ -269,7 +273,7 @@ How the `sort` command works:
 
 The sequence diagram below illustrates the interactions within the `Logic` component for a `findnote` command.
 
-![Interactions Inside the Logic Component for the `findnote` Command](images/FindNoteSequenceDiagram.png)
+<img src="images/FindNoteSequenceDiagram.png" width="900" />
 
 The class diagram below shows the parsing-related structure for the `findnote` command.
 
@@ -703,6 +707,25 @@ Given below are instructions to test the app manually.
 testers are expected to do more *exploratory* testing.
 
 </div>
+
+### Handling missing or corrupted data files
+
+1. Missing data file
+
+    1. Ensure the application has been launched at least once, then close it.
+    2. Navigate to the folder containing the data file and delete the data file.
+    3. Launch the application again.
+
+   Expected: The application should start normally and create a new data file populated with sample data or an empty dataset.
+
+2. Corrupted data file
+
+    1. Ensure the application has been launched at least once, then close it.
+    2. Open the data file in a text editor.
+    3. Modify the file so that it is no longer valid JSON, for example by deleting a closing brace.
+    4. Save the file and launch the application again.
+
+   Expected: The application should detect that the file is corrupted, warn the user that the data file is not in the correct format, and start with sample data or an empty dataset instead of crashing.
 
 ### Launch and shutdown
 

@@ -1,6 +1,23 @@
 @startuml
 !include style.puml
 
+title Interactions Inside the Logic Component for the `findnote` Command
+
+skinparam ParticipantFontColor black
+skinparam ParticipantBorderColor black
+skinparam ParticipantBackgroundColor white
+skinparam ActorFontColor black
+skinparam ActorBorderColor black
+skinparam ActorBackgroundColor white
+skinparam SequenceLifeLineBorderColor black
+skinparam SequenceLifeLineBackgroundColor white
+skinparam ArrowColor black
+skinparam NoteFontColor black
+skinparam NoteBorderColor black
+skinparam NoteBackgroundColor white
+skinparam ResponseMessageBelowArrow true
+skinparam maxMessageSize 80
+
 actor User
 participant ":LogicManager" as LogicManager
 participant ":AddressBookParser" as AddressBookParser
@@ -15,19 +32,19 @@ activate LogicManager
 LogicManager -> AddressBookParser : parseCommand("findnote recruiter followup")
 activate AddressBookParser
 
-AddressBookParser -> FindNoteCommandParser : parse(" recruiter followup")
+AddressBookParser -> FindNoteCommandParser : parse("recruiter followup")
 activate FindNoteCommandParser
 
 create Predicate
-FindNoteCommandParser -> Predicate : NoteContainsKeywordsPredicate(keywords)
+FindNoteCommandParser -> Predicate : create predicate
 activate Predicate
 Predicate --> FindNoteCommandParser
 deactivate Predicate
 
 create FindNoteCommand
-FindNoteCommandParser -> FindNoteCommand : FindNoteCommand(predicate)
+FindNoteCommandParser -> FindNoteCommand : create command
 activate FindNoteCommand
-FindNoteCommand --> FindNoteCommandParser
+FindNoteCommand --> FindNoteCommandParser : c
 deactivate FindNoteCommand
 
 FindNoteCommandParser --> AddressBookParser : c

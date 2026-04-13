@@ -116,7 +116,7 @@ This is where you type commands such as `add`, `find`, `deadline`, or `status`.
 After each command, Hired! shows a success or error message to tell you what happened.
 
 ### Application list
-This is the main list of applications currently being shown.  
+This is the main list of applications currently being shown.
 Commands such as `list`, `find`, `findnote`, and `sort` can change which applications appear here and in what order.
 
 ### Application card
@@ -132,7 +132,7 @@ Each application is shown as a card containing details such as:
 * assessment information, if available
 
 ### Displayed index
-Each card has an index based on the **currently displayed list**.  
+Each card has an index based on the **currently displayed list**.
 Index-based commands such as `edit`, `delete`, `status`, `deadline`, `resume`, and `removeevent` always use the displayed indexes, not a permanent index.
 
 ### Event button
@@ -194,7 +194,7 @@ Command:
 `reminder`
 
 Expected result:
-The displayed list is sorted by deadline, nearest first.  
+The displayed list is sorted by deadline, nearest first.
 Applications may now be highlighted based on deadline urgency.
 
 ### Step 7: Attach a resume
@@ -235,7 +235,7 @@ Command:
 Expected result:
 All applications are deleted.
 
-You are all set! Time to start creating your first application! 
+You are all set! Time to start creating your first application!
 After this tutorial, continue with [Features](#features) for the full command reference.
 --------------------------------------------------------------------------------------------------------------------
 
@@ -398,10 +398,20 @@ Examples:
 
 Format: `status INDEX s/STATUS`
 
+e.g.
+
+Before
+
+<img src="images/statusapplied.png" width="550">
+
+After
+
+<img src="images/statusoffered.png" width="550">
+
 * Edits the application at the specified `INDEX`.
 * The index refers to the index number shown in the displayed application list.
 * The index **must be a positive integer** `1, 2, 3, ...`
-* * The status is case-insensitive. e.g. `REJECTED` will turn out to be `rejected`
+* The status is case-insensitive. e.g. `REJECTED` will turn out to be `rejected`
 * Only status given above can be chosen.
 * Only one application can be changed at a time.
 * Status will appear as a tag in the UI.
@@ -605,6 +615,8 @@ Attaches your resume to a specific application.
 
 Format: `resume INDEX rp/RESUME_PATH`
 
+<img src="images/resume.png" width="550">
+
 * Edits the application at the specified `INDEX`.
 * The index refers to the index number shown in the displayed application list.
 * The index **must be a positive integer** `1, 2, 3, ...`
@@ -625,6 +637,8 @@ Opens your resume of a specific application.
 
 Format: `openresume INDEX`
 
+<img src="images/openresume.png" width="550">
+
 * Opens the resume of the application at the specified `INDEX`.
 * The index refers to the index number shown in the displayed application list.
 * The index **must be a positive integer** `1, 2, 3, ...`
@@ -637,6 +651,8 @@ Examples:
 Removes your resume of a specific application.
 
 Format: `removeresume INDEX`
+
+<img src="images/removeresume.png" width="550">
 
 * Edits the application at the specified `INDEX`.
 * The index refers to the index number shown in the displayed application list.
