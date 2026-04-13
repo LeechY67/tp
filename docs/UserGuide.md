@@ -293,9 +293,9 @@ Adds an application record to Hired!.
 
 Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG]... [note/NOTE]`
 
-**Required prefixes:** `r/`, `p/`, `e/`, and `c/` must be provided for a valid `add` command.
+**Required prefixes:** `r/`, `p/`, `e/`, and `c/` must be provided for a valid `add` command. They may appear in any order.
 
-**Optional prefixes:** `l/`, `t/`, and `note/` are optional. If provided, they may appear in any order after the required fields.
+**Optional prefixes:** `l/`, `t/`, and `note/` are optional. If provided, they may appear in any order.
 
 > **Note:** In Hired!,
 > * `r/` is used for the internship role,
@@ -311,19 +311,21 @@ Format: `add r/ROLE p/PHONE e/EMAIL c/COMPANY_NAME [l/COMPANY_LOCATION] [t/TAG].
 > Applications are considered duplicates (and cannot be added) only when they have the same identity:
 > 1) the same `role`,
 > 2) the same `company name`, and
-> 3) the same `company location`:
-     >    * if both locations are empty (e.g. `l/` is omitted), they are treated as the same;
-     >    * if one location is empty and the other is not, they are treated as different.
-            > **Tip:** An application can have any number of tags (including 0).
-            > **Tip:** A note can be added when creating an application by using `note/`.
-            > **Default after successful add:** status is `APPLIED`, deadline is unset, and reminder color remains default until `reminder` is enabled.
-> For duplicate checking, the comparison ignores letter case and whitespace differences in `role`, `company name`, and `company location`.
-> For example, `Software Engineer` and `softwareengineer` are treated as the same role.
+> 3) the same `company location`: <br/>
+     If both locations are empty (i.e. `l/` is omitted), they are treated as the same;
+     if one location is empty and the other is not, they are treated as different.
 
+> **Tip:** An application can have any number of tags (including 0).<br/>
+> **Tip:** A note can be added when creating an application by using `note/`.<br/>
+> **Default after successful add:** status is `APPLIED`, deadline is unset, and reminder color remains default until `reminder` is enabled.<br/>
+> **Tip:** For duplicate checking, the comparison ignores letter case and whitespace differences in `role`, `company name`, and `company location`
+> in case user unintentionally creates redundant records.<br/>
+> For example, `Software   Engineer` `Google` and `softwareengineer` `google`are treated as the same role.
 
 Examples:
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google`
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google l/Singapore`
+* `add r/Software Engineer p/98765432 l/Singapore e/hr@google.com c/Google`
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google t/interview t/priority`
 * `add r/Software Engineer p/98765432 e/hr@google.com c/Google l/Boon Lay t/interview`
 * `add r/Data Analyst p/92345678 e/recruitment@meta.com c/Meta l/Singapore t/applied note/Met recruiter at career fair`
